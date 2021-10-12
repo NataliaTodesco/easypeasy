@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+  <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+  <title>EasyPeasy</title>
+</head>
+
+<body>
+  <!-- BODY -->
+  <section>
+    <div id="particles-js"></div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3">
+            <!-- <img src="./Imagenes/Easy-Peasy-2.ico" alt="" class="logo img-fluid"> -->
+            <img src="./Imagenes/easypeasylogo.jpeg" alt="" class="logo img-fluid">
+          </div>
+          <div class="col-lg-9" class="textoHead">
+            <h1 class="display-2"><b> Easy Peasy </b></h1>
+            <p class="lead">Con este software podrás gestionar de forma sencilla y amigable los envíos de tu empresa. 
+              Desde un tornillo hasta miles de pallets, ten siempre el control de tus envíos y no te pierdas un detalle.
+            </p>
+            <hr class="my-4">
+            <p>Para acceder a las utilidades del programa primero inicie sesión.</p>
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#exampleModal">Iniciar Sesion</button>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <!-- INFO -->
+  <section>
+    <button class="info" onclick="mostrarMensaje()" type="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+    </svg>
+  </button>
+  </section>
+
+  <!-- MODAL -->
+  <section>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="usuario-svg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+              </svg>
+            </div>
+            <form class="needs-validation" novalidate>
+              <div>
+                <div>
+                  <label for="email"><i class="bi bi-envelope-fill"></i> Email</label>
+                  <input type="email" class="form-control" id="email" value="" required placeholder="Ingrese su dirección de email">
+                  <div class="invalid-feedback">
+                    Ingrese una dirección de email valida.
+                  </div>
+                </div>
+                <br>
+                <div>
+                  <label for="contraseña"><i class="bi bi-key-fill"></i> Contraseña</label>
+                  <input type="password" class="form-control" id="contraseña" value="" required placeholder="Ingrese su contraseña">
+                  <div class="invalid-feedback">
+                    Ingrese una contraseña.
+                  </div>
+                </div>
+                <br>
+              </div>
+              <div class="form-group">
+                <label for="rol"><i class="bi bi-person-fill"></i> Rol</label>
+                <select class="form-control" id="rol" required>
+                  <option value="1">Administrador</option>
+                  <option value="2">Gerente general</option>
+                  <option value="3">Empleado</option>
+                  <option value="4">Transportista</option>
+                </select>
+              </div>
+              <br>
+              <div class="botones">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button class="btn btn-dark" type="button" id="btn" onclick="go()">Ingresar</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="JS/app.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+  crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="JS/particulas.js"></script>
+</body>
+</html>
