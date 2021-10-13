@@ -16,6 +16,7 @@
 
         body{
             background-color: #ffee32;
+            font-family: 'Fira Sans', sans-serif;
         }
 
         .box{
@@ -27,7 +28,6 @@
             background-color: white;
             border-radius: 8px;
             border: 3px dashed #1cc267;
-            font-family: 'Fira Sans', sans-serif;
         }
 
         .btn{
@@ -37,8 +37,8 @@
             padding: 3%;
             font-size: large;
             -webkit-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
--moz-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
+            -moz-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
+            box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
         }
 
         .btn:hover{
@@ -47,22 +47,34 @@ box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
         }
 
         .logo{
-            height: 70px;
+            height: 50px;
         }
     </style>
   </head>
   <body>
+    <!-- Navbar -->
     <section>
-        <nav class="navbar navbar-dark bg-dark">
-            <img src="./Imagenes/Easy-Peasy-2.svg" alt="" class="logo">
-            <form class="form-inline">
-              <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
-                Salir
-                <i class="bi bi-box-arrow-right"></i>
-              </a>
-            </form>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+                <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto"></ul>
+              <form class="form-inline my-2 my-lg-0">
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html" style="margin: 0; padding: 7px 12px 7px 12px; box-shadow: none; font-size: medium;">
+                    Salir
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+              </form>
+            </div>
           </nav>
     </section>
+    <!-- Botones -->
     <section class="container">
         <div class="box">
             <button type="button" class="btn">
