@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using EasyPeasy.Models;
+using EasyPeasy.Comandos;
 
 namespace api.Controllers
 {
@@ -24,7 +25,7 @@ namespace api.Controllers
     [EnableCors("postgres")]
     public class RemitoController:ControllerBase
     {
-        private readonly EasyPeasyDBContext _db= new EasyPeasyDBContext();
+        private readonly EasyPeasyDBContext _db = new EasyPeasyDBContext();
 
         //Obetener listado de remitos con estado pendiente ordenados por fecha de compra
 
@@ -77,6 +78,82 @@ namespace api.Controllers
                 return Resultado;
             }
 
+        }
+
+        [HttpPost]
+        [Route("Remito/CargarRemito")]
+        public ActionResult<ResultadoApi> AltaRemito([FromBody]ComandoRemito comando)
+        {
+            var resultado = new ResultadoApi();
+
+            if(comando.FechaCompra.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Fecha de Compra";
+                return resultado;
+            }
+
+            if(comando.HoraEntregaPreferido.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Hora de Entrega Preferida";
+                return resultado;
+            }
+
+            var r = new Remito();
+            r.FechaCompra = comando.FechaCompra;
+            r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
+            r.IdEstado = comando.IdEstado;
+            r.IdCliente = comando.IdCliente;
+            r.IdHojaRuta = comando.IdHojaRuta;
+         
+            _db.Remitos.Add(r);
+            _db.SaveChanges();
+           
+            resultado.Ok = true;
+            resultado.Return = _db.Remitos.ToList();
+
+            return resultado;
+        }
+
+
+
+        [HttpPut]
+        [Route("Remito/Actualizar")]
+        public ActionResult<ResultadoApi> Update([FromBody]ComandoRemito comando)
+        {
+            var resultado = new ResultadoApi();
+           
+            if(comando.FechaCompra.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Fecha de Compra";
+                return resultado;
+            }
+
+            if(comando.HoraEntregaPreferido.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Hora de Entrega Preferida";
+                return resultado;
+            }
+
+            var r = _db.Remitos.Where(c =>c.IdRemito == comando.IdRemito).FirstOrDefault();
+            if(r != null)
+            {
+                r.FechaCompra = comando.FechaCompra;
+                r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
+                r.IdEstado = comando.IdEstado;
+                r.IdCliente = comando.IdCliente;
+                r.IdHojaRuta = comando.IdHojaRuta;
+                _db.Remitos.Update(r);
+                _db.SaveChanges();
+            }
+
+            resultado.Ok = true;
+            resultado.Return = _db.Remitos.ToList();;
+
+            return resultado;
         }
     }
 }

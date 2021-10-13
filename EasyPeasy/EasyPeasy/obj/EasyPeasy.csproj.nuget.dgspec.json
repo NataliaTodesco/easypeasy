@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Denise\\Desktop\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {}
+    "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Denise\\Desktop\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {
+    "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Denise\\Desktop\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
         "projectName": "EasyPeasy",
-        "projectPath": "C:\\Users\\Denise\\Desktop\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
-        "packagesPath": "C:\\Users\\Denise\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Denise\\Desktop\\EasyPeasy\\EasyPeasy\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Denise\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -91,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
