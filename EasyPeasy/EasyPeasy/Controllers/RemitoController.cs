@@ -155,5 +155,32 @@ namespace api.Controllers
 
             return resultado;
         }
+
+        //get listado de remitos por  zona
+        [HttpGet]
+        [Route("Remito/ObtenerRemitosPorZona")]
+        public ActionResult<ResultadoApi> GetRemitoPorZona(int idZona)
+        {
+            var Resultado = new ResultadoApi();
+            try{
+                Resultado.Ok = true;
+                //busco remitos en estado pendiente que pertenezcan a la zona solicitada
+                var remitos =  _db.Remitos
+                        .Where(x => x.IdEstado == 1 &&
+                               x.IdClienteNavigation.IdBarrioNavigation.IdZona==idZona)
+                        .ToList();
+                              
+                Resultado.Return = remitos;
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
     }
+
+    
 }
