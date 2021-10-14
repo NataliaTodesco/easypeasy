@@ -54,8 +54,7 @@ namespace api.Controllers
         }
 
         //update/create get
-        [HttpGet]
-        [ValidateAntiForgeryToken] 
+        [HttpGet]        
         [Route("HojaDeRuta/Upsert")]
         public ActionResult<ResultadoApi> Upsert (int? Id){
 
@@ -88,6 +87,64 @@ namespace api.Controllers
     
 
         }
+
+        [HttpPost]
+        [Route("Remito/RegistrarHojaDeRuta")]
+        public ActionResult<ResultadoApi> AltaHojaRuta([FromBody] ComandoHojaRuta comando)
+        {
+            var resultado = new ResultadoApi();
+
+            if (comando.Fecha.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Fecha";
+                return resultado;
+            }
+            if (comando.idZona.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese zona";
+                return resultado;
+            }
+
+            if (comando.IdVehiculo.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Vehiculo";
+                return resultado;
+            }
+            if (comando.IdTransportista.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Transportista";
+                return resultado;
+            }
+
+            var hojaRuta = new HojaRuta();
+            hojaRuta.Fecha = comando.Fecha;
+            hojaRuta.IdVehiculo = comando.IdVehiculo;
+            hojaRuta.IdTransportista = comando.IdTransportista;
+            //busco los remitos pendientes para la zona seleccionada y registro la hoja de ruta
+            hojaRuta.Remitos = _db.Remitos
+                            .Where(x => x.IdClienteNavigation.IdBarrioNavigation.IdZona == comando.idZona
+                            && x.IdEstado == 1).ToList();
+            //agrego hoja de ruta
+            _db.HojaRuta.Add(hojaRuta);
+            //cambio el estado de los remitos de "1"(pendiente) a "2"(en proceso)
+            foreach (var item in hojaRuta.Remitos)
+            {
+                item.IdEstado = 2;
+            }
+            //guardo cambios
+             _db.SaveChanges(); 
+
+            resultado.Ok = true;
+           /*  resultado.Return = _db.HojaRuta.ToList(); */
+
+            return resultado;
+        }
+
+
     }
 
 }
