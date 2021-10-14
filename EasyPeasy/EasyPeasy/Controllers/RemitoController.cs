@@ -53,6 +53,27 @@ namespace api.Controllers
 
         }
 
+        //Obtener todos los remitos
+         [HttpGet]
+        [Route("Remito/ObtenerRemitos")]
+        public ActionResult<ResultadoApi> GetAll()
+        {
+            var Resultado = new ResultadoApi();
+            try{
+                Resultado.Ok = true;
+                var remitos =  _db.Remitos.ToList();
+                              
+                Resultado.Return=remitos;
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
+
         //Obtener remito segun id, mostrar detalles de cliente y productos
         [HttpGet]
         [Route("Remito/ObtenerRemito")]
