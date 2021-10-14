@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using api.Resultados;
+using api.Comandos;
 
 namespace api.Controllers
 {
