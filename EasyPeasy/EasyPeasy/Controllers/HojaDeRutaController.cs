@@ -129,7 +129,7 @@ namespace api.Controllers
              _db.SaveChanges(); 
 
             resultado.Ok = true;
-           /*  resultado.Return = _db.HojaRuta.ToList(); */
+            resultado.Return = _db.HojaRuta.ToList(); 
 
             return resultado;
         }
@@ -163,6 +163,49 @@ namespace api.Controllers
             }
 
 
+        }
+
+          //actualizar hoja de ruta (solo updetear fecha/transportista/vehiculo)
+        [HttpPut]
+        [Route("HojaDeRuta/Actualizar")]
+        public ActionResult<ResultadoApi> Update([FromBody]ComandoHojaRuta comando)
+        {
+            var resultado = new ResultadoApi();
+           
+            if (comando.Fecha.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Fecha";
+                return resultado;
+            }
+
+            if (comando.IdVehiculo.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Vehiculo";
+                return resultado;
+            }
+            if (comando.IdTransportista.Equals(""))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese Transportista";
+                return resultado;
+            }
+
+            var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==comando.IdHojaRuta);
+            if(hojaDeRuta != null)
+            {
+                hojaDeRuta.Fecha = comando.Fecha;
+                hojaDeRuta.IdTransportista = comando.IdTransportista;
+                hojaDeRuta.IdVehiculo = comando.IdVehiculo;
+                _db.HojaRuta.Update(hojaDeRuta);
+                _db.SaveChanges();
+            }
+
+            resultado.Ok = true;
+            resultado.Return = _db.HojaRuta.ToList();;
+
+            return resultado;
         }
 
 
