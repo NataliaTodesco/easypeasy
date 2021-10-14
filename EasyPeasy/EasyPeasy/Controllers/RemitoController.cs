@@ -30,7 +30,7 @@ namespace api.Controllers
         //Obetener listado de remitos con estado pendiente ordenados por fecha de compra
 
         [HttpGet]
-        [Route("Remito/ObtenerRemitos")]
+        [Route("Remito/ObtenerRemitosPendientes")]
         public ActionResult<ResultadoApi> Get()
         {
             var Resultado = new ResultadoApi();
