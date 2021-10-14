@@ -61,23 +61,12 @@ namespace api.Controllers
 
             var Resultado = new ResultadoApi();
             try{
-
-                    if (Id == null)//crear nueva hoja de ruta
-                    {            
-                        Resultado.Ok = true;
-                        Resultado.Return = new HojaRuta();
-                        return Resultado;
-                    }
-                    else{//busco hoja de ruta por id
-                            Resultado.Ok = true;
-                            Resultado.Return =  _db.HojaRuta
-                                            .Include(x=>x.Remitos)
-                                            .Include(x=>x.IdTransportistaNavigation)
-                                            .Include(x=>x.IdVehiculoNavigation)
-                                            .FirstOrDefault(x => x.IdHojaRuta == Id);
-                                            return Resultado;
-
-                        }
+                     Resultado.Ok = true;
+                    Resultado.Return =  _db.HojaRuta
+                                         .Include(x=>x.Remitos)
+                                         .FirstOrDefault(x => x.IdHojaRuta == Id);
+                                        return Resultado;
+                        
                 }
                  catch(Exception ex){
                 Resultado.Ok = false;
