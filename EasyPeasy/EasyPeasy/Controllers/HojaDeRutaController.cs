@@ -89,7 +89,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        [Route("Remito/RegistrarHojaDeRuta")]
+        [Route("HojaDeRuta/RegistrarHojaDeRuta")]
         public ActionResult<ResultadoApi> AltaHojaRuta([FromBody] ComandoHojaRuta comando)
         {
             var resultado = new ResultadoApi();
