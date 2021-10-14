@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+    <title>EasyPeasy</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+        body{
+            background-color: #ffee32;
+            font-family: 'Fira Sans', sans-serif;
+        }
+
+        .btn{
+            background-color: #0aa34f;
+            color: white;
+            font-size: medium;
+        }
+
+        .btn:hover{
+            color: white;
+            border: 3px dashed #ffee32;
+        }
+
+        h1{
+            font-family: 'Luckiest Guy', cursive;
+        }
+
+        .presentation, .tab-content{
+            background-color: white;
+            border-radius: 5px 5px 0 0;
+        }
+
+        a{
+          color: black;
+        }
+
+        a:hover{
+          color: rgb(82, 79, 79);
+        }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+                <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto"></ul>
+              <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class="btn btn-success my-2 my-sm-0" href="menu.html">Menú</a>
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
+                    Salir
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+              </form>
+            </div>
+          </nav>
+    </section>
+    <!-- HEAD -->
+    <section class="container" style="text-align: center; margin-top: 2%;">
+        <h1 class="display-3">Remitos</h1>
+    </section>
+    <!-- BODY -->
+    <section class="container body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item presentation" role="presentation">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Remitos</a>
+            </li>
+            <li class="nav-item presentation" role="presentation">
+              <a class="nav-link" id="art-tab" data-toggle="tab" href="#art" role="tab" aria-controls="home" aria-selected="false">Articulos</a>
+            </li>
+            <li class="nav-item presentation" role="presentation">
+              <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Cargar Remito</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent" style="margin-bottom: 3%;">
+            <!-- Reportes -->
+            <!-- Remitos -->
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="container" style="padding: 3%;">
+                    <table class="table" onload="OnLoad()">
+                      <table class="table" id="TablaRemitos">
+                        <thead class="thead-dark">
+                            <th data-field="codigo">Codigo Remito</th>
+                            <th data-field="estado">Estado</th>
+                            <th data-field="fechaCompra">Fecha de compra</th>
+                            <th data-field="cliente">Cliente</th>
+                            <th>Acciones</th>
+                        </thead>
+                        <tbody id="cuerpoTabla"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Articulos -->
+            <div class="tab-pane fade show" id="art" role="tabpanel" aria-labelledby="art-tab">
+              <div class="container" style="padding: 3%;">
+                  <table class="table" onload="OnLoad()">
+                    <table class="table" id="TablaArticulos">
+                      <thead class="thead-dark">
+                          <th data-field="codigo">Código</th>
+                          <th data-field="estado">descripcion</th>
+                      </thead>
+                      <tbody id="cuerpoTablaA"></tbody>
+                  </table>
+              </div>
+          </div>
+            
+            <!-- Cargar Remito -->
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="container" style="padding: 3%;">
+                  <form class="needs-validation" novalidate>
+                    <div class="form-row">
+                      <div class="col-md-6 mb-3">
+                        <label for="fecha">Fecha de Compra</label>
+                        <input type="date" class="form-control" id="fecha" required>
+                        <div class="invalid-feedback">
+                          Ingrese una fecha de compra
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="hora">Hora Preferida</label>
+                        <input type="time" class="form-control" id="hora" required>
+                        <div class="invalid-feedback">
+                          Ingrese un horario de entrega preferido
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-6 mb-3">
+                        <label for="cliente">Cliente</label>
+                        <select class="custom-select" id="cliente" required>
+                          <option selected disabled value="">Seleccionar...</option>
+                          <option>...</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Seleccione un cliente
+                        </div>
+                      </div>
+                      <div class="col-md-6 mb-6">
+                        <label for="producto">Detalle</label> <br>
+                        <button type="button" class="btn" data-toggle="modal" data-target="#staticBackdrop">
+                          Ingresar productos con su cantidad...
+                        </button>
+                        <div class="invalid-feedback">
+                          Ingrese detalle
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col-md-4 mb-4">
+                        <label for="hoja">Hoja de Ruta</label>
+                        <select class="custom-select" id="hoja" required>
+                          <option selected disabled value="">Seleccionar...</option>
+                          <option>...</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Seleccione un cliente
+                        </div>
+                      </div>
+                      <div class="col-md-4 mb-4">
+                        <label for="estado">Estado</label>
+                        <select class="custom-select" id="estado" required>
+                          <option selected disabled value="">Seleccionar...</option>
+                          <option value="1">Pendiente</option>
+                          <option value="2">Entregado</option>
+                          <option value="3">Reprogramado</option>
+                        </select>
+                        <div class="invalid-feedback">
+                          Seleccione un estado
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn" type="button" onclick="go()" id="btn">Ingresar</button>
+                  </form>
+                </div>
+            </div>
+          </div>
+
+    <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <section id="seccion2">
+                  <div class="container">
+                      <form id="formulario" action="">
+                          <div class="row">
+                              <div class="col-lg-7">
+                                  <label for="producto">Producto</label>
+                                  <select id="producto" class="form-control">
+                                    <option disabled>Seleccionar...</option>
+                                  </select>
+                              </div>
+                              <div class="col-lg-3">
+                                  <label for="valor">Cant.</label>
+                                  <input id="valor" class="form-control" type="number">
+                              </div>
+                              <div class="col-lg-1">
+                                <br>
+                                  <button type="button" id="boton" onclick="agregar()" class="btn"><i class="bi bi-check-circle text-light" style="font-size: 1.5rem;"></i></button>
+                              </div>
+                          </div>
+                      </form><br>
+                  </div>
+              </section>
+              <section id="seccion3">
+                  <div class="container">
+                      <div class="row">
+                          <div id="listaIngresos" class="col-lg-12">
+                              Detalle
+                              <hr>
+                              <div id="itemIngreso"></div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+              <br>
+              <button type="button" class="btn" data-dismiss="modal">Close</button>
+              <button type="button" class="btn">Aceptar</button>
+            </div>
+          </div>
+        </div>
+        </section>
+
+    <!-- Etiqueta -->
+    <section class="d-print-block d-none">
+      Hola
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <script>
+      function go() {
+          var forms = document.getElementsByClassName('needs-validation');
+
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('click', function(event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add('was-validated');
+            }, false);
+          });
+
+          let fecha = $("#fecha").val();
+          let hora = $("#hora").val();
+          var cliente = document.getElementById('cliente');
+          var idCliente = cliente.selectedIndex;
+          var hoja = document.getElementById('hoja');
+          var idHoja = hoja.selectedIndex;
+          var estado = document.getElementById('estado');
+          var idEstado = estado.selectedIndex+1;
+
+          comando = {
+            "idRemito": 0,
+            "FechaCompra": fecha,
+            "HoraEntregaPreferido":hora,
+            "IdEstado":idEstado,
+            "IdCliente":idCliente,
+            "IdHojaRuta":idHoja
+          }
+
+          $.ajax({
+            url: "https://localhost:5001/Remito/CargarRemito",
+            dataType:'json',
+            contentType:'application/json',
+            data: JSON.stringify(comando),
+                  type: "POST",
+                  success: function(result) {
+                    if (result.Ok)
+                      swal("Login Exitoso");
+                  },
+                  error: function(error) {
+                    swal(result.error);
+                  }
+          });
+      }
+
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
+      </script>
+
+      <script>
+        function agregar() {
+            const formulario = document.getElementById('formulario');
+            let descripcion = formulario['producto'];
+            let valor = formulario['valor'];
+            let ingresos = [];
+
+            ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
+            document.getElementById('itemIngreso').innerHTML += ingresos;
+        }
+      </script>
+
+      <script>
+        function OnLoad() {
+          $.ajax({
+              url: "https://localhost:5001/Remito/ObtenerRemitos",
+              type: "GET",
+              
+              success: function (result) {
+                  if (result.ok) {
+                      crearTabla(result.return);
+                  }else{
+                      swal(result.error);
+                  }
+              },
+              error: function (error) {
+                  console.log();(error);
+              },
+          });
+
+          $.ajax({
+                url: "https://localhost:5001/Producto/ObtenerProducto",
+                type: "GET",
+                success: function(result) {
+                    crearTablaA(result);
+                    select = document.getElementById("producto");
+                    for (let i = 0; i < result.return.length; i++) {
+                        var option = document.createElement('option');
+                        option.text = result.return[i].descripcion;
+                        select.add(option);
+                    }
+                    console.log(select.value);
+                },
+                error: function(error) {
+                    swal(result.error);
+                }
+            });
+
+            $.ajax({
+                url: "https://localhost:5001/Cliente/ObtenerCliente",
+                type: "GET",
+                success: function(result) {
+                    select = document.getElementById("cliente");
+                    for (let i = 0; i < result.return.length; i++) {
+                        var option = document.createElement('option');
+                        option.text = result.return[i].nombre;
+                        select.add(option);
+                    }
+                    console.log(select.value);
+                },
+                error: function(error) {
+                    swal(result.error);
+                }
+            });
+
+            $.ajax({
+                url: "https://localhost:5001/HojaDeRuta/ObtenerHojasDeRuta",
+                type: "GET",
+                success: function(result) {
+                    select = document.getElementById("hoja");
+                    for (let i = 0; i < result.return.length; i++) {
+                        var option = document.createElement('option');
+                        option.text = "Fecha: "+result.return[i].fecha+", Zona: "+result.return[i].zona;
+                        select.add(option);
+                    }
+                    console.log(select.value);
+                },
+                error: function(error) {
+                    swal(result.error);
+                }
+            });
+        }
+
+        function crearTabla(datos) {
+          for (let index = 0; index < datos.length; index++) {
+              let html = "<tr>";
+              html += "<td>" + datos[index].idRemito + "</td>";             
+
+              if (datos[index].idEstado == 1) {
+              html += "<td>"+ "Pendiente"+"</td>";
+              }else if (datos[index].idEstado == 2){
+              html += "<td>"+ "En proceso"+"</td>";
+              }else if (datos[index].idEstado == 3){
+              html += "<td>"+ "Entregado"+"</td>";
+              }               
+              else {
+              html += "<td>"+ "Reprogramado"+"</td>";
+              }
+
+              html += "<td>"+ datos[index].fechaCompra + "</td>";
+              html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>";    
+              html += "<td>"+ "<i class='bi bi-trash-fill'></i> &nbsp;"+
+                        "<i class='bi bi-pencil-fill'></i> &nbsp;"+
+                        "<button type='button' class='btn' data-toggle='tooltip' data-placement='bottom' title='Generar etiqueta de envío'>"+
+                        "<i class='bi bi-file-text'></i> </button> " + "</td>";
+              html += "</tr>"
+            
+              $("#cuerpoTabla").append(html);
+          } 
+        }
+
+        function crearTablaA(datos) {
+          for (let index = 0; index < datos.length; index++) {
+              let html = "<tr>";
+              html += "<td>" + datos[index].idArticulo + "</td>";             
+              html += "<td>"+ datos[index].descripcion + "</td>";
+              html += "</tr>"
+            
+              $("#cuerpoTablaA").append(html);
+          } 
+        }
+
+      </script>
+      <script src="JS/app.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

@@ -77,7 +77,6 @@ C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\staticwebassets\EasyPeasy.StaticWebAssets.xml
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\scopedcss\bundle\EasyPeasy.styles.css
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\EasyPeasy.RazorTargetAssemblyInfo.cache
-C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\EasyPeasy.csproj.CopyComplete
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\EasyPeasy.dll
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\ref\EasyPeasy.dll
 C:\Users\Usuario\Documents\GitHub\easypeasy\EasyPeasy\EasyPeasy\obj\Debug\net5.0\EasyPeasy.pdb
