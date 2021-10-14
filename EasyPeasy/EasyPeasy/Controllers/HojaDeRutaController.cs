@@ -144,6 +144,37 @@ namespace api.Controllers
             return resultado;
         }
 
+        //get hoja de ruta segun legajo de transportista
+        [HttpGet]
+        [Route("HojaDeRuta/ObtenerHojaRutaTransportista")]
+        public ActionResult<ResultadoApi> Get(int legajo)
+        {
+
+            var Resultado = new ResultadoApi();
+            try
+            {
+                Resultado.Ok = true;
+                Resultado.Return = _db.HojaRuta
+                                   .Include(x => x.Remitos)
+                                   .ThenInclude(x => x.IdClienteNavigation)
+                                   .ThenInclude(x => x.IdBarrioNavigation)
+                                   .ThenInclude(x => x.IdZonaNavigation)
+                                   .Include(x => x.IdTransportistaNavigation)
+                                   .Include(x => x.IdVehiculoNavigation)
+                                   .FirstOrDefault(x => x.IdTransportistaNavigation.Legajo == legajo);
+                return Resultado;
+
+            }
+            catch (Exception ex)
+            {
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+
+        }
+
 
     }
 
