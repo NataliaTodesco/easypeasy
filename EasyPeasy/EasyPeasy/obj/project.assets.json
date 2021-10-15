@@ -1397,19 +1397,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
+    "C:\\Users\\pc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+      "projectUniqueName": "C:\\Users\\pc\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
       "projectName": "EasyPeasy",
-      "projectPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
-      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\obj\\",
+      "projectPath": "C:\\Users\\pc\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+      "packagesPath": "C:\\Users\\pc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pc\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

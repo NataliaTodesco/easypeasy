@@ -1,25 +1,37 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <!-- <link rel="stylesheet" href="estilo.css"> -->
 
     <title>Remitos</title>
-  </head>
-  <body onload="OnLoad()">   
+</head>
+
+<body onload="OnLoad()">
     <section>
-        <div class="container-fluid">
-            <div class="container">
-              <h3><b>Hojas de ruta</b></h3>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <h3><b>Hojas de ruta</b></h3>
+                </div>
+                <div class="col-lg-4">
+                    <label for="">Buscar por ID</label>
+                    <select name="idRuta" id="cboIdRuta">
+                    </select>
+                </div>
             </div>
-          </div>
+        </div>
+
     </section>
     <section class="container">
         <table class="table table bordered jumbotron" id="TablaRutas">
@@ -32,51 +44,95 @@
             </thead>
             <tbody id="cuerpoTabla"></tbody>
         </table>
-    </section>  
+    </section>
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-</body>
-    <script>
-        function OnLoad() {
-            $.ajax({
-                url: "https://localhost:5001/HojaDeRuta/ObtenerHojasDeRuta",
-                type: "GET",
-                
-                success: function (result) {
-                    if (result.ok) {
-                        crearTabla(result.return);
-                    }else{
-                        swal(result.error);
-                    }
-                },
-                error: function (error) {
-                    console.log();(error);
-                },
-            });
-        }
-
-        function crearTabla(datos) {
-
-            for (let index = 0; index < datos.length; index++) {
-                let html = "<tr>";
-                html += "<td>" + datos[index].fecha + "</td>";      
-                html += "<td>"+ datos[index].remitos[index].idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion + "</td>"; 
-                html += "<td>"+ datos[index].idTransportistaNavigation.nombre + "</td>";   
-                html += "<td>"+ datos[index].idVehiculoNavigation.patente + "</td>";   
-                
-                html += "</tr>"
-                $("#cuerpoTabla").append(html);
-            }
-            
-        }
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
+</body>
+<script>
+    function OnLoad() {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
+            // url: "https://localhost:5001/HojaDeRuta/ObtenerHojasDeRuta",
+            type: "GET",
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-      crossorigin="anonymous"
-    ></script>
+            success: function (result) {
+                if (result.ok) {
+                    crearTabla(result.return);
+                    cargarComboIdRuta(result.return);
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log();
+                (error);
+            },
+        });
+    }
+
+    function crearTabla(datos) {
+
+        for (let index = 0; index < datos.length; index++) {
+            let html = "<tr>";
+            html += "<td>" + datos[index].fecha + "</td>";
+            html += "<td>" + datos[index].remitos[index].idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion + "</td>";
+            html += "<td>" + datos[index].idTransportistaNavigation.nombre + "</td>";
+            html += "<td>" + datos[index].idVehiculoNavigation.patente + "</td>";
+
+            html += "</tr>"
+            $("#cuerpoTabla").append(html);
+        }
+
+    }
+
+
+    //CARGAR COMBO ID HOJA RUTAS
+    function cargarComboIdRuta(datos) {
+        var html = "<option value=''>SELECCIONE...</option>";
+        $("#cboIdRuta").append(html);
+        select = document.getElementById("cboIdRuta");
+        for (let i = 0; i < datos.length; i++) {
+            var option = document.createElement('option');
+            option.value = datos[i].idHojaRuta;
+            option.text = datos[i].idHojaRuta;
+            select.add(option);
+        }
+    }
+
+   // CARGAR HOJA DE RUTA SELECCIONADA EN EL COMBO
+    $("#cboIdRuta").change(function () {
+        let id = $("#cboIdRuta").val();
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/Upsert?Id=" + id,
+            // url: "HojaDeRuta/Upsert/" + id,
+            type: "GET",
+            dataType: 'JSON',
+            contentType: 'application/json',
+            data: JSON.stringify(id),
+            success: function (result) {
+                if (result.ok) {
+                    swal("Datos traidos con exito");
+                   crearTabla(result.return);
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                swal("Problemas en el servidor");
+            },
+        })
+    });
+ </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+</script>
+
 </html>
