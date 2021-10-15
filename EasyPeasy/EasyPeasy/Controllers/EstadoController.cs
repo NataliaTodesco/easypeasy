@@ -1,7 +1,5 @@
 using System.Xml;
 using System.Data;
-using System.Xml;
-using System.Data;
 using System.Xml.Schema;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -13,52 +11,32 @@ using System.Xml.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using api.Resultados;
+using EasyPeasy.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
-using EasyPeasy.Models;
+using api.Resultados;
 using EasyPeasy.Comandos;
 
 namespace api.Controllers
 {
     [ApiController]
     [EnableCors("postgres")]
-    public class ArticuloController:ControllerBase
+    public class EstadoController:ControllerBase
     {
         private readonly EasyPeasyDBContext _db = new EasyPeasyDBContext();
 
         [HttpGet]
-        [Route("Producto/ObtenerProducto")]
+        [Route("Estado/ObtenerEstado")]
 
         public ActionResult<ResultadoApi> Get()
         {
             var Resultado = new ResultadoApi();
             try{
                 Resultado.Ok = true;
-                Resultado.Return = _db.Productos.ToList();            
+                Resultado.Return = _db.Estados.ToList();            
                       
-                return Resultado;
-            }
-            catch(Exception ex){
-                Resultado.Ok = false;
-                Resultado.Error = "Error " + ex.Message;
-                return Resultado;
-            }
-
-        }
-
-        [HttpGet]
-        [Route("Producto/ObtenerUnProducto")]
-        public ActionResult<ResultadoApi> Get(int id)
-        {
-            var Resultado = new ResultadoApi();
-
-            try{
-                Resultado.Ok = true;
-                Resultado.Return = _db.Productos.FirstOrDefault(x => x.IdProducto == id);
-              
                 return Resultado;
             }
             catch(Exception ex){

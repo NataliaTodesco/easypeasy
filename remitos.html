@@ -7,10 +7,12 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
     <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
     <title>EasyPeasy</title>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
@@ -47,9 +49,15 @@
         a:hover{
           color: rgb(82, 79, 79);
         }
+
+        #idRemito{
+          background-color: #fff;
+          border: none;
+          width: 50%;
+        }
     </style>
   </head>
-  <body>
+  <body onload="OnLoad()" id="body">
     <!-- Navbar -->
     <section>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -112,21 +120,35 @@
             <!-- Articulos -->
             <div class="tab-pane fade show" id="art" role="tabpanel" aria-labelledby="art-tab">
               <div class="container" style="padding: 3%;">
-                  <table class="table" onload="OnLoad()">
-                    <table class="table" id="TablaArticulos">
-                      <thead class="thead-dark">
-                          <th data-field="codigo">Código</th>
-                          <th data-field="estado">descripcion</th>
-                      </thead>
-                      <tbody id="cuerpoTablaA"></tbody>
-                  </table>
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <table class="table" id="TablaArticulos">
+                          <thead class="thead-dark">
+                              <th data-field="codigo">Código</th>
+                              <th data-field="descripcion">Descripcion</th>
+                          </thead>
+                          <tbody id="cuerpoTablaA"></tbody>
+                      </table>
+                    </div>
+                    <div class="col-lg-6 col-md-6" style="text-align: center;">
+                      <h4>Obtener por ID</h4> <br>
+                      <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="id" placeholder="Ingrese el ID del Articulo que desea consultar">
+                        <div class="input-group-append">
+                          <button class="btn" type="button" id="buscar">Buscar</button>
+                        </div>
+                      </div>
+                      <div id="articulo">Articulo: </div>
+                      <img src="./Imagenes/Easy-Peasy-2.svg" class="img-fluid" alt="">
+                    </div>
+                  </div>
               </div>
           </div>
             
             <!-- Cargar Remito -->
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="container" style="padding: 3%;">
-                  <form class="needs-validation" novalidate>
+                  <form class="needs-validation" novalidate id="carga">
                     <div class="form-row">
                       <div class="col-md-6 mb-3">
                         <label for="fecha">Fecha de Compra</label>
@@ -148,7 +170,6 @@
                         <label for="cliente">Cliente</label>
                         <select class="custom-select" id="cliente" required>
                           <option selected disabled value="">Seleccionar...</option>
-                          <option>...</option>
                         </select>
                         <div class="invalid-feedback">
                           Seleccione un cliente
@@ -166,139 +187,173 @@
                     </div>
                     <div class="form-row">
                       <div class="col-md-4 mb-4">
-                        <label for="hoja">Hoja de Ruta</label>
-                        <select class="custom-select" id="hoja" required>
-                          <option selected disabled value="">Seleccionar...</option>
-                          <option>...</option>
-                        </select>
-                        <div class="invalid-feedback">
-                          Seleccione un cliente
-                        </div>
-                      </div>
-                      <div class="col-md-4 mb-4">
                         <label for="estado">Estado</label>
                         <select class="custom-select" id="estado" required>
                           <option selected disabled value="">Seleccionar...</option>
-                          <option value="1">Pendiente</option>
-                          <option value="2">Entregado</option>
-                          <option value="3">Reprogramado</option>
                         </select>
                         <div class="invalid-feedback">
                           Seleccione un estado
                         </div>
                       </div>
                     </div>
-                    <button class="btn" type="button" onclick="go()" id="btn">Ingresar</button>
+                    <button class="btn" type="submit" onclick="go()" id="btnI">Ingresar</button>
                   </form>
                 </div>
             </div>
           </div>
-
-    <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-body">
-                <section id="seccion2">
-                  <div class="container">
-                      <form id="formulario" action="">
-                          <div class="row">
-                              <div class="col-lg-7">
-                                  <label for="producto">Producto</label>
-                                  <select id="producto" class="form-control">
-                                    <option disabled>Seleccionar...</option>
-                                  </select>
-                              </div>
-                              <div class="col-lg-3">
-                                  <label for="valor">Cant.</label>
-                                  <input id="valor" class="form-control" type="number">
-                              </div>
-                              <div class="col-lg-1">
-                                <br>
-                                  <button type="button" id="boton" onclick="agregar()" class="btn"><i class="bi bi-check-circle text-light" style="font-size: 1.5rem;"></i></button>
-                              </div>
-                          </div>
-                      </form><br>
-                  </div>
-              </section>
-              <section id="seccion3">
-                  <div class="container">
-                      <div class="row">
-                          <div id="listaIngresos" class="col-lg-12">
-                              Detalle
-                              <hr>
-                              <div id="itemIngreso"></div>
-                          </div>
-                      </div>
-                  </div>
-              </section>
-              <br>
-              <button type="button" class="btn" data-dismiss="modal">Close</button>
-              <button type="button" class="btn">Aceptar</button>
-            </div>
+        </section>
+    <!-- Modal Productos-->
+    <section>
+      <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <section id="seccion2">
+                <div class="container">
+                    <form id="formulario" action="">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <label for="producto">Producto</label>
+                                <select id="producto" class="form-control">
+                                  <option disabled>Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="valor">Cant.</label>
+                                <input id="valor" class="form-control" type="number">
+                            </div>
+                            <div class="col-lg-1">
+                              <br>
+                                <button type="button" id="boton" onclick="agregar()" class="btn"><i class="bi bi-check-circle text-light" style="font-size: 1.5rem;"></i></button>
+                            </div>
+                        </div>
+                    </form><br>
+                </div>
+            </section>
+            <section id="seccion3">
+                <div class="container">
+                    <div class="row">
+                        <div id="listaIngresos" class="col-lg-12">
+                            Detalle
+                            <hr>
+                            <div id="itemIngreso"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <button type="button" class="btn" data-dismiss="modal">Close</button>
+            <button type="button" class="btn" id="btnAceptar" onclick="cargarProductos()">Aceptar</button>
           </div>
         </div>
-        </section>
-
-    <!-- Etiqueta -->
-    <section class="d-print-block d-none">
-      Hola
+      </div>  
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-    <script>
-      function go() {
-          var forms = document.getElementsByClassName('needs-validation');
+    <!-- Etiqueta -->
+    <section>
+      <div class="modal fade" id="etiqueta" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <section class="d-print-block" id="etiqueta" 
+                style=" background-color: white; 
+                        padding: 3%;  
+                        text-transform: uppercase;"> 
 
-          var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('click', function(event) {
-              if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-              form.classList.add('was-validated');
-            }, false);
-          });
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-8">
+                      apellido y nombre de cliente
+                      <div id="nombreE">Nombre</div>
+                    </div>
+                    <div class="col-lg-4">
+                      fecha 
+                      <div id="fechaE">XX/XX/XXXX</div>
+                    </div>
+                  </div> <br>
+                  <div class="row">
+                      <div class="col-lg-7">
+                        <div>
+                            dirección de entrega
+                          </div> 
+                          <div id="direccionE">Direccion 1234 B° Barrio</div>
+                          <div> <br>
+                            numero de tracking
+                          </div>
+                          <div id="numeroE">123456</div>
+                      </div>
+                      <div class="col-lg-5" style="text-align: center;">
+                          <img src="./Imagenes/Easy-Peasy-2.svg" alt="">
+                      </div>
+                  </div>
+                </div>
+              </section>
+            <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn" id="btnImprimir">Imprimir</button>
+          </div>
+        </div>
+      </div>  
+    </section>
 
-          let fecha = $("#fecha").val();
-          let hora = $("#hora").val();
-          var cliente = document.getElementById('cliente');
-          var idCliente = cliente.selectedIndex;
-          var hoja = document.getElementById('hoja');
-          var idHoja = hoja.selectedIndex;
-          var estado = document.getElementById('estado');
-          var idEstado = estado.selectedIndex+1;
-
-          comando = {
-            "idRemito": 0,
-            "FechaCompra": fecha,
-            "HoraEntregaPreferido":hora,
-            "IdEstado":idEstado,
-            "IdCliente":idCliente,
-            "IdHojaRuta":idHoja
-          }
-
-          $.ajax({
-            url: "https://localhost:5001/Remito/CargarRemito",
-            dataType:'json',
-            contentType:'application/json',
-            data: JSON.stringify(comando),
-                  type: "POST",
-                  success: function(result) {
-                    if (result.Ok)
-                      swal("Login Exitoso");
-                  },
-                  error: function(error) {
-                    swal(result.error);
-                  }
-          });
-      }
-
-        $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-        })
-      </script>
+    <!-- Modificar -->
+    <section>
+      <div class="modal fade" id="modificarM" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modificar</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <section>
+                <form class="needs-validation" novalidate id="carga">
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="fecha">Fecha de Compra</label>
+                      <input type="date" class="form-control" id="fechaM" required>
+                      <div class="invalid-feedback">
+                        Ingrese una fecha de compra
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="hora">Hora Preferida</label>
+                      <input type="time" class="form-control" id="horaM" required>
+                      <div class="invalid-feedback">
+                        Ingrese un horario de entrega preferido
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                      <label for="cliente">Cliente</label>
+                      <select class="custom-select" id="clienteM" required>
+                        <option selected disabled value="">Seleccionar...</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Seleccione un cliente
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-6">
+                      <label for="estado">Estado</label>
+                      <select class="custom-select" id="estadoM" required>
+                        <option selected disabled value="">Seleccionar...</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Seleccione un estado
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+                  <button class="btn" type="submit" onclick="go()" id="btnModificar">Aceptar</button>
+                </form>
+              </section>
+          </div>
+        </div>
+      </div>  
+    </section>
+    
 
       <script>
         function agregar() {
@@ -310,127 +365,16 @@
             ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
             document.getElementById('itemIngreso').innerHTML += ingresos;
         }
-      </script>
-
-      <script>
-        function OnLoad() {
-          $.ajax({
-              url: "https://localhost:5001/Remito/ObtenerRemitos",
-              type: "GET",
-              
-              success: function (result) {
-                  if (result.ok) {
-                      crearTabla(result.return);
-                  }else{
-                      swal(result.error);
-                  }
-              },
-              error: function (error) {
-                  console.log();(error);
-              },
-          });
-
-          $.ajax({
-                url: "https://localhost:5001/Producto/ObtenerProducto",
-                type: "GET",
-                success: function(result) {
-                    crearTablaA(result);
-                    select = document.getElementById("producto");
-                    for (let i = 0; i < result.return.length; i++) {
-                        var option = document.createElement('option');
-                        option.text = result.return[i].descripcion;
-                        select.add(option);
-                    }
-                    console.log(select.value);
-                },
-                error: function(error) {
-                    swal(result.error);
-                }
-            });
-
-            $.ajax({
-                url: "https://localhost:5001/Cliente/ObtenerCliente",
-                type: "GET",
-                success: function(result) {
-                    select = document.getElementById("cliente");
-                    for (let i = 0; i < result.return.length; i++) {
-                        var option = document.createElement('option');
-                        option.text = result.return[i].nombre;
-                        select.add(option);
-                    }
-                    console.log(select.value);
-                },
-                error: function(error) {
-                    swal(result.error);
-                }
-            });
-
-            $.ajax({
-                url: "https://localhost:5001/HojaDeRuta/ObtenerHojasDeRuta",
-                type: "GET",
-                success: function(result) {
-                    select = document.getElementById("hoja");
-                    for (let i = 0; i < result.return.length; i++) {
-                        var option = document.createElement('option');
-                        option.text = "Fecha: "+result.return[i].fecha+", Zona: "+result.return[i].zona;
-                        select.add(option);
-                    }
-                    console.log(select.value);
-                },
-                error: function(error) {
-                    swal(result.error);
-                }
-            });
-        }
-
-        function crearTabla(datos) {
-          for (let index = 0; index < datos.length; index++) {
-              let html = "<tr>";
-              html += "<td>" + datos[index].idRemito + "</td>";             
-
-              if (datos[index].idEstado == 1) {
-              html += "<td>"+ "Pendiente"+"</td>";
-              }else if (datos[index].idEstado == 2){
-              html += "<td>"+ "En proceso"+"</td>";
-              }else if (datos[index].idEstado == 3){
-              html += "<td>"+ "Entregado"+"</td>";
-              }               
-              else {
-              html += "<td>"+ "Reprogramado"+"</td>";
-              }
-
-              html += "<td>"+ datos[index].fechaCompra + "</td>";
-              html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>";    
-              html += "<td>"+ "<i class='bi bi-trash-fill'></i> &nbsp;"+
-                        "<i class='bi bi-pencil-fill'></i> &nbsp;"+
-                        "<button type='button' class='btn' data-toggle='tooltip' data-placement='bottom' title='Generar etiqueta de envío'>"+
-                        "<i class='bi bi-file-text'></i> </button> " + "</td>";
-              html += "</tr>"
-            
-              $("#cuerpoTabla").append(html);
-          } 
-        }
-
-        function crearTablaA(datos) {
-          for (let index = 0; index < datos.length; index++) {
-              let html = "<tr>";
-              html += "<td>" + datos[index].idArticulo + "</td>";             
-              html += "<td>"+ datos[index].descripcion + "</td>";
-              html += "</tr>"
-            
-              $("#cuerpoTablaA").append(html);
-          } 
-        }
 
       </script>
-      <script src="JS/app.js"></script>
+
+      <script src="JS/remito.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
       <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
       crossorigin="anonymous"
-    ></script>
+      ></script>
   </body>
 </html>

@@ -89,14 +89,28 @@ namespace api.Controllers
             if(comando.FechaCompra.Equals(""))
             {
                 resultado.Ok = false;
-                resultado.Error = "Ingrese Fecha de Compra";
+                resultado.Error = "Ingrese todos los datos";
                 return resultado;
             }
 
             if(comando.HoraEntregaPreferido.Equals(""))
             {
                 resultado.Ok = false;
-                resultado.Error = "Ingrese Hora de Entrega Preferida";
+                resultado.Error = "Ingrese todos los datos";
+                return resultado;
+            }
+
+            if(comando.IdEstado.Equals(0))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese todos los datos";
+                return resultado;
+            }
+
+            if(comando.IdCliente.Equals(0))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese todos los datos";
                 return resultado;
             }
 
@@ -105,7 +119,7 @@ namespace api.Controllers
             r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
             r.IdEstado = comando.IdEstado;
             r.IdCliente = comando.IdCliente;
-            r.IdHojaRuta = comando.IdHojaRuta;
+            
          
             _db.Remitos.Add(r);
             _db.SaveChanges();
@@ -127,14 +141,28 @@ namespace api.Controllers
             if(comando.FechaCompra.Equals(""))
             {
                 resultado.Ok = false;
-                resultado.Error = "Ingrese Fecha de Compra";
+                resultado.Error = "Ingrese todos los datos";
                 return resultado;
             }
 
             if(comando.HoraEntregaPreferido.Equals(""))
             {
                 resultado.Ok = false;
-                resultado.Error = "Ingrese Hora de Entrega Preferida";
+                resultado.Error = "Ingrese todos los datos";
+                return resultado;
+            }
+
+            if(comando.IdEstado.Equals(0))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese todos los datos";
+                return resultado;
+            }
+
+            if(comando.IdCliente.Equals(0))
+            {
+                resultado.Ok = false;
+                resultado.Error = "Ingrese todos los datos";
                 return resultado;
             }
 
@@ -145,13 +173,19 @@ namespace api.Controllers
                 r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
                 r.IdEstado = comando.IdEstado;
                 r.IdCliente = comando.IdCliente;
-                r.IdHojaRuta = comando.IdHojaRuta;
+                
                 _db.Remitos.Update(r);
                 _db.SaveChanges();
+
+                resultado.Ok = true;
+                resultado.Return = _db.Remitos.ToList();;
+            }
+            else {
+                resultado.Ok = false;
+                resultado.Error = "Elemento Nulo";
             }
 
-            resultado.Ok = true;
-            resultado.Return = _db.Remitos.ToList();;
+            
 
             return resultado;
         }
