@@ -55,6 +55,29 @@
           border: none;
           width: 50%;
         }
+
+        @media screen {
+          #printSection {
+              display: none;
+          }
+        }
+
+        @media print {
+          body * {
+            visibility:hidden;
+          }
+          #printSection, #printSection * {
+            visibility:visible;
+          }
+          #modal * {
+            visibility:visible;
+          }
+          #printSection {
+            position:absolute;
+            left:0;
+            top:0;
+          }
+        }
     </style>
   </head>
   <body onload="OnLoad()" id="body">
@@ -250,7 +273,7 @@
     </section>
 
     <!-- Etiqueta -->
-    <section>
+    <section >
       <div class="modal fade" id="etiqueta" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -260,7 +283,7 @@
                         padding: 3%;  
                         text-transform: uppercase;"> 
 
-                <div class="container">
+                <div class="container" id="modal">
                   <div class="row">
                     <div class="col-lg-8">
                       apellido y nombre de cliente
@@ -288,8 +311,8 @@
                   </div>
                 </div>
               </section>
-            <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn" id="btnImprimir">Imprimir</button>
+            <button type="button" class="btn d-print-block" data-dismiss="modal">Cerrar</button>
+            <a type="button" class="btn" id="btnImprimir" href="javascript:window.print()">imprimir</a>
           </div>
         </div>
       </div>  
@@ -364,7 +387,7 @@
             ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
             document.getElementById('itemIngreso').innerHTML += ingresos;
 
-            
+
         }
 
       </script>
