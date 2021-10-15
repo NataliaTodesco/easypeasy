@@ -30,7 +30,7 @@ namespace api.Controllers
         //Obetener listado de remitos con estado pendiente ordenados por fecha de compra
 
         [HttpGet]
-        [Route("Remito/ObtenerRemitos")]
+        [Route("Remito/ObtenerRemitosPendientes")]
         public ActionResult<ResultadoApi> Get()
         {
             var Resultado = new ResultadoApi();
@@ -41,6 +41,27 @@ namespace api.Controllers
                         .Where(x => x.IdEstado == 1)
                         .OrderBy(x => x.FechaCompra)
                         .ToList();
+                              
+                Resultado.Return=remitos;
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
+
+        //Obtener todos los remitos
+         [HttpGet]
+        [Route("Remito/ObtenerRemitos")]
+        public ActionResult<ResultadoApi> GetAll()
+        {
+            var Resultado = new ResultadoApi();
+            try{
+                Resultado.Ok = true;
+                var remitos =  _db.Remitos.ToList();
                               
                 Resultado.Return=remitos;
                 return Resultado;
