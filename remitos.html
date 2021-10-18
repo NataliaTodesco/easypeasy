@@ -50,12 +50,6 @@
           color: rgb(82, 79, 79);
         }
 
-        #idRemito{
-          background-color: #fff;
-          border: none;
-          width: 50%;
-        }
-
         @media screen {
           #printSection {
               display: none;
@@ -266,7 +260,7 @@
             </section>
             <br>
             <button type="button" class="btn" data-dismiss="modal">Close</button>
-            <button type="button" class="btn" id="btnAceptar" onclick="cargarProductos()">Aceptar</button>
+            <button type="button" class="btn" data-dismiss="modal" id="btnAceptar">Aceptar</button>
           </div>
         </div>
       </div>  
@@ -278,20 +272,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-              <section class="d-print-block" id="etiqueta" 
-                style=" background-color: white; 
-                        padding: 3%;  
-                        text-transform: uppercase;"> 
-
+              <section id="etiqueta" 
+                style=" background-color: white; text-transform: uppercase;"> 
                 <div class="container" id="modal">
                   <div class="row">
                     <div class="col-lg-8">
                       apellido y nombre de cliente
-                      <div id="nombreE">Nombre</div>
+                      <div id="nombreE"></div>
                     </div>
                     <div class="col-lg-4">
                       fecha 
-                      <div id="fechaE">XX/XX/XXXX</div>
+                      <div id="fechaE"></div>
                     </div>
                   </div> <br>
                   <div class="row">
@@ -299,11 +290,11 @@
                         <div>
                             dirección de entrega
                           </div> 
-                          <div id="direccionE">Direccion 1234 B° Barrio</div>
+                          <div id="direccionE"></div>
                           <div> <br>
                             numero de tracking
                           </div>
-                          <div id="numeroE">123456</div>
+                          <div id="numeroE"></div>
                       </div>
                       <div class="col-lg-5" style="text-align: center;">
                           <img src="./Imagenes/Easy-Peasy-2.svg" alt="">
@@ -376,21 +367,6 @@
         </div>
       </div>  
     </section>
-     
-      <script>
-        function agregar() {
-            const formulario = document.getElementById('formulario');
-            let descripcion = formulario['producto'];
-            let valor = formulario['valor'];
-            let ingresos = [];
-
-            ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
-            document.getElementById('itemIngreso').innerHTML += ingresos;
-
-
-        }
-
-      </script>
 
       <script src="JS/remito.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.0.js"></script>

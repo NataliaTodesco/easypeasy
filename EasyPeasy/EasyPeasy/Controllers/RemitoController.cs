@@ -61,7 +61,12 @@ namespace api.Controllers
             var Resultado = new ResultadoApi();
             try{
                 Resultado.Ok = true;
-                var remitos =  _db.Remitos.ToList();
+                var remitos =  _db.Remitos.Include(x => x.IdClienteNavigation)
+                                .ThenInclude(x => x.IdBarrioNavigation)
+                                .ThenInclude(x => x.IdZonaNavigation)
+                                .Include(x => x.ProductosXremitos)
+                                .ThenInclude(x => x.IdProductoNavigation)
+                                .ToList();
                               
                 Resultado.Return=remitos;
                 return Resultado;
@@ -140,13 +145,14 @@ namespace api.Controllers
             r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
             r.IdEstado = comando.IdEstado;
             r.IdCliente = comando.IdCliente;
+          
             
          
             _db.Remitos.Add(r);
             _db.SaveChanges();
            
             resultado.Ok = true;
-            resultado.Return = _db.Remitos.ToList();
+            resultado.Return = r;
 
             return resultado;
         }
@@ -194,7 +200,7 @@ namespace api.Controllers
                 r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
                 r.IdEstado = comando.IdEstado;
                 r.IdCliente = comando.IdCliente;
-                
+      
                 _db.Remitos.Update(r);
                 _db.SaveChanges();
 
@@ -234,6 +240,31 @@ namespace api.Controllers
                 return Resultado;
             }
 
+        }
+
+        [HttpDelete]
+        [Route("/Remito/EliminarRemito")]
+        public ActionResult<ResultadoApi> Delete(int id)
+        {
+            var resultado = new ResultadoApi();
+            try
+            {
+                var rem = _db.Remitos.Where(c => c.IdRemito == id).FirstOrDefault();
+                _db.Remitos.Remove(rem);
+                _db.SaveChanges();
+
+                resultado.Ok = true;
+                resultado.Return = _db.Remitos.ToList();
+
+                return resultado;
+            }
+            catch (System.Exception ex)
+            {  
+                resultado.Ok = false;
+                resultado.Error = "Remito no encontrado" + ex.Message;
+
+                return resultado;
+            }
         }
     }
 

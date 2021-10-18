@@ -1,7 +1,5 @@
 using System.Xml;
 using System.Data;
-using System.Xml;
-using System.Data;
 using System.Xml.Schema;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -37,7 +35,7 @@ namespace api.Controllers
             var Resultado = new ResultadoApi();
             try{
                 Resultado.Ok = true;
-                Resultado.Return = _db.Productos.ToList();            
+                Resultado.Return = _db.Productos .OrderBy(x => x.IdProducto).ToList();            
                       
                 return Resultado;
             }

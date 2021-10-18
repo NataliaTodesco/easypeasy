@@ -79,9 +79,9 @@
           }
       });
 
-    // Obtener Estados Cambiar URL
+    // Obtener Estados
     $.ajax({
-        url: "https://localhost:5001/Estado/ObtenerEstado",
+        url: "https://vast-brook-85314.herokuapp.com/Estado/ObtenerEstado",
         type: "GET",
         
         success: function (result) {
@@ -108,12 +108,12 @@
         },
     });
 
-    // Obtener Articulo por ID Cambiar URL
+    // Obtener Articulo por ID 
     $("#buscar").click(function() {
         let id = $("#id").val();
 
         $.ajax({
-          url: "https://localhost:5001/Producto/ObtenerUnProducto?id="+id,
+          url: "https://vast-brook-85314.herokuapp.com/Producto/ObtenerUnProducto?id="+id,
           type: "GET",
           success: function(result) {
             if (result.ok){
@@ -129,30 +129,12 @@
         });
       })
 
-    // Cargar Remitos
-    $("#btnI").click(function() {
-        let fecha = $("#fecha").val();
-        let hora = $("#hora").val();
-        var cliente = document.getElementById('cliente');
-        var idCliente = cliente.selectedIndex;
-        var estado = document.getElementById('estado');
-        var idEstado = estado.selectedIndex;
+    // Cargar ProductoXRemito
+      $("#btnAceptar").click(function(){
+        swal("Productos registrados","Continue con la carga del remito","success")
+        cargarRemito(Productos);
+      })
 
-        CargarFormulario(fecha,hora,idCliente,idEstado);
-    })
-
-    // Modificar Remitos
-    $("#btnModificar").click(function() {
-        let id = $("#idRemito").val();
-        let fecha = $("#fechaM").val();
-        let hora = $("#horaM").val();
-        var cliente = document.getElementById('clienteM');
-        var idCliente = cliente.selectedIndex;
-        var estado = document.getElementById('estadoM');
-        var idEstado = estado.selectedIndex;
-
-        ModificarFormulario(id,modificar,fecha,hora,idCliente,idEstado);
-    })
 }
 
     //Crear tabla Remitos
@@ -160,7 +142,7 @@
     for (let index = 0; index < datos.length; index++) {
         let html = "<tr id='lista'>";
         
-        html += "<td> <input type='number' id='idRemito' value='"+datos[index].idRemito+"' disabled> </td>";
+        html += "<td>"+datos[index].idRemito+"</td>";
         
         if (datos[index].idEstado == 1) {
         html += "<td>"+ "Pendiente"+"</td>";
@@ -174,18 +156,44 @@
         }
 
         html += "<td>"+ datos[index].fechaCompra + "</td>";
-        html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>";    
-        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar()' data-placement='bottom' title='Generar etiqueta de envío'>"+
+        html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>";  
+
+        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idRemito+")' data-placement='bottom'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                "<button type='button' class='btn' id='modificar' data-toggle='modal' data-target='#modificarM' data-placement='bottom' title='Generar etiqueta de envío'>"+
+                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                 "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
-                "<button type='button' class='btn' id='etic' data-toggle='modal' data-target='#etiqueta' data-placement='bottom' title='Generar etiqueta de envío'>"+
+                "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+datos[index].idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
                 "<i class='bi bi-file-text'></i> </button> " + "</td>";
         html += "</tr>"
       
         $("#cuerpoTabla").append(html);
     } 
   }
+
+  // Generar Etiqueta
+  function generarEtiqueta(id){
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id="+id,
+        type: "GET",
+        success: function(result) {
+            if (result.ok){
+                document.getElementById('nombreE').innerHTML = result.return.idClienteNavigation.nombre;
+                document.getElementById('fechaE').innerHTML = result.return.fechaCompra;
+                document.getElementById('direccionE').innerHTML = result.return.idClienteNavigation.direccion+
+                " B° "+result.return.idClienteNavigation.idBarrioNavigation.descripcion+
+                " Zona: "+result.return.idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion;
+                document.getElementById('numeroE').innerHTML = result.return.idRemito;
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
+   
+    
+ }
+
 
   // Crear tabla Articulos
   function crearTablaA(datos) {
@@ -200,7 +208,7 @@
   }
 
   // Cargar Remitos
-    function CargarFormulario(fecha,hora,idCliente,idEstado) {
+    function CargarFormulario(fecha,hora,idCliente,idEstado,Productos) {
         comando = {
             "idRemito": 0,
             "fechaCompra": fecha,
@@ -218,6 +226,7 @@
             type: "POST",
             success: function(result) {
                 if (result.ok){
+                    IngresarProd(result.return.idRemito,Productos)
                     swal("Remito cargado exitosamente");
                 }
                 else swal(result.error);
@@ -240,7 +249,7 @@
     }
 
     $.ajax({
-        url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
+        url: "https://vast-brook-85314.herokuapp.com/Estado/ObtenerEstado",
         dataType:'json',
         contentType:'application/json',
         data: JSON.stringify(comando),
@@ -257,8 +266,23 @@
     });
   }
 
+  function modificar(id) {
+    let idRem = id;
+
+    $("#btnModificar").click(function() {    
+        let fecha = $("#fechaM").val();
+        let hora = $("#horaM").val();
+        var cliente = document.getElementById('clienteM');
+        var idCliente = cliente.selectedIndex;
+        var estado = document.getElementById('estadoM');
+        var idEstado = estado.selectedIndex;
+
+        ModificarFormulario(idRem,fecha,hora,idCliente,idEstado);
+    })
+  }
+
   // Eliminar
-  function eliminar() {
+  function eliminar(id) {
     var lista = document.getElementById("cuerpoTabla")
 
      var eleminarTarea = function(){
@@ -269,5 +293,90 @@
          lista.children[i].addEventListener("click", eleminarTarea);
      }
 
+     $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Remito/EliminarRemito?id="+id,
+        type: "DELETE",
+        success: function(result) {
+            if (result.ok){
+                swal("Remito eliminado exitosamente");
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
+
+
     swal("Elemento eliminado");
   }
+
+  // Cargar Productos X Remitos
+        let Productos = [];
+
+        function agregar() {
+            const formulario = document.getElementById('formulario');
+            let descripcion = formulario['producto'];
+            let valor = formulario['valor'];
+            let ingresos = [];
+
+            var prod = document.getElementById('producto');
+            var idProducto = prod.selectedIndex;
+
+            ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
+            document.getElementById('itemIngreso').innerHTML += ingresos;
+
+            cargarProducto(idProducto,valor.value)
+        }
+
+        function cargarProducto(index,cant){
+          producto = {
+            indice : index,
+            cantidad : Number(cant)
+          };
+
+          Productos.push(producto);
+        }
+        
+        function cargarRemito(Productos){
+          $("#btnI").click(function() {
+              let fecha = $("#fecha").val();
+              let hora = $("#hora").val();
+              var cliente = document.getElementById('cliente');
+              var idCliente = cliente.selectedIndex;
+              var estado = document.getElementById('estado');
+              var idEstado = estado.selectedIndex;
+
+              CargarFormulario(fecha,hora,idCliente,idEstado,Productos);
+          })
+        }
+
+        function IngresarProd(idRemito, Productos){
+          for (let i = 0; i < Productos.length; i++) {
+            comando = {
+                "idProducto": Productos[i].indice,
+                "idRemito": idRemito,
+                "cantidad": Productos[i].cantidad
+            }
+
+            $.ajax({
+                url: "https://vast-brook-85314.herokuapp.com/RemXProd/RegistrarRemXProd",
+                dataType:'json',
+                contentType:'application/json',
+                data: JSON.stringify(comando),
+                type: "POST",
+                success: function(result) {
+                    if (result.ok){
+                        console.log("ProdxRemito cargado exitosamente");
+                    }
+                    else swal(result.error);
+                },
+                error: function(error) {
+                    swal(error);
+                }
+            });
+            
+          }
+        }
+
+        // https://vast-brook-85314.herokuapp.com/swagger/index.html
