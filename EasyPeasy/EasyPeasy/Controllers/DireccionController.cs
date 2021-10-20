@@ -1,3 +1,4 @@
+using System.Net.WebSockets;
 using System.Globalization;
 using System.Xml;
 using System.Data;
@@ -24,11 +25,38 @@ namespace api.Controllers
 {
     [ApiController]
     [EnableCors("postgres")]
-    public class DireccionController:ControllerBase
+    public class DireccionController : ControllerBase
     {
         private readonly EasyPeasyDBContext db = new EasyPeasyDBContext();
 
-        [HttpPost]
+        [HttpGet]
+        [Route("Direccion/ConsultarDireccion")]
+        public ActionResult<ResultadoApi> ObtenerDireccion()
+        {
+            var resultado = new ResultadoApi();
+            try
+            {
+                resultado.Ok = true;
+            
+                resultado.Return=db.Clientes.ToList();
+                //resultado.Return=db.Clientes.Select(x=>x.Direccion);
+                return resultado;
+
+
+                
+            }
+            catch (Exception ex)
+            {
+                resultado.Ok = false;
+                resultado.Error = "Error al listar direcciones";
+
+                return resultado;
+            }
+        }
+
+
+
+        /* [HttpPost]
         [Route("Direccion/RegistrarDireccion")]
         public ActionResult<ResultadoApi> AltaDireccion([FromBody] ComandoDireccion comando)
         {
@@ -65,9 +93,9 @@ namespace api.Controllers
             resultado.Ok = true;
 
             return resultado;
-        }
-        }
-
+        } */
     }
+
+}
 
 
