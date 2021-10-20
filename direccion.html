@@ -19,7 +19,7 @@
     <div class="col-12 col-sm-12 sol-md-6 col-lg-6 mt-5">
         <div class="form-group">
             <label> Direccion </label>
-            <select name="direccion" id="txtDireccion">
+            <select name="direccion" id="cboDireccion">
             </select>
         </div>
     </div>
@@ -47,7 +47,7 @@ function ListarDirecciones() {
         type: "GET",
         success: function (result) {
             if(result.ok){
-                document.getElementById('direccion').innerHTML = "Direccion: "+ result.return.Direccion;
+                //cargarTabla
             } else 
             {
                 swal(result.error);
@@ -57,14 +57,9 @@ function ListarDirecciones() {
             swal("Problemas al conseguir direcciones");
         },
     })
+})
     
-    }
-
-)
-
 }
-
-
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
@@ -72,3 +67,4 @@ function ListarDirecciones() {
     crossorigin="anonymous"></script>
 
 </html>
+    
