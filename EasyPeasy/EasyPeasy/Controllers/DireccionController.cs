@@ -38,8 +38,8 @@ namespace api.Controllers
             {
                 resultado.Ok = true;
             
-                resultado.Return=db.Clientes.ToList();
-                //resultado.Return=db.Clientes.Select(x=>x.Direccion);
+                
+                resultado.Return=db.Clientes.Select(x=>x.Direccion);
                 return resultado;
 
 
