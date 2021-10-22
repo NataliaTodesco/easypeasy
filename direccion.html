@@ -60,8 +60,8 @@
     select = document.getElementById("cboDirecciones");
     for (let i = 0; i < datos.length; i++) {
         var option = document.createElement('option');
-        option.value = datos[i].Direccion;
-        option.text = datos[i].Direccion;
+        option.value = datos[i].IdCliente;
+        option.text = datos[i];
         select.add(option);
     }
 }
