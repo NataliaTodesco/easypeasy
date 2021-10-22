@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <title>Cargar Direccion</title>
 </head>
@@ -18,53 +19,54 @@
 <body>
     <div class="col-12 col-sm-12 sol-md-6 col-lg-6 mt-5">
         <div class="form-group">
-            <label> Direccion </label>
-            <select name="direccion" id="cboDireccion">
+            <label> Direcciones </label>
+            <select name="direccion" id="cboDirecciones">
             </select>
         </div>
     </div>
 
 
-<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-crossorigin="anonymous"></script>
+
 </body>
-
-
-<script>
-function ListarDirecciones() {
-
-
-
-
-    $(document).ready(function () {
-        $.ajax({
-        url: "https://localhost:5001/Direccion/ConsultarDireccion",
-        type: "GET",
-        success: function (result) {
-            if(result.ok){
-                //cargarTabla
-            } else 
-            {
-                swal(result.error);
-            }
-        },
-        error : function (error) {
-            swal("Problemas al conseguir direcciones");
-        },
-    })
-})
-    
-}
-</script>
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
     crossorigin="anonymous"></script>
 
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "https://localhost:5001/Direccion/ConsultarDireccion",
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                    cargarCombo(result.return);
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(); (error);
+            },
+        })
+
+        // carga combo
+    function cargarCombo(datos){
+    var html = "<option value=''>Seleccione</option>";
+    $("#cboDirecciones").append(html);
+    select = document.getElementById("cboDirecciones");
+    for (let i = 0; i < datos.length; i++) {
+        var option = document.createElement('option');
+        option.value = datos[i].Direccion;
+        option.text = datos[i].Direccion;
+        select.add(option);
+    }
+}
+    })
+</script>
+
+
 </html>
-    
