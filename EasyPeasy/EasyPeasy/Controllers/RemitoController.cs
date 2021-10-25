@@ -229,6 +229,11 @@ namespace api.Controllers
                 var remitos =  _db.Remitos
                         .Where(x => x.IdEstado == 1 &&
                                x.IdClienteNavigation.IdBarrioNavigation.IdZona==idZona)
+                        .Include(x => x.IdClienteNavigation)
+                        .ThenInclude(x => x.IdBarrioNavigation)
+                        .ThenInclude(x => x.IdZonaNavigation)
+                        .Include(x => x.ProductosXremitos)
+                        .ThenInclude(x => x.IdProductoNavigation)
                         .ToList();
                               
                 Resultado.Return = remitos;
