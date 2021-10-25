@@ -291,7 +291,20 @@
 
      for (var i = 0; i <= lista.children.length -1; i++) {
          lista.children[i].addEventListener("click", eleminarTarea);
-     }
+     } 
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/RemXProd/EliminarRemXProd?id="+id,
+        type: "DELETE",
+        success: function(result) {
+            if (result.ok){
+                swal("Remito eliminado exitosamente");
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
 
      $.ajax({
         url: "https://vast-brook-85314.herokuapp.com/Remito/EliminarRemito?id="+id,

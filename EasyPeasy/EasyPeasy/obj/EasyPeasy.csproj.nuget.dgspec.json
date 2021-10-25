@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\bauti\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {}
+    "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {}
   },
   "projects": {
-    "c:\\Users\\bauti\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {
+    "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\bauti\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
         "projectName": "EasyPeasy",
-        "projectPath": "c:\\Users\\bauti\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
-        "packagesPath": "C:\\Users\\bauti\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\bauti\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\obj\\",
+        "projectPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\EasyPeasy.csproj",
+        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Usuario\\Documents\\GitHub\\easypeasy\\EasyPeasy\\EasyPeasy\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\bauti\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
