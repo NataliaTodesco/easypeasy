@@ -17,14 +17,35 @@
 
 
 <body>
-    <div class="col-12 col-sm-12 sol-md-6 col-lg-6 mt-5">
-        <div class="form-group">
-            <label> Direcciones </label>
-            <select name="direccion" id="cboDirecciones">
-            </select>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <h3><b>Consultar Direcciones</b></h3>
+                <form class="jumbotron">
+                    <div class="row ">
+                        <div class="col">
+                            <div class="mb-3">
+                                <div class="container">
+
+                                    <div class="col-12 col-sm-12 sol-md-6 col-lg-6 mt-5">
+                                        <div class="form-group">
+                                            <label> Direcciones </label>
+                                            <select name="direccion" id="cboDirecciones">
+                                                <option disabled selected>Seleccione Direccion</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-
 
 
 </body>
@@ -54,17 +75,17 @@
         })
 
         // carga combo
-    function cargarCombo(datos){
-    var html = "<option value=''>Seleccione</option>";
-    $("#cboDirecciones").append(html);
-    select = document.getElementById("cboDirecciones");
-    for (let i = 0; i < datos.length; i++) {
-        var option = document.createElement('option');
-        option.value = datos[i].IdCliente;
-        option.text = datos[i];
-        select.add(option);
-    }
-}
+        function cargarCombo(datos) {
+            var html = "<option value=''>Seleccione</option>";
+            $("#cboDirecciones").append(html);
+            select = document.getElementById("cboDirecciones");
+            for (let i = 0; i < datos.length; i++) {
+                var option = document.createElement('option');
+                option.value = datos[i].IdCliente;
+                option.text = datos[i];
+                select.add(option);
+            }
+        }
     })
 </script>
 
