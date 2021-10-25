@@ -11,20 +11,80 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <!-- <link rel="stylesheet" href="estilo.css"> -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 
-    <title>Remitos</title>
+        body{
+            background-color: #ffee32;
+            font-family: 'Fira Sans', sans-serif;
+        }
+
+        .btn{
+            background-color: #0aa34f;
+            color: white;
+            font-size: medium;
+        }
+
+        .btn:hover{
+            color: white;
+            border: 3px dashed #ffee32;
+        }
+
+        h1{
+            font-family: 'Luckiest Guy', cursive;
+            float: right;
+            margin-right: 15%;
+        }
+
+        a{
+          color: black;
+          text-decoration: none;
+        }
+
+        a:hover{
+          color: rgb(122, 121, 121);
+          text-decoration: none;
+        }
+    </style>
+
+    <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+    <title>EasyPeasy</title>
 </head>
 
 <body onload="OnLoad()">
+    <!-- Navbar -->
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+                <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                
+              <ul class="navbar-nav mr-auto"></ul>
+              <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class="btn btn-success my-2 my-sm-0" href="menu.html">Menú</a>
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
+                    Salir
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+              </form>
+            </div>
+          </nav>
+    </section>
     <section>
 
         <div class="container mt-5">
             <div class="row">
-                <div class="col-lg-8">
-                    <h3><b>Hojas de ruta</b></h3>
+                <div class="col-lg-9">
+                    <h1 class="display-4"><b>Hojas de ruta</b></h1>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                    <br><br>
                     <label for="">Buscar por ID</label>
                     <select name="idRuta" id="cboIdRuta">
                     </select>
@@ -35,7 +95,7 @@
     </section>
     <section class="container">
         <table class="table table bordered jumbotron" id="TablaRutas">
-            <thead>
+            <thead class="thead-dark">
                 <th data-field="fecha">Fecha</th>
                 <th data-field="zona">Zona</th>
                 <th data-field="transportista">Transportista</th>
@@ -58,7 +118,6 @@
     function OnLoad() {
         $.ajax({
             url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
-            // url: "https://localhost:5001/HojaDeRuta/ObtenerHojasDeRuta",
             type: "GET",
 
             success: function (result) {
@@ -84,6 +143,7 @@
             html += "<td>" + datos[index].remitos[index].idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion + "</td>";
             html += "<td>" + datos[index].idTransportistaNavigation.nombre + "</td>";
             html += "<td>" + datos[index].idVehiculoNavigation.patente + "</td>";
+            html += "<td><a class='btn' href='./RegistrarHojaDeRuta.html'>Registrar</a></td>";
 
             html += "</tr>"
             $("#cuerpoTabla").append(html);
