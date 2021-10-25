@@ -84,32 +84,6 @@ namespace api.Controllers
         {
             var resultado = new ResultadoApi();
 
-            if (comando.Fecha.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Fecha";
-                return resultado;
-            }
-            if (comando.idZona.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese zona";
-                return resultado;
-            }
-
-            if (comando.IdVehiculo.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Vehiculo";
-                return resultado;
-            }
-            if (comando.IdTransportista.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Transportista";
-                return resultado;
-            }
-
             var hojaRuta = new HojaRuta();
             hojaRuta.Fecha = comando.Fecha;
             hojaRuta.IdVehiculo = comando.IdVehiculo;
@@ -172,25 +146,6 @@ namespace api.Controllers
         {
             var resultado = new ResultadoApi();
            
-            if (comando.Fecha.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Fecha";
-                return resultado;
-            }
-
-            if (comando.IdVehiculo.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Vehiculo";
-                return resultado;
-            }
-            if (comando.IdTransportista.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Transportista";
-                return resultado;
-            }
 
             var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==comando.IdHojaRuta);
             if(hojaDeRuta != null)
@@ -203,7 +158,7 @@ namespace api.Controllers
             }
 
             resultado.Ok = true;
-            resultado.Return = _db.HojaRuta.ToList();;
+            resultado.Return = _db.HojaRuta.ToList();
 
             return resultado;
         }
