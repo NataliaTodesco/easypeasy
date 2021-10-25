@@ -29,11 +29,11 @@
     } 
     
     else if ($("#contraseña").val()=='123456' && $("#email").val() =='transportista@gmail.com' && idRol == 4){
-      window.location.replace("");
+      window.location.replace("./IndexHojaDeRuta");
     } 
     
     else if ($("#contraseña").val()=='123456' && $("#email").val() =='empleado@gmail.com' && idRol == 3){
-      window.location.replace("");
+      window.location.replace("./remitos.html");
     }
     else{ 
       swal("Error de Validacion","Porfavor ingrese email, rol y contraseña correctos","error"); 

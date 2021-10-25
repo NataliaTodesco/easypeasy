@@ -78,6 +78,34 @@ namespace api.Controllers
 
             return resultado;
         }
+
+        [HttpDelete]
+        [Route("/RemXProd/EliminarRemXProd")]
+        public ActionResult<ResultadoApi> Delete(int id)
+        {
+            var resultado = new ResultadoApi();
+            try
+            {
+                var rem = db.ProductosXremitos.Where(c => c.IdRemito == id);
+                foreach (var i in rem)
+                {
+                    db.ProductosXremitos.Remove(i);
+                }
+
+                db.SaveChanges();
+                resultado.Ok = true;
+                resultado.Return = db.ProductosXremitos.ToList();
+
+                return resultado;
+            }
+            catch (System.Exception ex)
+            {  
+                resultado.Ok = false;
+                resultado.Error = "Remito no encontrado" + ex.Message;
+
+                return resultado;
+            }
+        }
     }
 
 }

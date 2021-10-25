@@ -28,6 +28,7 @@
         success: function (result) {
             if (result.ok) {
                 crearTabla(result.return);
+                cargarComboId(result.return);
             }else{
                 swal(result.error);
             }
@@ -135,6 +136,27 @@
         cargarRemito(Productos);
       })
 
+    //Obtener por ID
+    $("#cboId").change(function () {
+        let id = $("#cboId").val();
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + id,
+            type: "GET",
+            success: function (result) {
+                if (result.ok) {
+                    swal("Datos traidos con exito");
+                    cargarTabla(result.return);
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                swal("Problemas en el servidor");
+            },
+        })
+    }
+    });
 }
 
     //Crear tabla Remitos
@@ -155,8 +177,17 @@
         html += "<td>"+ "Reprogramado"+"</td>";
         }
 
+        
+
         html += "<td>"+ datos[index].fechaCompra + "</td>";
-        html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>";  
+        html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>"; 
+        html += "<td>"; 
+        
+        datos[index].productosXremitos.forEach(prod => {
+            html += prod.idProductoNavigation.descripcion +"<br>";
+        }); 
+            
+        html += "</td>";  
 
         html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idRemito+")' data-placement='bottom'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -291,7 +322,20 @@
 
      for (var i = 0; i <= lista.children.length -1; i++) {
          lista.children[i].addEventListener("click", eleminarTarea);
-     }
+     } 
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/RemXProd/EliminarRemXProd?id="+id,
+        type: "DELETE",
+        success: function(result) {
+            if (result.ok){
+                swal("Remito eliminado exitosamente");
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
 
      $.ajax({
         url: "https://vast-brook-85314.herokuapp.com/Remito/EliminarRemito?id="+id,
@@ -378,5 +422,17 @@
             
           }
         }
+
+    function cargarComboId(datos) {
+        var html = "<option value=''>Seleccione ID...</option>";
+        $("#cboId").append(html);
+        select = document.getElementById("cboId");
+        for (let i = 0; i < datos.length; i++) {
+            var option = document.createElement('option');
+            option.value = datos[i].idRemito;
+            option.text = datos[i].idRemito;
+            select.add(option);
+        }
+    }
 
         // https://vast-brook-85314.herokuapp.com/swagger/index.html

@@ -11,15 +11,72 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    <title>Registrar hoja de ruta</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+        body{
+            background-color: #ffee32;
+            font-family: 'Fira Sans', sans-serif;
+        }
+
+        .btn{
+            background-color: #0aa34f;
+            color: white;
+            font-size: medium;
+        }
+
+        .btn:hover{
+            color: white;
+            border: 3px dashed #ffee32;
+        }
+
+        h1{
+            font-family: 'Luckiest Guy', cursive;
+            text-align: center;
+            margin: 3%;
+        }
+
+        .jumbotron{
+            background-color: white;
+            padding-top: 3%;
+        }
+    </style>
+
+    <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+    <title>EasyPeasy</title>
 </head>
 
 <body onload="cargarCombo()">
+    <!-- Navbar -->
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+                <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto"></ul>
+              <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class="btn btn-success my-2 my-sm-0" href="IndexHojaDeRuta.html">Volver</a>
+                <a class="btn btn-success my-2 my-sm-0" href="menu.html">Menú</a>
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
+                    Salir
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+              </form>
+            </div>
+          </nav>
+    </section>
     <div class="container">
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10">
-                <h3><b>Registrar hoja de ruta</b></h3>
+                <h1 class="display-4"><b>Registrar hoja de ruta</b></h1>
                 <form class="jumbotron">                    
                     <div class="row ">                       
                         <div class="col">
@@ -68,7 +125,7 @@
                     </div>
                     <div class="row">
                         <div  class="col">
-                            <button type="button" class="btn btn-primary form-control" id="btn1">Registrar</button>
+                            <button type="button" class="btn btn-success form-control" id="btn1">Registrar</button>
                         </div>
                     </div>
           
@@ -109,7 +166,7 @@
 
     function cargarCombo() {
         $.ajax({
-            url: "https://localhost:5001/Transportista/ObtenerTransportistas",
+            url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
             type: "GET",
             success: function (result) {
                 select = document.getElementById("cboTransportista");
@@ -127,7 +184,7 @@
         });
 
         $.ajax({
-            url: "https://localhost:5001/Vehiculo/ObtenerVehiculos",
+            url: "https://vast-brook-85314.herokuapp.com/Vehiculo/ObtenerVehiculos",
             type: "GET",
             success: function (result) {
                 select = document.getElementById("cboVehiculo");
@@ -153,7 +210,7 @@
 
         $.ajax({
             type: "Get",
-            url: "https://localhost:5001/Remito/ObtenerRemitosPorZona",
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemitosPorZona",
             data: { idZona: $("#cboZona").val() },
             success: function (result) {
                 if (result.ok) {
@@ -216,7 +273,7 @@
         }
 
         $.ajax({
-            url: "https://localhost:5001/Remito/RegistrarHojaDeRuta",
+            url: "https://vast-brook-85314.herokuapp.com/Remito/RegistrarHojaDeRuta",
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(comando),

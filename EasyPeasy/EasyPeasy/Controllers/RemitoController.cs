@@ -112,42 +112,12 @@ namespace api.Controllers
         {
             var resultado = new ResultadoApi();
 
-            if(comando.FechaCompra.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.HoraEntregaPreferido.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.IdEstado.Equals(0))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.IdCliente.Equals(0))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
             var r = new Remito();
             r.FechaCompra = comando.FechaCompra;
             r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
             r.IdEstado = comando.IdEstado;
             r.IdCliente = comando.IdCliente;
           
-            
-         
             _db.Remitos.Add(r);
             _db.SaveChanges();
            
@@ -165,33 +135,6 @@ namespace api.Controllers
         {
             var resultado = new ResultadoApi();
            
-            if(comando.FechaCompra.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.HoraEntregaPreferido.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.IdEstado.Equals(0))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
-
-            if(comando.IdCliente.Equals(0))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese todos los datos";
-                return resultado;
-            }
 
             var r = _db.Remitos.Where(c =>c.IdRemito == comando.IdRemito).FirstOrDefault();
             if(r != null)
@@ -212,8 +155,6 @@ namespace api.Controllers
                 resultado.Error = "Elemento Nulo";
             }
 
-            
-
             return resultado;
         }
 
@@ -229,6 +170,11 @@ namespace api.Controllers
                 var remitos =  _db.Remitos
                         .Where(x => x.IdEstado == 1 &&
                                x.IdClienteNavigation.IdBarrioNavigation.IdZona==idZona)
+                        .Include(x => x.IdClienteNavigation)
+                        .ThenInclude(x => x.IdBarrioNavigation)
+                        .ThenInclude(x => x.IdZonaNavigation)
+                        .Include(x => x.ProductosXremitos)
+                        .ThenInclude(x => x.IdProductoNavigation)
                         .ToList();
                               
                 Resultado.Return = remitos;
