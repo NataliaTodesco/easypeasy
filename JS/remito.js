@@ -427,6 +427,7 @@
             success: function (result) {
                 if (result.ok) {
                     $("#cuerpoTablaID").empty();
+                    $("#cuerpoTablaID").show()
 
                     let html = "<tr id='lista'>";
             
