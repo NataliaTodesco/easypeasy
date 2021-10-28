@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using EasyPeasy.Models;
+using EasyPeasy.Comandos;
 
 namespace api.Controllers
 {
@@ -46,5 +47,31 @@ namespace api.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("Vehiculo/RegistrarVehiculo")]
+        public ActionResult<ResultadoApi> post([FromBody]ComandoVehiculo comando){
+            var Resultado = new ResultadoApi();
+            var v = new Vehiculo();
+            try
+            {
+                v.IdVehiculo = 0;
+                v.Patente=comando.Patente;
+                v.Color=comando.Color;
+                v.Modelo=comando.Modelo;
+                _db.Vehiculos.Add(v);
+                _db.SaveChanges();
+                Resultado.Ok = true;
+                Resultado.Return = v;
+                return Resultado;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException.Message);
+                Resultado.Ok=false;
+                Resultado.Error = e.Message;
+                return Resultado;
+            }
+        }
+
     }
 }

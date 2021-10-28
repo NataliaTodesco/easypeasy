@@ -1,0 +1,16 @@
+EasyPeasy/EasyPeasy/[Dd]ebug/
+EasyPeasy/EasyPeasy/[Dd]ebugPublic/
+EasyPeasy/EasyPeasy/[Rr]elease/
+EasyPeasy/EasyPeasy/[Rr]eleases/
+EasyPeasy/EasyPeasy/[Oo]bj/
+EasyPeasy/EasyPeasy/x64/
+EasyPeasy/EasyPeasy/x86/
+EasyPeasy/EasyPeasy/build/
+EasyPeasy/EasyPeasy/bld/
+EasyPeasy/EasyPeasy/[Bb]in/
+EasyPeasy/EasyPeasy/[Oo]bj/
+EasyPeasy/EasyPeasy/msbuild.log
+EasyPeasy/EasyPeasy/msbuild.err
+EasyPeasy/EasyPeasy/msbuild.wrn
+EasyPeasy/EasyPeasy/*.cache
+EasyPeasy/EasyPeasy/appsettings.json

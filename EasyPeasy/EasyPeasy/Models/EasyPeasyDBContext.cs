@@ -34,7 +34,7 @@ namespace EasyPeasy.Models
             if (!optionsBuilder.IsConfigured)
             {
 
-                optionsBuilder.UseNpgsql("User ID=postgres; Password=Password; Server=localhost; Database=EasyPeasyDB; Integrated Security=true; Pooling=true;");
+                optionsBuilder.UseNpgsql(Startup.ConnString);
             }
         }
 

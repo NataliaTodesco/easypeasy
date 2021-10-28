@@ -1,3 +1,6 @@
+using System.IO.MemoryMappedFiles;
+using System.Linq.Expressions;
+using System.Reflection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +22,17 @@ namespace EasyPeasy
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConnString = Configuration.GetConnectionString("DefaultConnection");
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get; set;}
+        public static string ConnString { get; set;}
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             /* services.AddDbContext<EasyPeasyDBContext>(x=>
-            x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))); */
+            x.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));  */
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
