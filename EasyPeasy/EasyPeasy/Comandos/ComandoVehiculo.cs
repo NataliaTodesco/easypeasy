@@ -9,7 +9,7 @@ namespace EasyPeasy.Comandos
         public int IdVehiculo { get; set; }
 
         [Required(ErrorMessage = "Ingrese la Patente")]
-        public string? Patente { get; set; }
+        public string Patente { get; set; }
 
         public string Modelo { get; set; }
 

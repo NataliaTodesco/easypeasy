@@ -48,7 +48,7 @@ namespace api.Controllers
             catch (Exception ex)
             {
                 resultado.Ok = false;
-                resultado.Error = "Error al listar direcciones";
+                resultado.Error = "Error al listar direcciones" + ex;
 
                 return resultado;
             }

@@ -1,18 +1,7 @@
-using System.Xml;
 using System.Data;
-using System.Xml.Schema;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Http.Headers;
-using System.Xml.XPath;
-using System.Xml.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using api.Resultados;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
@@ -66,6 +55,29 @@ namespace api.Controllers
                                 .ThenInclude(x => x.IdZonaNavigation)
                                 .Include(x => x.ProductosXremitos)
                                 .ThenInclude(x => x.IdProductoNavigation)
+                                .ToList();
+                              
+                Resultado.Return=remitos;
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
+        //Obtener todos los remitos y el estado y transportista
+        [HttpGet]
+        [Route("Remito/ObtenerDetallesRemitos")]
+        public ActionResult<ResultadoApi> GetRemitosDetails()
+        {
+            var Resultado = new ResultadoApi();
+            try{
+                Resultado.Ok = true;
+                var remitos =  _db.Remitos.Include(x => x.IdEstadoNavigation)
+                                .Include(x => x.IdHojaRutaNavigation)
+                                .ThenInclude(x => x.IdTransportistaNavigation)
                                 .ToList();
                               
                 Resultado.Return=remitos;
