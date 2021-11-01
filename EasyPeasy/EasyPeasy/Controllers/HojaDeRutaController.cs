@@ -163,6 +163,31 @@ namespace api.Controllers
             return resultado;
         }
 
+        [HttpDelete]
+        [Route("/HojaDeRuta/Eliminar")]
+        public ActionResult<ResultadoApi> Delete(int id)
+        {
+            var resultado = new ResultadoApi();
+            try
+            {
+                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==comando.IdHojaRuta);
+                _db.HojaRuta.Remove(hojaDeRuta);
+                _db.SaveChanges();
+
+                resultado.Ok = true;
+                resultado.Return = _db.HojaRuta.ToList();
+
+                return resultado;
+            }
+            catch (System.Exception ex)
+            {  
+                resultado.Ok = false;
+                resultado.Error = "Hoja de Ruta no encontrada" + ex.Message;
+
+                return resultado;
+            }
+        }
+
 
     }
 
