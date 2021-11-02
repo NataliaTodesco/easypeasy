@@ -202,6 +202,53 @@
         });
     }
 
+    $(document).ready(function autocomplete() {
+    $("#cboVehiculo").autocomplete({
+      source: function (request, responce) {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Vehiculo/ObtenerVehiculos",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboVehiculo");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].patente;
+                    option.value = result.return[i].idVehiculo;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+      },
+      
+    });
+    $("#cboTransportista").autocomplete({
+      source: function (request, responce) {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboTransportista");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].nombre;
+                    option.value = result.return[i].idTransportista;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+      },
+      
+    });
+  });
+
     function CargarRemitos() {
 
         let zona = document.getElementById("cboZona");

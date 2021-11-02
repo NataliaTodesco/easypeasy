@@ -378,4 +378,38 @@
       crossorigin="anonymous"
       ></script>
   </body>
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      $("#clienteM").autocomplete({
+        source: function (request, responce) {
+          $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Cliente/ObtenerCliente",
+            type: "GET",
+            success: function (result) {
+              select = document.getElementById("cliente");
+              for (let i = 0; i < result.return.length; i++) {
+                var option = document.createElement('option');
+                option.text = result.return[i].nombre;
+                select.add(option);
+              }
+  
+              select = document.getElementById("clienteM");
+              for (let i = 0; i < result.return.length; i++) {
+                var option = document.createElement('option');
+                option.text = result.return[i].nombre;
+                select.add(option);
+              }
+            },
+            error: function (error) {
+              swal(result.error);
+            }
+          });
+        },
+      });
+    });
+  
+    
+  </script>
+  
 </html>
