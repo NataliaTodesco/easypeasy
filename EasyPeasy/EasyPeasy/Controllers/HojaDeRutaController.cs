@@ -170,7 +170,7 @@ namespace api.Controllers
             var resultado = new ResultadoApi();
             try
             {
-                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==comando.IdHojaRuta);
+                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==id);
                 _db.HojaRuta.Remove(hojaDeRuta);
                 _db.SaveChanges();
 
