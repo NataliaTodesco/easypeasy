@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Index</title>
+</head>
+<body>
+    <div class="container py-3">
+        <h3>Porcentaje de entregas por transportista</h3><br>
+        <h5>Ingrese rango de fechas a consultar</h5><br>
+        <h6>Desde:</h6>
+        <input type="date" id="date1" class="form-control"><br>
+        <h6>Hasta:</h6>
+        <input type="date" id="date2" class="form-control"><br>
+        <button onclick="LoadChart()" class="btn btn-primary">Consultar</button>
+        <button onclick="location.reload()" class="btn btn-success">Nueva busqueda</button><br>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <table border="0" cellpadding="0" cellspacing="0" style="width: 100;">
+                <tr>
+                    <td>
+                        <div id="dvChart">
+                            <canvas style="width: 100%; height: 500px;"></canvas>
+                        </div>
+                    </td>
+                    <td>
+                        <div id="dvLegend">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/excanvas/r3/excanvas.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/chart.js/0.2/Chart.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        function validarFechas() {
+            let fechaDesde = document.getElementById("date1").value;
+            let fechaHasta = document.getElementById("date2").value;
+
+            if (fechaDesde === "") {
+                swal({
+                    text:"Fecha desde es requerida!",
+                    icon:"warning",
+                    dangerMode:true
+                });
+                return false;
+
+            };
+            if (fechaHasta === "") {
+                swal({
+                    text:"Fecha hasta es requerida!",
+                    icon:"warning",
+                    dangerMode:true
+                });
+                return false;
+
+            };
+            if (fechaDesde === fechaHasta) {
+                swal({
+                    text:"Fecha desde no puede ser igual a fecha hasta!",
+                    icon:"warning",
+                    dangerMode:true
+                });
+                return false;
+
+            };
+            if (fechaDesde >= fechaHasta) {
+                swal({
+                    text:"Fecha desde no puede ser mayor a fecha hasta!",
+                    icon:"warning",
+                    dangerMode:true
+                });
+                return false;
+            };
+            return true;
+
+        }
+        function LoadChart() {
+
+            if (validarFechas()) {
+                $("#dvChart").html("");
+                $("#dvLegend").html("");
+
+                $.ajax({
+                    type: "GET",
+                    url: "https://localhost:5001/Reportes/EntregasPorTransportista",
+                    // url: "https://vast-brook-85314.herokuapp.com/Reportes/EntregasPorTransportista",
+
+                    success: function (result) {
+                        var transportistasArray = new Array();
+                        for (let i = 0; i < result.return.length; i++) {
+                            transportistasArray.push(result.return[i]);
+                        };
+                        $("#dvChart").html("");
+                        $("#dvLegend").html("");
+                        var el = document.createElement('canvas');
+                        $("#dvChart")[0].appendChild(el);
+                        var ctx = el.getContext('2d');
+                        var chart = new Chart(ctx).Pie(transportistasArray);
+
+                        for (var i = 0; i < result.return.length; i++) {
+                            var div = $("<div />");
+                            div.css("margin-bottom", "10px");
+                            div.html("<span style = 'display:inline-block;height:10px;width:10px;background-color:"
+                                + result.return[i].color + "'></span> " + result.return[i].text + ' ' + result.return[i].value + '%');
+                            $("#dvLegend").append(div);
+                        }
+                    },
+                    failure: function (result) {
+                        alert('There was an error.');
+                    }
+                });
+            }
+        };      
+
+    </script>
+</body>
+</html>
