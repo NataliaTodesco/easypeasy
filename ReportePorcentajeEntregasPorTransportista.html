@@ -2,20 +2,83 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <title>Index</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+        
+        <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+        <title>EasyPeasy</title>
+    
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+    
+            body{
+                background-color: #ffee32;
+                font-family: 'Fira Sans', sans-serif;
+            }
+    
+            .btn{
+                background-color: #0aa34f;
+                color: white;
+                font-size: medium;
+            }
+    
+            .btn:hover{
+                color: white;
+                border: 3px dashed #ffee32;
+            }
+    
+            h1{
+                font-family: 'Luckiest Guy', cursive;
+            }
+            a{
+              color: black;
+            }
+    
+            a:hover{
+              color: rgb(82, 79, 79);
+            }
+        </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div style="display: flex; align-items: center; justify-content: center;">
+                <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+                <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button> 
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto"></ul>
+              <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class="btn btn-success my-2 my-sm-0" href="menu.html">Volver</a>
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
+                    Salir
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+              </form>
+            </div>
+          </nav>
+    </section>
     <div class="container py-3">
-        <h3>Porcentaje de entregas por transportista</h3><br>
-        <h5>Ingrese rango de fechas a consultar</h5><br>
-        <h6>Desde:</h6>
-        <input type="date" id="date1" class="form-control"><br>
-        <h6>Hasta:</h6>
-        <input type="date" id="date2" class="form-control"><br>
-        <button onclick="LoadChart()" class="btn btn-primary">Consultar</button>
-        <button onclick="location.reload()" class="btn btn-success">Nueva busqueda</button><br>
+        <h1 class="display-4" style="text-align: center;">Porcentaje de entregas por transportista</h1><br>
+        <h5><li>Ingrese rango de fechas a consultar</h5><br>
+        <div class="row">
+            <div class="col-lg-6">
+                <h6>Desde:</h6>
+                <input type="date" id="date1" class="form-control"><br>
+            </div>
+            <div class="col-lg-6">
+                <h6>Hasta:</h6>
+                <input type="date" id="date2" class="form-control"><br>
+            </div>
+        </div>
+        <button onclick="LoadChart()" class="btn">Consultar</button>
+        <button onclick="location.reload()" class="btn">Nueva busqueda</button><br>
     </div>
     </div>
     <div class="row">
