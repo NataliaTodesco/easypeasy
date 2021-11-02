@@ -88,9 +88,14 @@
         success: function (result) {
             if (result.ok) {
                 select = document.getElementById("estado");
+                var option = document.createElement('option');
+                option.text = "Seleccionar...";
+                select.add(option);
+
                 for (let i = 0; i < result.return.length; i++) {
                     var option = document.createElement('option');
                     option.text = result.return[i].descripcion;
+                    select.add(option);
                 }
 
                 select = document.getElementById("estadoM");
@@ -193,7 +198,7 @@
         success: function(result) {
             if (result.ok){
                 document.getElementById('nombreE').innerHTML = result.return.idClienteNavigation.nombre;
-                document.getElementById('fechaE').innerHTML = result.return.fechaCompra;
+                document.getElementById('fechaE').innerHTML = roundDate(result.return.fechaCompra);
                 document.getElementById('direccionE').innerHTML = result.return.idClienteNavigation.direccion+
                 " B° "+result.return.idClienteNavigation.idBarrioNavigation.descripcion+
                 " Zona: "+result.return.idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion;
@@ -213,7 +218,7 @@
   // Crear tabla Articulos
   function crearTablaA(datos) {
     for (let index = 0; index < datos.length; index++) {
-        let html = "<tr>";
+        let html = "<tr>"; 
         html += "<td>" + datos[index].idProducto + "</td>";             
         html += "<td>"+ datos[index].descripcion + "</td>";
         html += "</tr>"
@@ -286,7 +291,8 @@
 
     $("#btnModificar").click(function() {    
         let fecha = $("#fechaM").val();
-        let hora = $("#horaM").val();
+        var hoy = new Date();
+        let hora = hoy.getHours() + ':' + hoy.getMinutes();
         var cliente = document.getElementById('clienteM');
         var idCliente = cliente.selectedIndex;
         var estado = document.getElementById('estadoM');
@@ -369,7 +375,8 @@
         function cargarRemito(Productos){
           $("#btnI").click(function() {
               let fecha = $("#fecha").val();
-              let hora = $("#hora").val();
+              var hoy = new Date();
+              let hora = hoy.getHours() + ':' + hoy.getMinutes();
               var cliente = document.getElementById('cliente');
               var idCliente = cliente.selectedIndex;
               var idEstado = 1;
@@ -486,5 +493,6 @@
 }
 
 
+        // ObtenerRemitoXEstado
 
         // https://vast-brook-85314.herokuapp.com/swagger/index.html
