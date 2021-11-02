@@ -91,7 +91,6 @@
                 for (let i = 0; i < result.return.length; i++) {
                     var option = document.createElement('option');
                     option.text = result.return[i].descripcion;
-                    select.add(option);
                 }
 
                 select = document.getElementById("estadoM");
@@ -155,9 +154,9 @@
         html += "<td>"+ "Reprogramado"+"</td>";
         }
 
-        
+        var fecha = roundDate(datos[index].fechaCompra);
 
-        html += "<td>"+ datos[index].fechaCompra + "</td>";
+        html += "<td>"+ fecha + "</td>";
         html += "<td>"+ datos[index].idClienteNavigation.nombre + "</td>"; 
         html += "<td>"; 
         
@@ -177,6 +176,13 @@
       
         $("#cuerpoTabla").append(html);
     } 
+  }
+
+  function roundDate(timeStamp){
+    var yyyy = new Date(timeStamp).getFullYear().toString();
+    var mm = new Date(timeStamp).getMonth().toString();
+    var dd  = new Date(timeStamp).getDate().toString();
+    return dd +"/"+ mm +"/" + yyyy;
   }
 
   // Generar Etiqueta
@@ -366,8 +372,7 @@
               let hora = $("#hora").val();
               var cliente = document.getElementById('cliente');
               var idCliente = cliente.selectedIndex;
-              var estado = document.getElementById('estado');
-              var idEstado = estado.selectedIndex;
+              var idEstado = 1;
 
               CargarFormulario(fecha,hora,idCliente,idEstado,Productos);
           })

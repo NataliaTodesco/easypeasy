@@ -125,7 +125,7 @@
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="container" style="padding: 3%;">
                   <div class="id form-inline">
-                    <label for="">Buscar por ID</label>
+                    <label for="">Buscar por N°</label>
                             <select name="id" id="cboId" class="form-control">
                             </select>
                     <button class="btn" type="submit" onclick="buscar()">Buscar</button>
@@ -160,9 +160,9 @@
                       </table>
                     </div>
                     <div class="col-lg-6 col-md-6" style="text-align: center;">
-                      <h4>Obtener por ID</h4> <br>
+                      <h4>Obtener por Código</h4> <br>
                       <div class="input-group mb-3">
-                        <input type="number" class="form-control" id="id" placeholder="Ingrese el ID del Articulo que desea consultar">
+                        <input type="number" class="form-control" id="id" placeholder="Ingrese el código del Articulo que desea consultar">
                         <div class="input-group-append">
                           <button class="btn" type="button" id="buscar">Buscar</button>
                         </div>
@@ -180,7 +180,7 @@
                   <form class="needs-validation" novalidate id="carga">
                     <div class="form-row">
                       <div class="col-md-6 mb-3">
-                        <label for="fecha">Fecha de Compra</label>
+                        <label for="fecha">Fecha de Remito</label>
                         <input type="date" class="form-control" id="fecha" required>
                         <div class="invalid-feedback">
                           Ingrese una fecha de compra
@@ -211,17 +211,6 @@
                         </button>
                         <div class="invalid-feedback">
                           Ingrese detalle
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-row">
-                      <div class="col-md-4 mb-4">
-                        <label for="estado">Estado</label>
-                        <select class="custom-select" id="estado" required>
-                          <option selected disabled value="">Seleccionar...</option>
-                        </select>
-                        <div class="invalid-feedback">
-                          Seleccione un estado
                         </div>
                       </div>
                     </div>
