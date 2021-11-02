@@ -224,6 +224,60 @@ namespace api.Controllers
                 return resultado;
             }
         }
+
+        [HttpGet]
+        [Route("Remito/ObtenerRemitoXFecha")]
+        public ActionResult<ResultadoApi> Get(DateTime fecha)
+        {
+            var Resultado = new ResultadoApi();
+
+            try{
+                Resultado.Ok = true;
+                 Resultado.Return = _db.Remitos
+                    .Include(x => x.IdClienteNavigation)
+                    .ThenInclude(x => x.IdBarrioNavigation)
+                    .ThenInclude(x => x.IdZonaNavigation)
+                    .Include(x => x.ProductosXremitos)
+                    .ThenInclude(x => x.IdProductoNavigation)
+                    .Where(x => x.FechaCompra == fecha)
+                    .ToList();
+              
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
+
+        [HttpGet]
+        [Route("Remito/ObtenerRemitoXEstado")]
+        public ActionResult<ResultadoApi> Get2(int estado)
+        {
+            var Resultado = new ResultadoApi();
+
+            try{
+                Resultado.Ok = true;
+                 Resultado.Return = _db.Remitos
+                    .Include(x => x.IdClienteNavigation)
+                    .ThenInclude(x => x.IdBarrioNavigation)
+                    .ThenInclude(x => x.IdZonaNavigation)
+                    .Include(x => x.ProductosXremitos)
+                    .ThenInclude(x => x.IdProductoNavigation)
+                    .Where(x => x.IdEstado == estado)
+                    .ToList();
+              
+                return Resultado;
+            }
+            catch(Exception ex){
+                Resultado.Ok = false;
+                Resultado.Error = "Error " + ex.Message;
+                return Resultado;
+            }
+
+        }
     }
 
     
