@@ -185,7 +185,7 @@
 
   function roundDate(timeStamp){
     var yyyy = new Date(timeStamp).getFullYear().toString();
-    var mm = new Date(timeStamp).getMonth().toString();
+    var mm = new Date(timeStamp).getMonth()+1;
     var dd  = new Date(timeStamp).getDate().toString();
     return dd +"/"+ mm +"/" + yyyy;
   }
@@ -262,21 +262,22 @@
     comando = {
         "idRemito": id,
         "fechaCompra": fecha,
-        "horaEntregaPreferido": hora,
+        "horaEntregaPreferido": "16:00",
         "idEstado": idEstado,
         "idCliente": idCliente,
         "idHojaRuta": 0
     }
 
     $.ajax({
-        url: "https://vast-brook-85314.herokuapp.com/Estado/ObtenerEstado",
+        url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
         dataType:'json',
         contentType:'application/json',
         data: JSON.stringify(comando),
         type: "PUT",
         success: function(result) {
             if (result.ok){
-                swal("Remito modificado exitosamente");
+                location.reload();
+                //swal("Remito modificado exitosamente");
             }
             else swal(result.error);
         },
@@ -402,6 +403,8 @@
                 success: function(result) {
                     if (result.ok){
                         console.log("ProdxRemito cargado exitosamente");
+                        //location.reload();
+                        window.location.href = "./remitos.html";
                     }
                     else swal(result.error);
                 },
