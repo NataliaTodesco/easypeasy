@@ -124,7 +124,7 @@
             if (result.ok){
                 if (result.return != null)
                     document.getElementById('articulo').innerHTML = "Articulo: "+ result.return.idProducto+" - "+result.return.descripcion;
-                else swal("No se encuentra un articulo con ese ID")
+                else swal("No se encuentra un articulo con ese código")
             }
             else swal(result.error);
           },
@@ -427,19 +427,84 @@
 
     function buscar(){
         let id = Number($("#cboId").val());
+        let fecha = $("#fechaB").val();
+        let estado = document.getElementById('estado');
+        let idEstado = estado.selectedIndex;
 
-        if (id == 0){
+        if (id == 0 && fecha == "" && idEstado == 0){
             $("#cuerpoTabla").show();
             $("#cuerpoTablaID").hide();
-        }else{
+            $("#cuerpoTablaFecha").hide();
+            $("#cuerpoTablaEstado").hide();
+            $("#cuerpoTablaFE").hide();
+        } else if (id != 0 && fecha == "" && idEstado == 0){
+            $.ajax({
+                url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + id,
+                type: "GET",
+                success: function (result) {
+                    if (result.ok) {
+                        $("#cuerpoTablaID").empty();
+                        $("#cuerpoTablaID").show()
 
+                        let html = "<tr id='lista'>";
+                
+                        html += "<td>"+result.return.idRemito+"</td>";
+                        
+                        if (result.return.idEstado == 1) {
+                        html += "<td>"+ "Pendiente"+"</td>";
+                        }else if (result.return.idEstado == 2){
+                        html += "<td>"+ "En proceso"+"</td>";
+                        }else if (result.return.idEstado == 3){
+                        html += "<td>"+ "Entregado"+"</td>";
+                        }               
+                        else {
+                        html += "<td>"+ "Reprogramado"+"</td>";
+                        }
+                
+                        
+                
+                        html += "<td>"+ result.return.fechaCompra + "</td>";
+                        html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
+                        html += "<td>"; 
+                        
+                        result.return.productosXremitos.forEach(prod => {
+                            html += prod.idProductoNavigation.descripcion +"<br>";
+                        }); 
+                            
+                        html += "</td>";  
+                
+                        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                                "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                                "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                        html += "</tr>"
+
+                        $("#cuerpoTabla").hide();
+                        $("#cuerpoTablaFecha").hide();
+                        $("#cuerpoTablaEstado").hide();
+                        $("#cuerpoTablaFE").hide();
+                            
+                        $("#cuerpoTablaID").append(html);
+
+                        swal("Datos traidos con exito");
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+    } else if (id == 0 && fecha != "" && idEstado == 0){
         $.ajax({
-            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + id,
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemitoXFecha?fecha=" + fecha,
             type: "GET",
             success: function (result) {
                 if (result.ok) {
-                    $("#cuerpoTablaID").empty();
-                    $("#cuerpoTablaID").show()
+                    $("#cuerpoTablaFecha").empty();
+                    $("#cuerpoTablaFecha").show()
 
                     let html = "<tr id='lista'>";
             
@@ -477,8 +542,11 @@
                     html += "</tr>"
 
                     $("#cuerpoTabla").hide();
-                
-                    $("#cuerpoTablaID").append(html);
+                    $("#cuerpoTablaID").hide();
+                    $("#cuerpoTablaEstado").hide();
+                    $("#cuerpoTablaFE").hide();
+                        
+                    $("#cuerpoTablaFecha").append(html);
 
                     swal("Datos traidos con exito");
                 } else {
@@ -489,10 +557,129 @@
                 swal("Problemas en el servidor");
             },
         })
+    } else if (id == 0 && fecha == "" && idEstado != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemitoXEstado?estado=" + idEstado,
+            type: "GET",
+            success: function (result) {
+                if (result.ok) {
+                    $("#cuerpoTablaEstado").empty();
+                    $("#cuerpoTablaEstado").show()
+
+                    let html = "<tr id='lista'>";
+            
+                    html += "<td>"+result.return.idRemito+"</td>";
+                    
+                    if (result.return.idEstado == 1) {
+                    html += "<td>"+ "Pendiente"+"</td>";
+                    }else if (result.return.idEstado == 2){
+                    html += "<td>"+ "En proceso"+"</td>";
+                    }else if (result.return.idEstado == 3){
+                    html += "<td>"+ "Entregado"+"</td>";
+                    }               
+                    else {
+                    html += "<td>"+ "Reprogramado"+"</td>";
+                    }
+            
+                    
+            
+                    html += "<td>"+ result.return.fechaCompra + "</td>";
+                    html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
+                    html += "<td>"; 
+                    
+                    result.return.productosXremitos.forEach(prod => {
+                        html += prod.idProductoNavigation.descripcion +"<br>";
+                    }); 
+                        
+                    html += "</td>";  
+            
+                    html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                            "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                            "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                            "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                            "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                            "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                    html += "</tr>"
+
+                    $("#cuerpoTabla").hide();
+                    $("#cuerpoTablaID").hide();
+                    $("#cuerpoTablaFecha").hide();
+                    $("#cuerpoTablaFE").hide();
+                        
+                    $("#cuerpoTablaEstado").append(html);
+
+                    swal("Datos traidos con exito");
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                swal("Problemas en el servidor");
+            },
+        })
+    } else if (id == 0 && fecha != "" && idEstado != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemitoXFechaYEstado?estado="+idEstado+"&fecha="+fecha,
+            type: "GET",
+            success: function (result) {
+                if (result.ok) {
+                    $("#cuerpoTablaFE").empty();
+                    $("#cuerpoTablaFE").show()
+
+                    let html = "<tr id='lista'>";
+            
+                    html += "<td>"+result.return.idRemito+"</td>";
+                    
+                    if (result.return.idEstado == 1) {
+                    html += "<td>"+ "Pendiente"+"</td>";
+                    }else if (result.return.idEstado == 2){
+                    html += "<td>"+ "En proceso"+"</td>";
+                    }else if (result.return.idEstado == 3){
+                    html += "<td>"+ "Entregado"+"</td>";
+                    }               
+                    else {
+                    html += "<td>"+ "Reprogramado"+"</td>";
+                    }
+            
+                    
+            
+                    html += "<td>"+ result.return.fechaCompra + "</td>";
+                    html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
+                    html += "<td>"; 
+                    
+                    result.return.productosXremitos.forEach(prod => {
+                        html += prod.idProductoNavigation.descripcion +"<br>";
+                    }); 
+                        
+                    html += "</td>";  
+            
+                    html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                            "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                            "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                            "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                            "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                            "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                    html += "</tr>"
+
+                    $("#cuerpoTabla").hide();
+                    $("#cuerpoTablaID").hide();
+                    $("#cuerpoTablaFecha").hide();
+                    $("#cuerpoTablaEstado").hide();
+                        
+                    $("#cuerpoTablaFE").append(html);
+
+                    swal("Datos traidos con exito");
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                swal("Problemas en el servidor");
+            },
+        })
+    }else {
+        swal("No se puede buscar por N°, Fecha y Estado, por favor borre los campos que no requiera");
     }
 }
-
-
-        // ObtenerRemitoXEstado
 
         // https://vast-brook-85314.herokuapp.com/swagger/index.html

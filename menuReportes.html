@@ -29,12 +29,12 @@
             border: 3px dashed #1cc267;
         }
 
-        .btn{
+        .box .btn{
             background-color: #0aa34f;
             color: white;
-            margin: 1%;
-            padding: 3%;
-            font-size: large;
+            margin: 3%;
+            padding: 5%;
+            font-size: x-large;
             -webkit-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
             -moz-box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
             box-shadow: 0px 1px 10px 1px rgba(28,194,103,1);
@@ -64,8 +64,9 @@
             </button> 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto"></ul>
-              <form class="form-inline my-2 my-lg-0">
-                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html" style="margin: 0; padding: 7px 12px 7px 12px; box-shadow: none; font-size: medium;">
+              <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class="btn btn-success my-2 my-sm-0" href="menu.html" style="font-size: medium; box-shadow: none;">Volver</a>
+                <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html"  style="font-size: medium; box-shadow: none;">
                     Salir
                     <i class="bi bi-box-arrow-right"></i>
                 </a>
@@ -76,22 +77,20 @@
     <!-- Botones -->
     <section class="container">
         <div class="box">
-            <a type="button" class="btn" href="menuReportes.html">
-                Reportes del sistema 
-                <i class="bi bi-file-bar-graph"></i>
-            </a>
-            <a type="button" class="btn" href="./IndexHojaDeRuta.html">
-                Gestionar Hojas de Ruta 
-                <i class="bi bi-truck"></i>
-            </a>
-            <a type="button" class="btn" href="remitos.html">
-                Gestionar Embalaje 
-                <img src="https://img.icons8.com/fluency-systems-regular/25/ffffff/open-delivered-box.png"/>
-            </a>
-            <a type="button" class="btn" href="entregas.html">
-                Gestionar Entregas 
-                <i class="bi bi-box-seam"></i>
-            </a>
+            <div class="row">
+                <div class="col-lg-6">
+                    <a type="button" class="btn" href="ReportePorcentajeEntregasPorTransportista.html">
+                        Reportes de estregas por transportista <br>
+                        <i class="bi bi-person-check"></i>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <a type="button" class="btn" href="ReporteEstadosEnvio.html">
+                        Reportes de Estados de Envio <br>
+                        <i class="bi bi-file-arrow-up"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
