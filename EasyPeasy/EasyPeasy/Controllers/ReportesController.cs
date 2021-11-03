@@ -52,8 +52,34 @@ namespace EasyPeasy.Controllers
                 resultadoApi.Error = "Error " + ex.Message;
                 return resultadoApi;
             }
+        }
 
+        [HttpGet]
+        [Route("/Reportes/EstadoEntregas")]
+        public ActionResult<ResultadoApi> EstadoEntregas()
+        {
+            Random random = new Random();
+            ResultadoApi resultadoApi = new ResultadoApi();
+            try
+            {
+                int total = 100;
+                var entregadas = random.Next(total);
+                var reprogramadas = random.Next(total - entregadas);
+                int[] estados = new int[2];
+                estados[0] = entregadas;
+                estados[1] = reprogramadas;
 
+                resultadoApi.Ok = true;
+                resultadoApi.Return = estados;
+                return resultadoApi;
+            }
+
+            catch (Exception ex)
+            {
+                resultadoApi.Ok = false;
+                resultadoApi.Error = "Error " + ex.Message;
+                return resultadoApi;
+            }
 
         }
     }
