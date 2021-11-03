@@ -12,6 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using EasyPeasy.Models;
+using EasyPeasy.Models.DTO;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,12 @@ using Microsoft.AspNetCore.Cors;
 using api.Resultados;
 using EasyPeasy.Comandos;
 
+
 namespace api.Controllers
 {
     [ApiController]
     [EnableCors("postgres")]
-    public class HojaDeRutaController:ControllerBase
+    public class HojaDeRutaController : ControllerBase
     {
         private readonly EasyPeasyDBContext _db = new EasyPeasyDBContext();
 
@@ -33,20 +35,53 @@ namespace api.Controllers
         public ActionResult<ResultadoApi> Get()
         {
             var Resultado = new ResultadoApi();
-            try{
+            try
+            {
                 Resultado.Ok = true;
-                Resultado.Return = _db.HojaRuta
-                                  .Include(x => x.IdTransportistaNavigation)
-                                  .Include(x => x.IdVehiculoNavigation)
-                                  .Include(x => x.Remitos)
-                                  .ThenInclude(x => x.IdClienteNavigation)
-                                  .ThenInclude(x => x.IdBarrioNavigation)
-                                  .ThenInclude(x => x.IdZonaNavigation)
-                                  .ToList();            
-                      
+                Rutas Hr = new Rutas();
+                Hr.HojaRutas = (from h in _db.HojaRuta
+                                 select new DTOHojaRuta
+                                 {
+                                     Id = h.IdHojaRuta,
+                                     Fecha = h.Fecha,
+                                     IdVehiculo = h.IdVehiculo,
+                                     IdTransportista = h.IdTransportista,
+
+                                     Remitos = (
+                                         from r in _db.Remitos
+                                         where r.IdHojaRuta == h.IdHojaRuta
+                                         select new HRemito
+                                         {
+                                             IdRemito = r.IdRemito,
+                                             FechaCompra = r.FechaCompra,
+                                             HoraEntregaPreferido = r.HoraEntregaPreferido,
+                                             Estado = r.IdEstado,
+                                             Cliente = (
+                                                 from c in _db.Clientes
+                                                 where c.IdCliente == r.IdCliente
+                                                 select new HCliente{
+                                                    IdCliente = c.IdCliente,
+                                                    Nombre = c.Nombre,
+                                                    Direccion = c.Direccion,
+                                                    Telefono = c.Telefono
+                                                 }
+                                             ).FirstOrDefault()
+                                         }
+                                       ).ToList(),
+
+                                    //  un listado de las direcciones de cada hoja de ruta para haccer mas facil el acceso al mapa
+                                     Direcciones = (
+                                       from a in _db.Remitos
+                                       join b in _db.HojaRuta on a.IdHojaRuta equals b.IdHojaRuta
+                                       join c in _db.Clientes on a.IdCliente equals c.IdCliente
+                                       where a.IdHojaRuta == h.IdHojaRuta
+                                       select c.Direccion).ToList()
+                                 }).ToList();
+                Resultado.Return = Hr;
                 return Resultado;
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 Resultado.Ok = false;
                 Resultado.Error = "Error " + ex.Message;
                 return Resultado;
@@ -55,26 +90,29 @@ namespace api.Controllers
         }
 
         //update/create get
-        [HttpGet]        
+        [HttpGet]
         [Route("HojaDeRuta/Upsert")]
-        public ActionResult<ResultadoApi> Upsert (int? Id){
+        public ActionResult<ResultadoApi> Upsert(int? Id)
+        {
 
             var Resultado = new ResultadoApi();
-            try{
-                     Resultado.Ok = true;
-                    Resultado.Return =  _db.HojaRuta
-                                         .Include(x=>x.Remitos)
-                                         .FirstOrDefault(x => x.IdHojaRuta == Id);
-                                        return Resultado;
-                        
-                }
-                 catch(Exception ex){
+            try
+            {
+                Resultado.Ok = true;
+                Resultado.Return = _db.HojaRuta
+                                     .Include(x => x.Remitos)
+                                     .FirstOrDefault(x => x.IdHojaRuta == Id);
+                return Resultado;
+
+            }
+            catch (Exception ex)
+            {
                 Resultado.Ok = false;
                 Resultado.Error = "Error " + ex.Message;
                 return Resultado;
             }
-            
-    
+
+
 
         }
 
@@ -100,10 +138,10 @@ namespace api.Controllers
                 item.IdEstado = 2;
             }
             //guardo cambios
-             _db.SaveChanges(); 
+            _db.SaveChanges();
 
             resultado.Ok = true;
-            resultado.Return = _db.HojaRuta.ToList(); 
+            resultado.Return = _db.HojaRuta.ToList();
 
             return resultado;
         }
@@ -117,15 +155,58 @@ namespace api.Controllers
             var Resultado = new ResultadoApi();
             try
             {
+                Rutas hr = new Rutas();
                 Resultado.Ok = true;
-                Resultado.Return = _db.HojaRuta
-                                   .Include(x => x.Remitos)
-                                   .ThenInclude(x => x.IdClienteNavigation)
-                                   .ThenInclude(x => x.IdBarrioNavigation)
-                                   .ThenInclude(x => x.IdZonaNavigation)
-                                   .Include(x => x.IdTransportistaNavigation)
-                                   .Include(x => x.IdVehiculoNavigation)
-                                   .FirstOrDefault(x => x.IdTransportistaNavigation.Legajo == legajo);
+                // Resultado.Return = _db.HojaRuta
+                //                    .Include(x => x.Remitos)
+                //                    .ThenInclude(x => x.IdClienteNavigation)
+                //                    .ThenInclude(x => x.IdBarrioNavigation)
+                //                    .ThenInclude(x => x.IdZonaNavigation) vade retro referencia circular
+                //                    .Include(x => x.IdTransportistaNavigation)
+                //                    .Include(x => x.IdVehiculoNavigation)
+                //                    .FirstOrDefault(x => x.IdTransportistaNavigation.Legajo == legajo);
+                hr.HojaRutas =(from h in _db.HojaRuta
+                                
+                                where h.IdTransportista == legajo
+
+                                 select new DTOHojaRuta
+                                 {
+                                     Id = h.IdHojaRuta,
+                                     Fecha = h.Fecha,
+                                     IdVehiculo = h.IdVehiculo,
+                                     IdTransportista = h.IdTransportista,
+
+                                     Remitos = (
+                                         from r in _db.Remitos
+                                         where r.IdHojaRuta == h.IdHojaRuta
+                                         select new HRemito
+                                         {
+                                             IdRemito = r.IdRemito,
+                                             FechaCompra = r.FechaCompra,
+                                             HoraEntregaPreferido = r.HoraEntregaPreferido,
+                                             Estado = r.IdEstado,
+                                             Cliente = (
+                                                 from c in _db.Clientes
+                                                 where c.IdCliente == r.IdCliente
+                                                 select new HCliente{
+                                                    IdCliente = c.IdCliente,
+                                                    Nombre = c.Nombre,
+                                                    Direccion = c.Direccion,
+                                                    Telefono = c.Telefono
+                                                 }
+                                             ).FirstOrDefault()
+                                         }
+                                       ).ToList(),
+
+                                    //  un listado de las direcciones de cada hoja de ruta para haccer mas facil el acceso al mapa
+                                     Direcciones = (
+                                       from a in _db.Remitos
+                                       join b in _db.HojaRuta on a.IdHojaRuta equals b.IdHojaRuta
+                                       join c in _db.Clientes on a.IdCliente equals c.IdCliente
+                                       where a.IdHojaRuta == h.IdHojaRuta
+                                       select c.Direccion).ToList()
+                                 }).ToList();
+                Resultado.Return = hr;
                 return Resultado;
 
             }
@@ -139,16 +220,16 @@ namespace api.Controllers
 
         }
 
-          //actualizar hoja de ruta (solo updetear fecha/transportista/vehiculo)
+        //actualizar hoja de ruta (solo updetear fecha/transportista/vehiculo)
         [HttpPut]
         [Route("HojaDeRuta/Actualizar")]
-        public ActionResult<ResultadoApi> Update([FromBody]ComandoHojaRuta comando)
+        public ActionResult<ResultadoApi> Update([FromBody] ComandoHojaRuta comando)
         {
             var resultado = new ResultadoApi();
-           
 
-            var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==comando.IdHojaRuta);
-            if(hojaDeRuta != null)
+
+            var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x => x.IdHojaRuta == comando.IdHojaRuta);
+            if (hojaDeRuta != null)
             {
                 hojaDeRuta.Fecha = comando.Fecha;
                 hojaDeRuta.IdTransportista = comando.IdTransportista;
@@ -170,7 +251,7 @@ namespace api.Controllers
             var resultado = new ResultadoApi();
             try
             {
-                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x=>x.IdHojaRuta==id);
+                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x => x.IdHojaRuta == id);
                 _db.HojaRuta.Remove(hojaDeRuta);
                 _db.SaveChanges();
 
@@ -180,7 +261,7 @@ namespace api.Controllers
                 return resultado;
             }
             catch (System.Exception ex)
-            {  
+            {
                 resultado.Ok = false;
                 resultado.Error = "Hoja de Ruta no encontrada" + ex.Message;
 
