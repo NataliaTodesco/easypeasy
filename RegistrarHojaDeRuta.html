@@ -273,13 +273,14 @@
     function crearTabla(datos) {
         if(datos.length<=0){
             let html = "<tr>";
-            html += "<td>" + "La zona seleccionada no tiene remitos pendientes" + "</td class='form-control'>";
+                html += "<td>" + "La zona seleccionada no tiene remitos pendientes" +
+                     "</br>" +"<button onclick='location.reload(true)'>"+
+                         "Seleccionar nueva zona" +
+                         "</button class='btn btn-primary form-control'>"  + 
+                         "</td class='form-control'>";
             html += "</tr>"
             $("#cuerpoTabla").append(html);
-            setTimeout(function(){
-                  location.reload(true);
-                  alert("La pagina ahora se recargara");
-                }, 1000);
+            document.getElementById("cboZona").disabled=true;
         }
         else{
             for (let i = 0; i <= datos.length; i++) {
@@ -287,6 +288,7 @@
             html += "<td>" +  datos[i].idRemito + "</td class='form-control'>";
             html += "</tr>"
             $("#cuerpoTabla").append(html);
+            document.getElementById("cboZona").disabled=true;
         }
 
         }
