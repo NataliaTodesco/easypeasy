@@ -397,12 +397,7 @@
             cantidad : Number(cant)
           };
 
-          for (let i = 0; i < Productos.length; i++) {
-              if (producto.indice == Productos[i].indice)
-                Productos[i].cantidad += producto.cantidad
-              else
-                Productos.push(producto);
-          }
+          Productos.push(producto);
         }
         
         function cargarRemito(Productos){
