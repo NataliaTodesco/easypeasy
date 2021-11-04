@@ -348,18 +348,45 @@
 
   // Cargar Productos X Remitos
         let Productos = [];
+        let ingresos = [];
 
         function agregar() {
             const formulario = document.getElementById('formulario');
             let descripcion = formulario['producto'];
             let valor = formulario['valor'];
-            let ingresos = [];
+            
 
             var prod = document.getElementById('producto');
             var idProducto = prod.selectedIndex;
 
-            ingresos.push(descripcion.value +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+valor.value+" <hr>");
-            document.getElementById('itemIngreso').innerHTML += ingresos;
+            var lista = {
+                descripcion: descripcion.value,
+                cantidad: Number(valor.value)
+            }
+
+            if (ingresos.length == 0){
+                ingresos.push(lista);
+            }
+            else{
+                for (let i = 0; i < ingresos.length; i++) {
+                    if (lista.descripcion == ingresos[i].descripcion){
+                        ingresos[i].cantidad += Number(lista.cantidad);
+                        break;
+                    }
+                    else {
+                        ingresos.push(lista);
+                        break;
+                    }
+                }
+            }
+
+            let detalle = "";
+
+            for (let i = 0; i < ingresos.length; i++) {
+                detalle += ingresos[i].descripcion +"&nbsp &nbsp &nbsp &nbsp &nbsp Cant. "+ ingresos[i].cantidad+" <hr>";
+            }
+
+            document.getElementById('itemIngreso').innerHTML = detalle;
 
             cargarProducto(idProducto,valor.value)
         }
@@ -370,7 +397,12 @@
             cantidad : Number(cant)
           };
 
-          Productos.push(producto);
+          for (let i = 0; i < Productos.length; i++) {
+              if (producto.indice == Productos[i].indice)
+                Productos[i].cantidad += producto.cantidad
+              else
+                Productos.push(producto);
+          }
         }
         
         function cargarRemito(Productos){
