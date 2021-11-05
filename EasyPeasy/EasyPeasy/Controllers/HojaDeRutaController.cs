@@ -251,7 +251,7 @@ namespace api.Controllers
             var resultado = new ResultadoApi();
             try
             {
-                var hojaDeRuta = _db.HojaRuta.FirstOrDefault(x => x.IdHojaRuta == id);
+                var hojaDeRuta = _db.HojaRuta.Where(c => c.IdHojaRuta == id).FirstOrDefault();
                 _db.HojaRuta.Remove(hojaDeRuta);
                 _db.SaveChanges();
 
