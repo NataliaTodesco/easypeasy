@@ -305,7 +305,31 @@ namespace api.Controllers
             }
 
         }
-    }
 
-    
+        // [HttpPut]
+        // [Route("Remito/ActualizarEstado")]
+        // public ActionResult<ResultadoApi> Update(int id)
+        // {
+        //     var resultado = new ResultadoApi();
+
+        //     var r = _db.Remitos.Where(c => c.IdRemito == id).FirstOrDefault();
+            
+        //     if(r != null)
+        //     {
+        //         r.IdEstado = 3;
+
+        //         _db.Remitos.Update(r);
+        //         _db.SaveChanges();
+
+        //         resultado.Ok = true;
+        //         resultado.Return = _db.Remitos.ToList();
+        //     }
+        //     else {
+        //         resultado.Ok = false;
+        //         resultado.Error = "Elemento Nulo";
+        //     }
+
+        //     return resultado;
+        // }
+    }
 }

@@ -64,12 +64,22 @@ function mostrarDatos() {
                 clienteEntrega.value = result.return.idClienteNavigation.nombre;
                 direccionEntrega.value = result.return.idClienteNavigation.direccion;
                 crearTablaDetalles(result.return.productosXremitos);
-                if (result.return.idEstado == 1) {
-                    estadoEntrega.value = "Pendiente";
-                } else if (result.return.idEstado == 3) {
-                    estadoEntrega.value = "Reprogramado";
-                } else {
-                    estadoEntrega.value = "Entregado";
+                switch (result.return.idEstado) {
+                    case 1:
+                        estadoEntrega.value = "Pendiente";
+                        break;
+                    case 2:
+                        estadoEntrega.value = "En proceso";
+                        break;
+                    case 3:
+                        estadoEntrega.value = "Entregado";
+                        break;
+                    case 4:
+                        estadoEntrega.value = "Reprogramar";
+                        break;
+                
+                    default: estadoEntrega.value = "---";
+                        break;
                 }
             } else {
                 swal(result.error);
@@ -122,11 +132,63 @@ function crearTablaEntregas(datos) {
     }
 }
 
-function modificarEntrega(datos) {
-    //swal("Modificar entrega "+ datos);
+    function CargarEntrega() {
+        let idRemito = $("#idRemito").val();
+            let horaEntrega = $("#horaEntrega").val();
+            var firma = null;
+            let observaciones = $("#observaciones").val();
+            CargarDetalleEntrega(idRemito,horaEntrega,firma,observaciones);
+        ActualizarEstadoEntregado(idRemito);
+    }
+
+function CargarDetalleEntrega(idRemito,horaEntrega,firma,observaciones) {
+    comando = {
+        "IdDetalle": 0,
+        "IdRemito": parseInt(idRemito),
+        "HoraEntrega": horaEntrega,
+        "Firma": firma,
+        "Observaciones": observaciones
+    }
+
+    $.ajax({
+        url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega", //no está en heroku
+        dataType:'json',
+        contentType:'application/json',
+        data: JSON.stringify(comando),
+        type: "POST",
+        success: function(result) {
+            if (result.ok){
+                
+            }
+            else swal(result.error);
+            
+        },
+        error: function(error) {
+            swal(error);
+            
+        }
+    });
+    
 }
 
-function eliminarEntrega(datos) {
-    swal("Eliminar entrega " + datos);
-}
+// function ActualizarEstado(id) {
+
+//     $.ajax({
+//         url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
+//         dataType:'json',
+//         contentType:'application/json',
+//         data: JSON.stringify(id),
+//         type: "PUT",
+//         success: function(result) {
+//             if (result.ok){
+//                 // location.reload();
+//                 swal("Remito modificado exitosamente");
+//             }
+//             else swal(result.error);
+//         },
+//         error: function(error) {
+//             swal("Error" + error);
+//         }
+//     });
+//   }
 // https://vast-brook-85314.herokuapp.com/swagger/index.html
