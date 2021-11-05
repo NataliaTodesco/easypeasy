@@ -38,13 +38,6 @@ namespace api.Controllers
         {
             var resultado = new ResultadoApi();
 
-           
-            if (comando.Firma.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "ingrese firma";
-                return resultado;
-            }
             if (comando.Observaciones.Equals(""))
             {
                 resultado.Ok = false;
@@ -55,8 +48,6 @@ namespace api.Controllers
             var entrega = db.DetalleEntregas.Where(c => c.IdDetalle == comando.IdDetalle).FirstOrDefault();
             if (entrega != null)
             {
-                
-                entrega.Firma=comando.Firma;
                 entrega.Observaciones=comando.Observaciones;
                 db.DetalleEntregas.Update(entrega);
                 db.SaveChanges();
