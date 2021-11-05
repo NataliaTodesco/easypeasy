@@ -138,7 +138,7 @@
                             <td> - </td>
                             <td>
                               <button type='button' class='btn' id='eliminar' onclick='swal("eliminar")' data-placement='bottom'><i class='bi bi-trash-fill'></i> </button> &nbsp;
-                              <button type='button' class='btn' id='modificar' onclick='swal("modificar")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'><i class='bi bi-pencil-fill'></i> </button> &nbsp;
+                              <button type='button' class='btn' id='modificar' onclick='' data-toggle='modal' data-target='#modificarEntrega' data-placement='bottom'><i class='bi bi-pencil-fill'></i> </button> &nbsp;
                             </td>
                           </tr>
                         </tbody>
@@ -151,7 +151,7 @@
                   <form class="needs-validation" novalidate id="carga">
                     <div class="form-row">
                       <div class="col-md-6 mb-3">
-                        <label for="idRemito">Id Remito</label>
+                        <label for="idRemito">Número de Remito</label>
                         <select onchange="mostrarDatos()" class="custom-select" id="idRemito" required>
                             <option  selected disabled value="">Seleccionar...</option>
                         </select>
@@ -170,8 +170,8 @@
                           <input readonly type="text" class="form-control" id="direccionEntrega" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="fechaEntrega">Fecha de entrega</label>
-                          <input type="date" class="form-control" id="fechaEntrega" required>
+                          <label for="horaEntrega">Hora de entrega</label>
+                          <input type="time" class="form-control" id="horaEntrega" required>
                           <div class="invalid-feedback">
                             Ingrese una fecha de entrega
                           </div>
@@ -184,23 +184,9 @@
                               Consultar
                             </button>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="hora">Hora de entrega</label>
-                            <input type="time" class="form-control" id="hora" required>
-                        </div>
-                      </div>
-                      <div class="form-row">
                         <div class="col-md-6 mb-6">
                           <label for="estadoEntrega">Estado</label>
                           <input readonly type="text" class="form-control mb-3" id="estadoEntrega" required>
-                        </div>
-                        <div class="col-md-6 mb-6">
-                          <label for="firmaEntrega">Firma cliente</label>
-                          <br>
-                          <input class="mb-3" type="file" id="firmaEntrega" required>
-                            <div class="invalid-feedback">
-                              Ingrese firma
-                            </div>
                         </div>
                       </div>
                       <div class="form-row">
@@ -209,7 +195,7 @@
                           <textarea style="resize: none;" name="" id="observaciones" rows="4" class="form-control mb-3"></textarea>
                         </div>
                       </div>
-                      <button class="btn" type="submit" onclick="go()" id="btnI">Confirmar entrega</button>
+                      <button class="btn" type="submit" onclick="CargarEntrega()" id="btnCargarEntrega">Confirmar entrega</button>
                     </div>
                     
                   </form>
@@ -263,24 +249,18 @@
                 <form class="needs-validation" novalidate id="carga">
                   <div class="form-row">
                     <div class="col-md-6 mb-3">
-                        <label for="hora">Hora de entrega</label>
+                        <label for="horaEntregaModificar">Hora de entrega</label>
                         <input type="time" class="form-control" id="hora" required>
                     </div>
-                    <label for="firmaEntrega">Firma cliente</label>
-                      <br>
-                      <input class="mb-3" type="file" id="firmaEntrega" required>
-                        <div class="invalid-feedback">
-                          Ingrese firma
-                        </div>
                   </div>
                   <div class="form-row">
                     <div class="col-md-12 mb-6">
                       <label for="observaciones">Observaciones</label>
-                      <textarea style="resize: none;" name="" id="observaciones" rows="4" class="form-control mb-3"></textarea>
+                      <textarea style="resize: none;" name="" id="observacionesModificar" rows="4" class="form-control mb-3"></textarea>
                     </div>
                   </div>
                   <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
-                  <button class="btn" type="submit" onclick="go()" id="btnModificar">Aceptar</button>
+                  <button class="btn" type="submit" onclick="go()" id="btnModificarEntrega">Aceptar</button>
                 </form>
               </section>
           </div>

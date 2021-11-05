@@ -532,44 +532,45 @@
             url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemitoXFecha?fecha=" + fecha,
             type: "GET",
             success: function (result) {
-                if (result.ok) {
-                    $("#cuerpoTablaFecha").empty();
-                    $("#cuerpoTablaFecha").show()
+                $("#cuerpoTablaFecha").empty();
+                $("#cuerpoTablaFecha").show()
+                let html = "<tr id='lista'>";
 
-                    let html = "<tr id='lista'>";
-            
-                    html += "<td>"+result.return.idRemito+"</td>";
-                    
-                    if (result.return.idEstado == 1) {
-                    html += "<td>"+ "Pendiente"+"</td>";
-                    }else if (result.return.idEstado == 2){
-                    html += "<td>"+ "En proceso"+"</td>";
-                    }else if (result.return.idEstado == 3){
-                    html += "<td>"+ "Entregado"+"</td>";
-                    }               
-                    else {
-                    html += "<td>"+ "Reprogramado"+"</td>";
-                    }
-            
-                    
-            
-                    html += "<td>"+ result.return.fechaCompra + "</td>";
-                    html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
-                    html += "<td>"; 
-                    
-                    result.return.productosXremitos.forEach(prod => {
-                        html += prod.idProductoNavigation.descripcion +"<br>";
-                    }); 
+                if (result.ok) {
+                    for (let i = 0; i < result.return.length; i++) {
+                        html += "<td>"+result.return[i].idRemito+"</td>";
                         
-                    html += "</td>";  
-            
-                    html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
-                            "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
-                            "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
-                            "<i class='bi bi-file-text'></i> </button> " + "</td>";
-                    html += "</tr>"
+                        if (result.return[i].idEstado == 1) {
+                        html += "<td>"+ "Pendiente"+"</td>";
+                        }else if (result.return[i].idEstado == 2){
+                        html += "<td>"+ "En proceso"+"</td>";
+                        }else if (result.return[i].idEstado == 3){
+                        html += "<td>"+ "Entregado"+"</td>";
+                        }               
+                        else {
+                        html += "<td>"+ "Reprogramado"+"</td>";
+                        }
+                
+                        
+                
+                        html += "<td>"+ roundDate(result.return[i].fechaCompra) + "</td>";
+                        html += "<td>"+ result.return[i].idClienteNavigation.nombre + "</td>"; 
+                        html += "<td>"; 
+                        
+                        result.return[i].productosXremitos.forEach(prod => {
+                            html += prod.idProductoNavigation.descripcion +"<br>";
+                        }); 
+                            
+                        html += "</td>";  
+                
+                        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                                "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                                "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                        html += "</tr>"
+                    }
 
                     $("#cuerpoTabla").hide();
                     $("#cuerpoTablaID").hide();
@@ -598,38 +599,40 @@
 
                     let html = "<tr id='lista'>";
             
-                    html += "<td>"+result.return.idRemito+"</td>";
-                    
-                    if (result.return.idEstado == 1) {
-                    html += "<td>"+ "Pendiente"+"</td>";
-                    }else if (result.return.idEstado == 2){
-                    html += "<td>"+ "En proceso"+"</td>";
-                    }else if (result.return.idEstado == 3){
-                    html += "<td>"+ "Entregado"+"</td>";
-                    }               
-                    else {
-                    html += "<td>"+ "Reprogramado"+"</td>";
-                    }
-            
-                    
-            
-                    html += "<td>"+ result.return.fechaCompra + "</td>";
-                    html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
-                    html += "<td>"; 
-                    
-                    result.return.productosXremitos.forEach(prod => {
-                        html += prod.idProductoNavigation.descripcion +"<br>";
-                    }); 
+                    for (let i = 0; i < result.return.length; i++) {
+                        html += "<td>"+result.return[i].idRemito+"</td>";
                         
-                    html += "</td>";  
-            
-                    html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
-                            "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
-                            "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
-                            "<i class='bi bi-file-text'></i> </button> " + "</td>";
-                    html += "</tr>"
+                        if (result.return[i].idEstado == 1) {
+                        html += "<td>"+ "Pendiente"+"</td>";
+                        }else if (result.return[i].idEstado == 2){
+                        html += "<td>"+ "En proceso"+"</td>";
+                        }else if (result.return[i].idEstado == 3){
+                        html += "<td>"+ "Entregado"+"</td>";
+                        }               
+                        else {
+                        html += "<td>"+ "Reprogramado"+"</td>";
+                        }
+                
+                        
+                
+                        html += "<td>"+ roundDate(result.return[i].fechaCompra) + "</td>";
+                        html += "<td>"+ result.return[i].idClienteNavigation.nombre + "</td>"; 
+                        html += "<td>"; 
+                        
+                        result.return[i].productosXremitos.forEach(prod => {
+                            html += prod.idProductoNavigation.descripcion +"<br>";
+                        }); 
+                            
+                        html += "</td>";  
+                
+                        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                                "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                                "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                        html += "</tr>"
+                    }
 
                     $("#cuerpoTabla").hide();
                     $("#cuerpoTablaID").hide();
@@ -658,38 +661,40 @@
 
                     let html = "<tr id='lista'>";
             
-                    html += "<td>"+result.return.idRemito+"</td>";
-                    
-                    if (result.return.idEstado == 1) {
-                    html += "<td>"+ "Pendiente"+"</td>";
-                    }else if (result.return.idEstado == 2){
-                    html += "<td>"+ "En proceso"+"</td>";
-                    }else if (result.return.idEstado == 3){
-                    html += "<td>"+ "Entregado"+"</td>";
-                    }               
-                    else {
-                    html += "<td>"+ "Reprogramado"+"</td>";
-                    }
-            
-                    
-            
-                    html += "<td>"+ result.return.fechaCompra + "</td>";
-                    html += "<td>"+ result.return.idClienteNavigation.nombre + "</td>"; 
-                    html += "<td>"; 
-                    
-                    result.return.productosXremitos.forEach(prod => {
-                        html += prod.idProductoNavigation.descripcion +"<br>";
-                    }); 
+                    for (let i = 0; i < result.return.length; i++) {
+                        html += "<td>"+result.return[i].idRemito+"</td>";
                         
-                    html += "</td>";  
-            
-                    html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
-                            "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
-                            "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
-                            "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
-                            "<i class='bi bi-file-text'></i> </button> " + "</td>";
-                    html += "</tr>"
+                        if (result.return[i].idEstado == 1) {
+                        html += "<td>"+ "Pendiente"+"</td>";
+                        }else if (result.return[i].idEstado == 2){
+                        html += "<td>"+ "En proceso"+"</td>";
+                        }else if (result.return[i].idEstado == 3){
+                        html += "<td>"+ "Entregado"+"</td>";
+                        }               
+                        else {
+                        html += "<td>"+ "Reprogramado"+"</td>";
+                        }
+                
+                        
+                
+                        html += "<td>"+ roundDate(result.return[i].fechaCompra) + "</td>";
+                        html += "<td>"+ result.return[i].idClienteNavigation.nombre + "</td>"; 
+                        html += "<td>"; 
+                        
+                        result.return[i].productosXremitos.forEach(prod => {
+                            html += prod.idProductoNavigation.descripcion +"<br>";
+                        }); 
+                            
+                        html += "</td>";  
+                
+                        html += "<td>"+ "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idRemito+")' data-placement='bottom'>"+
+                                "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idRemito+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                                "<button type='button' class='btn' id='etic' onclick='generarEtiqueta("+result.return.idRemito+")' data-toggle='modal' data-target='#etiqueta' data-placement='bottom'>"+
+                                "<i class='bi bi-file-text'></i> </button> " + "</td>";
+                        html += "</tr>"
+                    }
 
                     $("#cuerpoTabla").hide();
                     $("#cuerpoTablaID").hide();

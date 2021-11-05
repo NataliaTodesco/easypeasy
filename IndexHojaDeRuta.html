@@ -68,6 +68,8 @@
                 
               <ul class="navbar-nav mr-auto"></ul>
               <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+                <a class='btn' href='./RegistrarHojaDeRuta.html'>Registrar
+                    <i class='bi bi-clipboard-plus'></i></a>
                 <a class="btn btn-success my-2 my-sm-0" href="vehiculos.html">Vehículos</a>
                 <a class="btn btn-success my-2 my-sm-0" href="remitos.html">Remitos</a>
                 <a class="btn btn-success my-2 my-sm-0" href="menu.html">Menú</a>
@@ -106,9 +108,65 @@
                 <th>Acciones</th>
             </thead>
             <tbody id="cuerpoTabla"></tbody>
+            <tbody id="cuerpoTablaID"></tbody>
         </table>
     </section>
-
+    <section>
+        <div class="modal fade" id="modificarM" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Modificar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <section>
+                  <form class="needs-validation" novalidate id="carga">
+                    <div class="row ">                       
+                        <div class="col">
+                            <label>Zona</label><br>
+                            <select class="form-control" id="cboZona">
+                                <option disabled selected>Seleccione zona...</option>
+                                <option value="1">Sur</option>
+                                <option value="2">Norte</option>
+                                <option value="3">Centro</option>
+                                <option value="4">Este</option>
+                                <option value="5">Oeste</option>
+                            </select><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="col">
+                            <label>Fecha</label><br>
+                            <input type="date" class="form-control" id="txtFecha"><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="col">
+                            <label>Transportista</label><br>
+                            <select class="form-control" id="cboTransportista">
+                                <option disabled selected>Seleccione transportista...</option>
+                            </select><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div  class="col">
+                            <label>Vehiculo</label><br>
+                            <select class="form-control" id="cboVehiculo">
+                                <option disabled selected>Seleccione vehiculo...</option>
+                            </select><br>
+                        </div>
+                    </div>
+                    <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+                    <button class="btn" type="button" id="btnModificar" onclick="go()">Aceptar</button>
+                  </form>
+                </section>
+            </div>
+          </div>
+        </div>  
+      </section>
    
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
@@ -121,37 +179,39 @@
 </body>
 <script>
     function OnLoad() {
+        cargarCombo();
+
         $.ajax({
             url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
             type: "GET",
 
             success: function (result) {
                 if (result.ok) {
-                    crearTabla(result.return);
-                    cargarComboIdRuta(result.return);
+                    crearTabla(result.return.hojaRutas);
+                    cargarComboIdRuta(result.return.hojaRutas);
                 } else {
                     swal(result.error);
                 }
             },
             error: function (error) {
-                console.log();
-                (error);
+                console.log(error);
             },
         });
     }
 
     function crearTabla(datos) {
-
+        $("#cuerpoTabla").show();
+        $("#cuerpoTablaID").hide();
         for (let index = 0; index < datos.length; index++) {
             let html = "<tr>";
-            html += "<td>" + datos[index].fecha + "</td>";
-            html += "<td>" + datos[index].remitos[index].idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion + "</td>";
-            html += "<td>" + datos[index].idTransportistaNavigation.nombre + "</td>";
-            html += "<td>" + datos[index].idVehiculoNavigation.patente + "</td>";
-            html += "<td><a class='btn' href='./RegistrarHojaDeRuta.html'><i class='bi bi-clipboard-plus'></i></a> &nbsp;"
+            html += "<td>" + roundDate(datos[index].fecha) + "</td>";
+            html += "<td>" + datos[index].idZona + "</td>";
+            html += "<td>" + datos[index].transportista.nombre + "</td>";
+            html += "<td>" + datos[index].vehiculo.patente + "</td>";
+            html += "<td> "
                 + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idHojaRuta+")'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idHojaRuta+")'>"+
+                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idHojaRuta+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                 "<i class='bi bi-pencil-fill'></i> </button> </td>";
 
             html += "</tr>"
@@ -160,6 +220,12 @@
 
     }
 
+        function roundDate(timeStamp){
+        var yyyy = new Date(timeStamp).getFullYear().toString();
+        var mm = new Date(timeStamp).getMonth()+1;
+        var dd  = new Date(timeStamp).getDate().toString();
+        return dd +"/"+ mm +"/" + yyyy;
+    }
 
     //CARGAR COMBO ID HOJA RUTAS
     function cargarComboIdRuta(datos) {
@@ -168,8 +234,8 @@
         select = document.getElementById("cboIdRuta");
         for (let i = 0; i < datos.length; i++) {
             var option = document.createElement('option');
-            option.value = datos[i].idHojaRuta;
-            option.text = datos[i].idHojaRuta;
+            option.value = datos[i].id;
+            option.text = datos[i].id;
             select.add(option);
         }
     }
@@ -186,8 +252,30 @@
             data: JSON.stringify(id),
             success: function (result) {
                 if (result.ok) {
+                    if (id != 0){
+                    $("#cuerpoTabla").hide();
+                    $("#cuerpoTablaID").empty();
+                    $("#cuerpoTablaID").show();
                     swal("Datos traidos con exito");
-                   crearTabla(result.return);
+
+                    let html = "<tr>";
+                    html += "<td>" + roundDate(result.return.fecha) + "</td>";
+                    html += "<td>" + result.return.idZona + "</td>";
+                    html += "<td>" + result.return.transportista.nombre + "</td>";
+                    html += "<td>" + result.return.vehiculo.patente + "</td>";
+                    html += "<td> "
+                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idHojaRuta+")'>"+
+                        "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idHojaRuta+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                        "<i class='bi bi-pencil-fill'></i> </button> </td>";
+
+                    html += "</tr>"
+                    $("#cuerpoTablaID").append(html);
+                        }
+                        else {
+                            $("#cuerpoTabla").show();
+                            $("#cuerpoTablaID").hide();
+                        }
                 } else {
                     swal(result.error);
                 }
@@ -216,6 +304,142 @@
 
         swal("Elemento eliminado");
     }
+ </script>
+
+ <script>
+    function modificar(id) {
+        let idRem = id;
+
+        $("#btnModificar").click(function() {    
+            let fecha = $("#txtFecha").val();
+            let transportista = document.getElementById("cboTransportista");
+            let transportistaId = transportista.selectedIndex;
+            let vehiculo = document.getElementById("cboVehiculo");
+            let vehiculoId = vehiculo.selectedIndex;
+            let zona = document.getElementById("cboZona");
+            let zonaId = zona.options[zona.selectedIndex].value;
+
+            if (id != 0 && fecha != "" && transportistaId != 0 && vehiculoId != 0 && zonaId != 0){
+                ModificarFormulario(id,fecha,transportistaId,vehiculoId,zonaId);
+            }
+            else swal("Complete todos los campos");
+        })
+    }
+
+    function ModificarFormulario(id,fecha,transportistaId,vehiculoId,zonaId) {
+        comando = {
+            "idHojaRuta": id,
+            "idZona": zonaId,
+            "fecha": fecha,
+            "idVehiculo": vehiculoId,
+            "idTransportista": transportistaId
+        }
+
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/Actualizar",
+            dataType:'json',
+            contentType:'application/json',
+            data: JSON.stringify(comando),
+            type: "PUT",
+            success: function(result) {
+                if (result.ok){
+                    location.reload();
+                }
+                else swal(result.error);
+            },
+            error: function(error) {
+                swal("Error" + error);
+            }
+        });
+    }
+
+    function cargarCombo() {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboTransportista");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].nombre;
+                    option.value = result.return[i].idTransportista;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Vehiculo/ObtenerVehiculos",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboVehiculo");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].patente;
+                    option.value = result.return[i].idVehiculo;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+    }
+
+    $(document).ready(function autocomplete() {
+    $("#cboVehiculo").autocomplete({
+      source: function (request, responce) {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Vehiculo/ObtenerVehiculos",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboVehiculo");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].patente;
+                    option.value = result.return[i].idVehiculo;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+      },
+      
+    });
+    $("#cboTransportista").autocomplete({
+      source: function (request, responce) {
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
+            type: "GET",
+            success: function (result) {
+                select = document.getElementById("cboTransportista");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].nombre;
+                    option.value = result.return[i].idTransportista;
+                    select.add(option);
+                }
+                console.log(select.value);
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
+      },
+      
+    });
+  });
+
+  
+
  </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
