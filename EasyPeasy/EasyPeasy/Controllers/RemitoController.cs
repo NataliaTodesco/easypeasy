@@ -6,7 +6,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using EasyPeasy.Models;
+using EasyPeasy.Models.DTO;
 using EasyPeasy.Comandos;
+
 
 namespace api.Controllers
 {
@@ -50,13 +52,59 @@ namespace api.Controllers
             var Resultado = new ResultadoApi();
             try{
                 Resultado.Ok = true;
-                var remitos =  _db.Remitos.Include(x => x.IdClienteNavigation)
-                                .ThenInclude(x => x.IdBarrioNavigation)
-                                .ThenInclude(x => x.IdZonaNavigation)
-                                .Include(x => x.ProductosXremitos)
-                                .ThenInclude(x => x.IdProductoNavigation)
-                                .ToList();
-                              
+                // var remitos =  _db.Remitos.Include(x => x.IdClienteNavigation)
+                //                 .ThenInclude(x => x.IdBarrioNavigation)
+                //                 .ThenInclude(x => x.IdZonaNavigation)
+                //                 .Include(x => x.ProductosXremitos)
+                //                 .ThenInclude(x => x.IdProductoNavigation)
+                //                 .ToList();
+                ListadoRemitos remitos = new ListadoRemitos();
+                remitos.Remitos= (from r in _db.Remitos 
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).ToList();
                 Resultado.Return=remitos;
                 return Resultado;
             }
@@ -100,14 +148,62 @@ namespace api.Controllers
 
             try{
                 Resultado.Ok = true;
-                 Resultado.Return = _db.Remitos
-                    .Include(x => x.IdClienteNavigation)
-                    .ThenInclude(x => x.IdBarrioNavigation)
-                    .ThenInclude(x => x.IdZonaNavigation)
-                    .Include(x => x.ProductosXremitos)
-                    .ThenInclude(x => x.IdProductoNavigation)
-                    .FirstOrDefault(x => x.IdRemito == id);
-              
+                //  Resultado.Return = _db.Remitos
+                //     .Include(x => x.IdClienteNavigation)
+                //     .ThenInclude(x => x.IdBarrioNavigation)
+                //     .ThenInclude(x => x.IdZonaNavigation)
+                //     .Include(x => x.ProductosXremitos)
+                //     .ThenInclude(x => x.IdProductoNavigation)
+                //     .FirstOrDefault(x => x.IdRemito == id);
+                 DTORemito remito = new DTORemito();
+                remito= (from r in _db.Remitos 
+                        where r.IdRemito == id
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).FirstOrDefault();
+                Resultado.Return=remito;
                 return Resultado;
             }
             catch(Exception ex){
@@ -179,17 +275,65 @@ namespace api.Controllers
             try{
                 Resultado.Ok = true;
                 //busco remitos en estado pendiente que pertenezcan a la zona solicitada
-                var remitos =  _db.Remitos
-                        .Where(x => x.IdEstado == 1 &&
-                               x.IdClienteNavigation.IdBarrioNavigation.IdZona==idZona)
-                        .Include(x => x.IdClienteNavigation)
-                        .ThenInclude(x => x.IdBarrioNavigation)
-                        .ThenInclude(x => x.IdZonaNavigation)
-                        .Include(x => x.ProductosXremitos)
-                        .ThenInclude(x => x.IdProductoNavigation)
-                        .ToList();
-                              
-                Resultado.Return = remitos;
+                // var remitos =  _db.Remitos
+                //         .Where(x => x.IdEstado == 1 &&
+                //                x.IdClienteNavigation.IdBarrioNavigation.IdZona==idZona)
+                //         .Include(x => x.IdClienteNavigation)
+                //         .ThenInclude(x => x.IdBarrioNavigation)
+                //         .ThenInclude(x => x.IdZonaNavigation)
+                //         .Include(x => x.ProductosXremitos)
+                //         .ThenInclude(x => x.IdProductoNavigation)
+                //         .ToList();
+                 ListadoRemitos remitos = new ListadoRemitos();
+                remitos.Remitos= (from r in _db.Remitos 
+                                    where r.IdEstado == 1 &&
+                                    r.IdClienteNavigation.IdBarrioNavigation.IdZona == idZona
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).ToList();
+                Resultado.Return=remitos;
                 return Resultado;
             }
             catch(Exception ex){
@@ -233,15 +377,63 @@ namespace api.Controllers
 
             try{
                 Resultado.Ok = true;
-                 Resultado.Return = _db.Remitos
-                    .Include(x => x.IdClienteNavigation)
-                    .ThenInclude(x => x.IdBarrioNavigation)
-                    .ThenInclude(x => x.IdZonaNavigation)
-                    .Include(x => x.ProductosXremitos)
-                    .ThenInclude(x => x.IdProductoNavigation)
-                    .Where(x => x.FechaCompra == fecha)
-                    .ToList();
-              
+                //  Resultado.Return = _db.Remitos
+                //     .Include(x => x.IdClienteNavigation)
+                //     .ThenInclude(x => x.IdBarrioNavigation)
+                //     .ThenInclude(x => x.IdZonaNavigation)
+                //     .Include(x => x.ProductosXremitos)
+                //     .ThenInclude(x => x.IdProductoNavigation)
+                //     .Where(x => x.FechaCompra == fecha)
+                //     .ToList();
+               ListadoRemitos remitos = new ListadoRemitos();
+                remitos.Remitos= (from r in _db.Remitos 
+                                    where r.FechaCompra == fecha
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).ToList();
+                Resultado.Return=remitos;
                 return Resultado;
             }
             catch(Exception ex){
@@ -260,15 +452,63 @@ namespace api.Controllers
 
             try{
                 Resultado.Ok = true;
-                 Resultado.Return = _db.Remitos
-                    .Include(x => x.IdClienteNavigation)
-                    .ThenInclude(x => x.IdBarrioNavigation)
-                    .ThenInclude(x => x.IdZonaNavigation)
-                    .Include(x => x.ProductosXremitos)
-                    .ThenInclude(x => x.IdProductoNavigation)
-                    .Where(x => x.IdEstado == estado)
-                    .ToList();
-              
+                //  Resultado.Return = _db.Remitos
+                //     .Include(x => x.IdClienteNavigation)
+                //     .ThenInclude(x => x.IdBarrioNavigation)
+                //     .ThenInclude(x => x.IdZonaNavigation)
+                //     .Include(x => x.ProductosXremitos)
+                //     .ThenInclude(x => x.IdProductoNavigation)
+                //     .Where(x => x.IdEstado == estado)
+                //     .ToList();
+               ListadoRemitos remitos = new ListadoRemitos();
+                remitos.Remitos= (from r in _db.Remitos 
+                                    where r.IdEstado == estado
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).ToList();
+                Resultado.Return=remitos;
                 return Resultado;
             }
             catch(Exception ex){
@@ -287,15 +527,63 @@ namespace api.Controllers
 
             try{
                 Resultado.Ok = true;
-                 Resultado.Return = _db.Remitos
-                    .Include(x => x.IdClienteNavigation)
-                    .ThenInclude(x => x.IdBarrioNavigation)
-                    .ThenInclude(x => x.IdZonaNavigation)
-                    .Include(x => x.ProductosXremitos)
-                    .ThenInclude(x => x.IdProductoNavigation)
-                    .Where(x => x.IdEstado == estado && x.FechaCompra == fecha)
-                    .ToList();
-              
+                //  Resultado.Return = _db.Remitos
+                //     .Include(x => x.IdClienteNavigation)
+                //     .ThenInclude(x => x.IdBarrioNavigation)
+                //     .ThenInclude(x => x.IdZonaNavigation)
+                //     .Include(x => x.ProductosXremitos)
+                //     .ThenInclude(x => x.IdProductoNavigation)
+                //     .Where(x => x.IdEstado == estado && x.FechaCompra == fecha)
+                //     .ToList();
+               ListadoRemitos remitos = new ListadoRemitos();
+                remitos.Remitos= (from r in _db.Remitos 
+                                    where r.IdEstado == estado && r.FechaCompra == fecha
+                                    select new DTORemito{
+                                        IdRemito = r.IdRemito ,
+                                        FechaCompra = r.FechaCompra ,
+                                        HoraEntregaPreferido = r.HoraEntregaPreferido ,
+                                        Estado = (from e in _db.Estados
+                                                    where r.IdEstado == e.IdEstado
+                                                    select new REstado{
+                                                        IdEstado = r.IdEstado.GetValueOrDefault() ,
+                                                        Descripcion = e.Descripcion
+                                                    }
+
+                                        ) .FirstOrDefault(),
+                                        Cliente = (from c in _db.Clientes
+                                                    where  r.IdCliente == c.IdCliente
+                                                    select new RCliente{
+                                                        IdCliente = c.IdCliente ,
+                                                        Nombre = c.Nombre ,
+                                                        Direccion = c.Direccion ,
+                                                        Telefono = c.Telefono 
+                                                    }
+                                        ).FirstOrDefault(),
+                                        HojaRuta = (from hr in _db.HojaRuta
+                                                    where hr.IdHojaRuta == r.IdHojaRuta
+                                                    select new RHojaRuta{
+                                                    IdHojaRuta = hr.IdHojaRuta ,
+                                                    Fecha = hr.Fecha ,
+                                                    IdVehiculo = hr.IdVehiculo ,
+                                                    IdTransportista = hr.IdTransportista    
+                                                    }
+
+                                        ).FirstOrDefault() ,
+                                        ProductosXRemitos = (from pxr in _db.ProductosXremitos
+                                                            where pxr.IdRemito == r.IdRemito
+                                                            select new RProductoXRemito{
+                                                            Producto =(from p in _db.Productos
+                                                                        where p.IdProducto == pxr.IdProducto
+                                                                        select new RProducto{
+                                                                            IdProducto = pxr.IdProducto,
+                                                                            Descripcion = p.Descripcion
+                                                                        }    
+                                                            ).FirstOrDefault(),
+                                                            Cantidad = pxr.Cantidad                                                             
+                                                            }
+                                        ).ToList()
+                                    }).ToList();
+                Resultado.Return=remitos;
                 return Resultado;
             }
             catch(Exception ex){

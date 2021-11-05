@@ -19,12 +19,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using EasyPeasy.Comandos;
 using EasyPeasy.Models;
+using EasyPeasy.Models.DTO;
 
 namespace api.Controllers
 {
     [ApiController]
     [EnableCors("postgres")]
-    public class RemXProdController:ControllerBase
+    public class RemXProdController : ControllerBase
     {
         private readonly EasyPeasyDBContext db = new EasyPeasyDBContext();
 
@@ -34,13 +35,83 @@ namespace api.Controllers
         public ActionResult<ResultadoApi> Get()
         {
             var Resultado = new ResultadoApi();
-            try{
+            try
+            {
                 Resultado.Ok = true;
-                Resultado.Return = db.ProductosXremitos.ToList();            
-                      
+                //Resultado.Return = db.ProductosXremitos.ToList();            
+                ListadoRemitosXProductos RXP = new ListadoRemitosXProductos();
+                RXP.RemitosXProductos = (from rxp in db.ProductosXremitos
+                                         select new DTORemitoXProducto
+                                         {
+                                             IdRemito = rxp.IdRemito,
+                                             IdProducto = rxp.IdProducto,
+                                             Cantidad = rxp.Cantidad.GetValueOrDefault(),
+                                             Producto = (from p in db.Productos
+                                                         where rxp.IdProducto == p.IdProducto
+                                                         select new RProducto
+                                                         {
+                                                             IdProducto = p.IdProducto,
+                                                             Descripcion = p.Descripcion
+                                                         }
+                                             ).FirstOrDefault(),
+                                             Remito = (from r in db.Remitos
+                                                       where rxp.IdRemito == r.IdRemito
+                                                       select new DTORemito
+                                                       {
+                                                           IdRemito = r.IdRemito,
+                                                           FechaCompra = r.FechaCompra,
+                                                           HoraEntregaPreferido = r.HoraEntregaPreferido,
+                                                           Estado = (from e in db.Estados
+                                                                     where r.IdEstado == e.IdEstado
+                                                                     select new REstado
+                                                                     {
+                                                                         IdEstado = r.IdEstado.GetValueOrDefault(),
+                                                                         Descripcion = e.Descripcion
+                                                                     }
+
+                                                                          ).FirstOrDefault(),
+                                                           Cliente = (from c in db.Clientes
+                                                                      where r.IdCliente == c.IdCliente
+                                                                      select new RCliente
+                                                                      {
+                                                                          IdCliente = c.IdCliente,
+                                                                          Nombre = c.Nombre,
+                                                                          Direccion = c.Direccion,
+                                                                          Telefono = c.Telefono
+                                                                      }
+                                                              ).FirstOrDefault(),
+                                                           HojaRuta = (from hr in db.HojaRuta
+                                                                       where hr.IdHojaRuta == r.IdHojaRuta
+                                                                       select new RHojaRuta
+                                                                       {
+                                                                           IdHojaRuta = hr.IdHojaRuta,
+                                                                           Fecha = hr.Fecha,
+                                                                           IdVehiculo = hr.IdVehiculo,
+                                                                           IdTransportista = hr.IdTransportista
+                                                                       }
+
+                                                            ).FirstOrDefault(),
+                                        //                    ProductosXRemitos = (from pxr in db.ProductosXremitos  
+                                        //                     where pxr.IdRemito == r.IdRemito
+                                        //                     select new RProductoXRemito{
+                                        //                     Producto =(from p in db.Productos
+                                        //                                 where p.IdProducto == pxr.IdProducto
+                                        //                                 select new RProducto{
+                                        //                                     IdProducto = pxr.IdProducto,
+                                        //                                     Descripcion = p.Descripcion
+                                        //                                 }    
+                                        //                     ).FirstOrDefault(),
+                                        //                     Cantidad = pxr.Cantidad                                                             
+                                        //                     }
+                                        // ).ToList()
+                                                       }).FirstOrDefault()
+                                         }
+                ).ToList();
+                Resultado.Return = RXP;
                 return Resultado;
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 Resultado.Ok = false;
                 Resultado.Error = "Error " + ex.Message;
                 return Resultado;
@@ -68,12 +139,12 @@ namespace api.Controllers
             }
 
             var x = new ProductosXremito();
-            x.IdProducto=comando.IdProducto;
-            x.IdRemito=comando.IdRemito;
+            x.IdProducto = comando.IdProducto;
+            x.IdRemito = comando.IdRemito;
             x.Cantidad = comando.Cantidad;
-            
+
             db.ProductosXremitos.Add(x);
-            db.SaveChanges(); 
+            db.SaveChanges();
             resultado.Ok = true;
 
             return resultado;
@@ -99,7 +170,7 @@ namespace api.Controllers
                 return resultado;
             }
             catch (System.Exception ex)
-            {  
+            {
                 resultado.Ok = false;
                 resultado.Error = "Remito no encontrado" + ex.Message;
 
