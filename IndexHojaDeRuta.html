@@ -260,9 +260,9 @@
 
                     let html = "<tr>";
                     html += "<td>" + roundDate(result.return.fecha) + "</td>";
-                    html += "<td>" + "result.return.remitos.idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion "+ "</td>";
-                    html += "<td>" + "result.return.idTransportistaNavigation.nombre" + "</td>";
-                    html += "<td>" + "result.return.idVehiculoNavigation.patente" + "</td>";
+                    html += "<td>" + result.return.idZona + "</td>";
+                    html += "<td>" + result.return.transportista.nombre + "</td>";
+                    html += "<td>" + result.return.vehiculo.patente + "</td>";
                     html += "<td> "
                         + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idHojaRuta+")'>"+
                         "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+

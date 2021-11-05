@@ -225,6 +225,7 @@ namespace api.Controllers
             r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
             r.IdEstado = comando.IdEstado;
             r.IdCliente = comando.IdCliente;
+            r.IdHojaRuta = comando.IdHojaRuta;
           
             _db.Remitos.Add(r);
             _db.SaveChanges();

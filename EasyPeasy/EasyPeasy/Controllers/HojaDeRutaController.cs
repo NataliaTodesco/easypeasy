@@ -107,11 +107,62 @@ namespace api.Controllers
 
             var Resultado = new ResultadoApi();
             try
-            {
-                Resultado.Ok = true;
-                Resultado.Return = _db.HojaRuta
-                                     .Include(x => x.Remitos)
-                                     .FirstOrDefault(x => x.IdHojaRuta == Id);
+                {
+            //     Resultado.Ok = true;
+            //     Resultado.Return = _db.HojaRuta
+            //                          .Include(x => x.Remitos)
+            //                          .FirstOrDefault(x => x.IdHojaRuta == Id);
+            DTOHojaRuta Hr = new DTOHojaRuta();
+                        Hr = (from h in _db.HojaRuta
+                                where h.IdHojaRuta == Id
+                                 select new DTOHojaRuta
+                                 {
+                                     Id = h.IdHojaRuta,
+                                     Fecha = h.Fecha,
+                                     IdVehiculo = h.IdVehiculo,
+                                     Vehiculo = new HRVehiculo{
+                                                IdVehiculo = h.IdVehiculoNavigation.IdVehiculo,
+                                                Patente = h.IdVehiculoNavigation.Patente,
+                                                Modelo = h.IdVehiculoNavigation.Modelo
+                                                },
+                                     IdTransportista = h.IdTransportista,
+                                     Transportista =  new HRTransportista{
+                                                        IdTransportista = h.IdTransportistaNavigation.IdTransportista, 
+                                                        Legajo = h.IdTransportistaNavigation.Legajo, 
+                                                        Nombre= h.IdTransportistaNavigation.Nombre, 
+                                                    },
+                                     IdZona = h.Remitos.FirstOrDefault().IdClienteNavigation.IdBarrioNavigation.IdZonaNavigation.IdZona,
+                                     Remitos = (
+                                         from r in _db.Remitos
+                                         where r.IdHojaRuta == h.IdHojaRuta
+                                         select new HRemito
+                                         {
+                                             IdRemito = r.IdRemito,
+                                             FechaCompra = r.FechaCompra,
+                                             HoraEntregaPreferido = r.HoraEntregaPreferido,
+                                             Estado = r.IdEstado,
+                                             Cliente = (
+                                                 from c in _db.Clientes
+                                                 where c.IdCliente == r.IdCliente
+                                                 select new HCliente{
+                                                    IdCliente = c.IdCliente,
+                                                    Nombre = c.Nombre,
+                                                    Direccion = c.Direccion,
+                                                    Telefono = c.Telefono
+                                                 }
+                                             ).FirstOrDefault()
+                                         }
+                                       ).ToList(),
+
+                                    //  un listado de las direcciones de cada hoja de ruta para haccer mas facil el acceso al mapa
+                                     Direcciones = (
+                                       from a in _db.Remitos
+                                       join b in _db.HojaRuta on a.IdHojaRuta equals b.IdHojaRuta
+                                       join c in _db.Clientes on a.IdCliente equals c.IdCliente
+                                       where a.IdHojaRuta == h.IdHojaRuta
+                                       select c.Direccion).ToList()
+                                 }).FirstOrDefault();
+                Resultado.Return = Hr;
                 return Resultado;
 
             }
