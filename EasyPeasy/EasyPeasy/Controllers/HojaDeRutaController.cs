@@ -45,8 +45,18 @@ namespace api.Controllers
                                      Id = h.IdHojaRuta,
                                      Fecha = h.Fecha,
                                      IdVehiculo = h.IdVehiculo,
+                                     Vehiculo = new HRVehiculo{
+                                                IdVehiculo = h.IdVehiculoNavigation.IdVehiculo,
+                                                Patente = h.IdVehiculoNavigation.Patente,
+                                                Modelo = h.IdVehiculoNavigation.Modelo
+                                                },
                                      IdTransportista = h.IdTransportista,
-
+                                     Transportista =  new HRTransportista{
+                                                        IdTransportista = h.IdTransportistaNavigation.IdTransportista, 
+                                                        Legajo = h.IdTransportistaNavigation.Legajo, 
+                                                        Nombre= h.IdTransportistaNavigation.Nombre, 
+                                                    },
+                                     IdZona = h.Remitos.FirstOrDefault().IdClienteNavigation.IdBarrioNavigation.IdZonaNavigation.IdZona,
                                      Remitos = (
                                          from r in _db.Remitos
                                          where r.IdHojaRuta == h.IdHojaRuta

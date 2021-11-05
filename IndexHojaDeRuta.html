@@ -205,9 +205,9 @@
         for (let index = 0; index < datos.length; index++) {
             let html = "<tr>";
             html += "<td>" + roundDate(datos[index].fecha) + "</td>";
-            html += "<td>" + "datos[index].remitos[index].idClienteNavigation.idBarrioNavigation.idZonaNavigation.descripcion "+ "</td>";
-            html += "<td>" + "datos[index].idTransportistaNavigation.nombre" + "</td>";
-            html += "<td>" + "datos[index].idVehiculoNavigation.patente" + "</td>";
+            html += "<td>" + datos[index].idZona + "</td>";
+            html += "<td>" + datos[index].transportista.nombre + "</td>";
+            html += "<td>" + datos[index].vehiculo.patente + "</td>";
             html += "<td> "
                 + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idHojaRuta+")'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+

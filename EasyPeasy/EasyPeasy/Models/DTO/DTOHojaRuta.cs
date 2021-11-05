@@ -9,13 +9,14 @@ namespace EasyPeasy.Models.DTO
 
         public int Id { get; set; }
 
-        public int? idZona { get; set; }
+        public int? IdZona { get; set; }
 
         public DateTime? Fecha { get; set; }
 
         public int? IdVehiculo { get; set; }
-
-        public int? IdTransportista { get; set; }
+        public HRVehiculo Vehiculo {get; set;}
+        public int? IdTransportista {get;set;}
+        public HRTransportista Transportista { get; set; }
 
         public List<HRemito> Remitos{get;set;}
 
@@ -41,4 +42,16 @@ namespace EasyPeasy.Models.DTO
         public string Direccion { get; set; }
         public string Telefono { get; set; }
     }
-}
+
+    public class HRTransportista {
+        public int IdTransportista { get; set; }
+        public long Legajo { get; set; }
+        public string Nombre { get; set; }
+    }
+
+    public class HRVehiculo{
+        public int IdVehiculo { get; set; }
+        public string Patente { get; set; }
+        public string Modelo { get; set; }
+    }
+ }
