@@ -51,6 +51,14 @@ function OnLoad() {
             (error);
         },
     });
+
+    $("#btnModificarEntrega").click(function () {
+        let id = $("#cboDetalle").val();
+        let observaciones = $("#observacionesModificar").val();
+
+        modificarEntrega(id,observaciones);
+        
+    });
 }
 
 // ------------ OBTENER INFO REGISTRAR ENTREGAS -------------
@@ -170,14 +178,6 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
     });
 }
     // Modificar Entrega
-    $("#btnModificarEntrega").click(function () {
-        let id = $("#cboDetalle").val();
-        let observaciones = $("#observacionesModificar").val();
-
-        modificarEntrega(id,observaciones);
-        
-    });
-    
     function modificarEntrega(id,observaciones){
         comando = {
       "IdDetalle": parseInt(id),

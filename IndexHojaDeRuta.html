@@ -205,13 +205,24 @@
         for (let index = 0; index < datos.length; index++) {
             let html = "<tr>";
             html += "<td>" + roundDate(datos[index].fecha) + "</td>";
-            html += "<td>" + datos[index].idZona + "</td>";
+            
+            if (datos[index].idZona == 1)
+                    html += "<td> Sur </td>";
+                    else if (datos[index].idZona == 2)
+                    html += "<td> Norte </td>";
+                    else if (datos[index].idZona == 3)
+                    html += "<td> Centro </td>";
+                    if (datos[index].idZona == 4)
+                    html += "<td> Este </td>";
+                    else if (datos[index].idZona == 5)
+                    html += "<td> Oeste </td>";
+
             html += "<td>" + datos[index].transportista.nombre + "</td>";
             html += "<td>" + datos[index].vehiculo.patente + "</td>";
             html += "<td> "
-                + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idHojaRuta+")'>"+
+                + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idZona+")'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idHojaRuta+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idZona+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                 "<i class='bi bi-pencil-fill'></i> </button> </td>";
 
             html += "</tr>"
@@ -260,13 +271,24 @@
 
                     let html = "<tr>";
                     html += "<td>" + roundDate(result.return.fecha) + "</td>";
-                    html += "<td>" + result.return.idZona + "</td>";
+
+                    if (result.return.idZona == 1)
+                    html += "<td> Sur </td>";
+                    else if (result.return.idZona == 2)
+                    html += "<td> Norte </td>";
+                    else if (result.return.idZona == 3)
+                    html += "<td> Centro </td>";
+                    if (result.return.idZona == 4)
+                    html += "<td> Este </td>";
+                    if (result.return.idZona == 5)
+                    html += "<td> Oeste </td>";
+
                     html += "<td>" + result.return.transportista.nombre + "</td>";
                     html += "<td>" + result.return.vehiculo.patente + "</td>";
                     html += "<td> "
-                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.id+")'>"+
+                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idZona+")'>"+
                         "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idZona+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                         "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
                         "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.id+")'>"+
                         "<i class='bi bi-geo-alt-fill'></i> </button> </td>";
