@@ -171,7 +171,7 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
 }
     // Modificar Entrega
     $("#btnModificarEntrega").click(function () {
-        let id = $("#IdDetalle").val();
+        let id = $("#cboDetalles").val();
         let observaciones = $("#observacionesModificar").val();
 
         modificarEntrega(id,observaciones);
