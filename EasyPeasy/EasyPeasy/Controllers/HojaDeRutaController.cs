@@ -108,7 +108,7 @@ namespace api.Controllers
             var Resultado = new ResultadoApi();
             try
                 {
-            //     Resultado.Ok = true;
+                Resultado.Ok = true;
             //     Resultado.Return = _db.HojaRuta
             //                          .Include(x => x.Remitos)
             //                          .FirstOrDefault(x => x.IdHojaRuta == Id);

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
@@ -264,10 +264,12 @@
                     html += "<td>" + result.return.transportista.nombre + "</td>";
                     html += "<td>" + result.return.vehiculo.patente + "</td>";
                     html += "<td> "
-                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idHojaRuta+")'>"+
+                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.id+")'>"+
                         "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idHojaRuta+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
-                        "<i class='bi bi-pencil-fill'></i> </button> </td>";
+                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                        "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                        "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.id+")'>"+
+                        "<i class='bi bi-geo-alt-fill'></i> </button> </td>";
 
                     html += "</tr>"
                     $("#cuerpoTablaID").append(html);
@@ -441,7 +443,30 @@
   
 
  </script>
+ <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+ <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+ <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+ <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+ <script src="./JS/mapFunctions.js"></script>
+ <script>
+    async function cargarMapa(id){
+         if ($('#map').length < 1){
+             $("#cuerpoTablaID").append("<tr><td colspan='5'><div id='map' style='width: 100%; height: 50vh'></div></td></tr>")
+         }
+         //$('#map').show
+         try {
+             dirs = await
+             fetch(`https://vast-brook-85314.herokuapp.com/HojaDeRuta/Upsert?Id=${id}`)
+             .then(res => res.json()).then(data=>{return data.return.direcciones})
+             let mapa = new Mapa(document.getElementById('map'))
+             mapa.initialize()
+             mapa.traceRoute(dirs)
+         } catch (error) {
+             console.error(error);
+         }
 
+     }
+ </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
