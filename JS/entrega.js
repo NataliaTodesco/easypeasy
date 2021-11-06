@@ -77,7 +77,7 @@ function mostrarDatos() {
                     case 4:
                         estadoEntrega.value = "Reprogramar";
                         break;
-                
+
                     default: estadoEntrega.value = "---";
                         break;
                 }
@@ -132,16 +132,16 @@ function crearTablaEntregas(datos) {
     }
 }
 
-    function CargarEntrega() {
-        let idRemito = $("#idRemito").val();
-            let horaEntrega = $("#horaEntrega").val();
-            var firma = null;
-            let observaciones = $("#observaciones").val();
-            CargarDetalleEntrega(idRemito,horaEntrega,firma,observaciones);
-        ActualizarEstadoEntregado(idRemito);
-    }
+function CargarEntrega() {
+    let idRemito = $("#idRemito").val();
+    let horaEntrega = $("#horaEntrega").val();
+    var firma = null;
+    let observaciones = $("#observaciones").val();
+    CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones);
+    ActualizarEstadoEntregado(idRemito);
+}
 
-function CargarDetalleEntrega(idRemito,horaEntrega,firma,observaciones) {
+function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
     comando = {
         "IdDetalle": 0,
         "IdRemito": parseInt(idRemito),
@@ -152,24 +152,90 @@ function CargarDetalleEntrega(idRemito,horaEntrega,firma,observaciones) {
 
     $.ajax({
         url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega", //no está en heroku
-        dataType:'json',
-        contentType:'application/json',
+        dataType: 'json',
+        contentType: 'application/json',
         data: JSON.stringify(comando),
         type: "POST",
-        success: function(result) {
-            if (result.ok){
-                
+        success: function (result) {
+            if (result.ok) {
+
             }
             else swal(result.error);
-            
+
         },
-        error: function(error) {
+        error: function (error) {
             swal(error);
-            
+
         }
     });
-    
 }
+    // Modificar Entrega
+    $("#btnModificarEntrega").click(function () {
+        let id = $("#cboDetalle").val();
+        let observaciones = $("#observacionesModificar").val();
+
+        modificarEntrega(id,observaciones);
+        
+    });
+    
+    function modificarEntrega(id,observaciones){
+        comando = {
+      "IdDetalle": parseInt(id),
+      "Observaciones": observaciones,
+        };
+    
+        $.ajax({
+            url: "https://localhost:5001/Entregas/ModificarEntregas",
+            type: "PUT",
+            dataType: 'JSON',
+            contentType:'application/json',
+            data: JSON.stringify(comando),
+            success: function (result) {
+                if(result.ok){
+                    
+                } else  
+                {
+                    swal("Problema Server");
+                }
+            },
+            error : function (error) {
+                swal("Problemas en el servidor");
+            },
+        })
+        
+    }
+    // GET DETALLE ENTREGA
+    $(document).ready(function () {
+        $.ajax({
+        url: "https://localhost:5001/Entregas/ObtenerDetalleEntrega",
+        type: "GET",
+        success: function (result) {
+            if(result.ok){
+                resultadoS = result.return;
+                cargarCombo(resultadoS);
+            } else 
+            {
+                swal(result.error);
+            }
+        },
+        error : function (error) {
+            swal("Problemas al conseguir detalles de entrega");
+        },
+    })
+    // carga combo
+    function cargarCombo(datos){
+    var html = "<option value=''>SELECCIONE</option>";
+    $("#cboDetalle").append(html);
+    select = document.getElementById("cboDetalle");
+    for (let i = 0; i < datos.length; i++) {
+        var option = document.createElement('option');
+        option.value = datos[i].IdDetalle;
+        option.text = datos[i].Observaciones;
+        select.add(option);
+    }
+}
+
+    });
 
 // function ActualizarEstado(id) {
 

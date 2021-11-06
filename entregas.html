@@ -248,9 +248,9 @@
               <section>
                 <form class="needs-validation" novalidate id="carga">
                   <div class="form-row">
-                    <div class="col-md-6 mb-3">
-                        <label for="horaEntregaModificar">Hora de entrega</label>
-                        <input type="time" class="form-control" id="hora" required>
+                    <div class="col-md-12 mb-6">
+                      <label for="idDetalle">Detalle Entrega</label>
+                      <select style="resize: none;" name="" id="cboDetalle" rows="4" class="form-control mb-3"></select>
                     </div>
                   </div>
                   <div class="form-row">
@@ -267,7 +267,63 @@
         </div>
       </div>  
     </section>
-
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="cargarEntrega-tab">
+      <div class="container" style="padding: 3%;">
+        <form class="needs-validation" novalidate id="carga">
+          <div class="form-row">
+            <div class="col-md-6 mb-3">
+              <label for="idRemito">Número de Remito</label>
+              <select onchange="mostrarDatos()" class="custom-select" id="idRemito" required>
+                  <option  selected disabled value="">Seleccionar...</option>
+              </select>
+              <div class="invalid-feedback">
+                  Seleccione un remito
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="clienteEntrega">Cliente</label>
+              <input readonly id="clienteEntrega" class="form-control" type="text">
+            </div>
+          </div>
+          <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="direccionEntrega">Dirección</label>
+                <input readonly type="text" class="form-control" id="direccionEntrega" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="horaEntrega">Hora de entrega</label>
+                <input type="time" class="form-control" id="horaEntrega" required>
+                <div class="invalid-feedback">
+                  Ingrese una fecha de entrega
+                </div>
+              </div>
+          </div>
+          <div class="form-row">
+              <div class="col-md-6 mb-6">
+                  <label for="producto">Detalle (producto y cantidad)</label> <br>
+                  <button id="producto" type="button" class="btn mb-3" data-toggle="modal" data-target="#staticBackdrop">
+                    Consultar
+                  </button>
+              </div>
+              <div class="col-md-6 mb-6">
+                <label for="estadoEntrega">Estado</label>
+                <input readonly type="text" class="form-control mb-3" id="estadoEntrega" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-12 mb-6">
+                <label for="observaciones">Observaciones</label>
+                <textarea style="resize: none;" name="" id="observaciones" rows="4" class="form-control mb-3"></textarea>
+              </div>
+            </div>
+            <button class="btn" type="submit" onclick="CargarEntrega()" id="btnCargarEntrega">Confirmar entrega</button>
+          </div>
+          
+        </form>
+      </div>
+  </div>
+</div>
+</section>
       <!-- <script src="JS/remito.js"></script> -->
       <script src="JS/entrega.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
