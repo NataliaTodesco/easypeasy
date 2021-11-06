@@ -171,7 +171,7 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
 }
     // Modificar Entrega
     $("#btnModificarEntrega").click(function () {
-        let id = $("#cboDetalles").val();
+        let id = $("#cboDetalle").val();
         let observaciones = $("#observacionesModificar").val();
 
         modificarEntrega(id,observaciones);
@@ -192,7 +192,7 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
             data: JSON.stringify(comando),
             success: function (result) {
                 if(result.ok){
-                    location.reload();
+                    
                 } else  
                 {
                     swal("Problema Server");
@@ -204,6 +204,38 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
         })
         
     }
+    // GET DETALLE ENTREGA
+    $(document).ready(function () {
+        $.ajax({
+        url: "https://localhost:5001/Entregas/ObtenerDetalleEntrega",
+        type: "GET",
+        success: function (result) {
+            if(result.ok){
+                resultadoS = result.return;
+                cargarCombo(resultadoS);
+            } else 
+            {
+                swal(result.error);
+            }
+        },
+        error : function (error) {
+            swal("Problemas al conseguir detalles de entrega");
+        },
+    })
+    // carga combo
+    function cargarCombo(datos){
+    var html = "<option value=''>SELECCIONE</option>";
+    $("#cboDetalle").append(html);
+    select = document.getElementById("cboDetalle");
+    for (let i = 0; i < datos.length; i++) {
+        var option = document.createElement('option');
+        option.value = datos[i].IdDetalle;
+        option.text = datos[i].Observaciones;
+        select.add(option);
+    }
+}
+
+    });
 
 // function ActualizarEstado(id) {
 

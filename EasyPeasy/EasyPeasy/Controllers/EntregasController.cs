@@ -48,13 +48,34 @@ namespace api.Controllers
             var entrega = db.DetalleEntregas.Where(c => c.IdDetalle == comando.IdDetalle).FirstOrDefault();
             if (entrega != null)
             {
-                entrega.Observaciones=comando.Observaciones;
+                entrega.Observaciones = comando.Observaciones;
                 db.DetalleEntregas.Update(entrega);
                 db.SaveChanges();
             }
             resultado.Ok = true;
-           
+
             return resultado;
+        }
+        [HttpGet]
+        [Route("Entregas/ObtenerDetalleEntrega")]
+        public ActionResult<ResultadoApi> getDetalleEntrega()
+        {
+            var resultado = new ResultadoApi();
+            try
+            {
+                resultado.Ok = true;
+                resultado.Return = db.DetalleEntregas.ToList();
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                resultado.Ok = false;
+               
+                resultado.Error = "Error al encontrar";
+
+                return resultado;
+            }
         }
 
 
