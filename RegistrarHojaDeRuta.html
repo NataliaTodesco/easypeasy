@@ -261,7 +261,7 @@
             data: { idZona: $("#cboZona").val() },
             success: function (result) {
                 if (result.ok) {
-                    crearTabla(result.return);
+                    crearTabla(result.return.remitos);
                 } else {
                     swal(result.error);
                 }
@@ -299,7 +299,6 @@
 
     $("#btn1").click(function () {
         if (Validar()) {
-            swal("Carga Exitosa!", "", "success")
             let fecha = $("#txtFecha").val();
             let zona = document.getElementById('cboZona');
             let idZona = zona.selectedIndex;
@@ -314,27 +313,33 @@
 
     function CargarFormulario(fecha, idZona, idTransportista, idvehiculo) {
         comando = {
-            "IdHojaRuta": 0,
+            "idHojaRuta": 0,
             "idZona": idZona,
-            "Fecha": fecha,
-            "IdVehiculo": idvehiculo,
-            "IdTransportista": idTransportista
+            "fecha": fecha,
+            "idVehiculo": idvehiculo,
+            "idTransportista": idTransportista
         }
+        
 
         $.ajax({
-            url: "https://vast-brook-85314.herokuapp.com/Remito/RegistrarHojaDeRuta",
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/RegistrarHojaDeRuta",
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(comando),
             type: "POST",
             success: function (result) {
-                if (result.Ok)
-                    swal("Registro exitoso");
+                if (result.ok){
+                    swal("Carga Exitosa!", "", "success")
                     $(location).attr('href',"IndexHojaDeRuta.html");
+                }
+                else{
+                    swal(result.error);
+                }
+                    
                     
             },
             error: function (error) {
-                swal(result.error);
+                console.log(error);
             }
         });
     }
