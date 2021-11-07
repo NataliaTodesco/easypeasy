@@ -34,8 +34,7 @@
 
         h1{
             font-family: 'Luckiest Guy', cursive;
-            float: right;
-            margin-right: 15%;
+            text-align: center;
         }
 
         a{
@@ -84,14 +83,25 @@
     <section>
 
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-9">
-                    <h1 class="display-4"><b>Hojas de ruta</b></h1>
-                </div>
-                <div class="col-lg-3">
-                    <br><br>
-                    <label for="">Buscar por ID</label>
-                    <select name="idRuta" id="cboIdRuta">
+            <h1 class="display-3"><b>Hojas de ruta</b></h1><br>
+            <div>
+                <div class="form-inline" style="float: right; margin-bottom: 10px;">
+                    <label for="">Buscar por:  N°</label> &nbsp;&nbsp;
+                    <select class="form-control" name="idRuta" id="cboIdRuta">
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <label for="">Fecha</label> &nbsp;&nbsp;
+                    <input type="date" class="form-control" name="fechaB" id="fechaB">&nbsp;&nbsp;&nbsp;
+                    <label for="">Zona</label> &nbsp;&nbsp;
+                    <select class="form-control" id="zonaB">
+                        <option value="0" selected>Seleccione...</option>
+                        <option value="1">Sur</option>
+                        <option value="2">Norte</option>
+                        <option value="3">Centro</option>
+                        <option value="4">Este</option>
+                        <option value="5">Oeste</option>
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <label for="">Transportista</label> &nbsp;&nbsp;
+                    <select class="form-control" id="transportistaB">
                     </select>
                 </div>
             </div>
@@ -101,6 +111,7 @@
     <section class="container">
         <table class="table table bordered jumbotron" id="TablaRutas">
             <thead class="thead-dark">
+                <th data-field="num">N°</th>
                 <th data-field="fecha">Fecha</th>
                 <th data-field="zona">Zona</th>
                 <th data-field="transportista">Transportista</th>
@@ -197,6 +208,25 @@
                 console.log(error);
             },
         });
+
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
+            type: "GET",
+            success: function (result) {
+                var html = "<option value='0'>Seleccione...</option>";
+                $("#transportistaB").append(html);
+                select = document.getElementById("transportistaB");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].nombre;
+                    option.value = result.return[i].idTransportista;
+                    select.add(option);
+                }
+            },
+            error: function (error) {
+                swal(result.error);
+            }
+        });
     }
 
     function crearTabla(datos) {
@@ -204,6 +234,7 @@
         $("#cuerpoTablaID").hide();
         for (let index = 0; index < datos.length; index++) {
             let html = "<tr>";
+                html += "<td>" + datos[index].id + "</td>";
             html += "<td>" + roundDate(datos[index].fecha) + "</td>";
             
             if (datos[index].idZona == 1)
@@ -220,9 +251,9 @@
             html += "<td>" + datos[index].transportista.nombre + "</td>";
             html += "<td>" + datos[index].vehiculo.patente + "</td>";
             html += "<td> "
-                + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].idZona+")'>"+
+                + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].id+")'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].idZona+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                "<button type='button' class='btn' id='modificar' onclick='modificar("+datos[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                 "<i class='bi bi-pencil-fill'></i> </button> </td>";
 
             html += "</tr>"
@@ -237,10 +268,16 @@
         var dd  = new Date(timeStamp).getDate().toString();
         return dd +"/"+ mm +"/" + yyyy;
     }
+    function roundDatePlus(timeStamp){
+        var yyyy = new Date(timeStamp).getFullYear().toString();
+        var mm = new Date(timeStamp).getMonth()+1;
+        var dd  = new Date(timeStamp).getDate()+1;
+        return dd +"/"+ mm +"/" + yyyy;
+    }
 
     //CARGAR COMBO ID HOJA RUTAS
     function cargarComboIdRuta(datos) {
-        var html = "<option value=''>SELECCIONE...</option>";
+        var html = "<option value='0'>Seleccione...</option>";
         $("#cboIdRuta").append(html);
         select = document.getElementById("cboIdRuta");
         for (let i = 0; i < datos.length; i++) {
@@ -266,10 +303,15 @@
                     if (id != 0){
                     $("#cuerpoTabla").hide();
                     $("#cuerpoTablaID").empty();
+                    $("#fechaB").val("");
+                    $("#zonaB").val(0);
+                    $("#transportistaB").val(0);
                     $("#cuerpoTablaID").show();
                     swal("Datos traidos con exito");
 
                     let html = "<tr>";
+
+                    html += "<td>" + result.return.id + "</td>";
                     html += "<td>" + roundDate(result.return.fecha) + "</td>";
 
                     if (result.return.idZona == 1)
@@ -286,9 +328,9 @@
                     html += "<td>" + result.return.transportista.nombre + "</td>";
                     html += "<td>" + result.return.vehiculo.patente + "</td>";
                     html += "<td> "
-                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.idZona+")'>"+
+                        + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.id+")'>"+
                         "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
-                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.idZona+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                        "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
                         "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
                         "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.id+")'>"+
                         "<i class='bi bi-geo-alt-fill'></i> </button> </td>";
@@ -464,6 +506,206 @@
 
   
 
+ </script>
+ <script>
+     $("#zonaB").change(function () {
+        let id = $("#zonaB").val();
+
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
+            // url: "HojaDeRuta/Upsert/" + id,
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTabla").hide();
+                        $("#cuerpoTablaID").empty();
+                        $("#cuerpoTablaID").show();
+                        $("#fechaB").val("");
+                        $("#cboIdRuta").val(0);
+                        $("#transportistaB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.hojaRutas.length; index++) {
+                            if (result.return.hojaRutas[index].idZona == id){
+                                let html = "<tr>";
+                                html += "<td>" + result.return.hojaRutas[index].id + "</td>";
+                                html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
+                                
+                                if (result.return.hojaRutas[index].idZona == 1)
+                                        html += "<td> Sur </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 2)
+                                        html += "<td> Norte </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 3)
+                                        html += "<td> Centro </td>";
+                                        if (result.return.hojaRutas[index].idZona == 4)
+                                        html += "<td> Este </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 5)
+                                        html += "<td> Oeste </td>";
+
+                                html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
+                                html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td> "
+                                    + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                    "<i class='bi bi-pencil-fill'></i> </button> </td>";
+
+                                html += "</tr>";
+
+
+                                $("#cuerpoTablaID").append(html);
+                            }
+                        }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTabla").show();
+            $("#cuerpoTablaID").hide();
+        }
+    });
+
+    $("#fechaB").change(function () {
+        let fecha = $("#fechaB").val();
+
+        if (fecha != ""){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
+            // url: "HojaDeRuta/Upsert/" + id,
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTabla").hide();
+                        $("#cuerpoTablaID").empty();
+                        $("#cuerpoTablaID").show();
+                        $("#cboIdRuta").val(0);
+                        $("#zonaB").val(0);
+                        $("#transportistaB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.hojaRutas.length; index++) {
+                            console.log(roundDate(result.return.hojaRutas[index].fecha), roundDatePlus(fecha))
+                            if (roundDate(result.return.hojaRutas[index].fecha) == roundDatePlus(fecha)){
+                                let html = "<tr>";
+                                html += "<td>" + result.return.hojaRutas[index].id + "</td>";
+                                html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
+                                
+                                if (result.return.hojaRutas[index].idZona == 1)
+                                        html += "<td> Sur </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 2)
+                                        html += "<td> Norte </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 3)
+                                        html += "<td> Centro </td>";
+                                        if (result.return.hojaRutas[index].idZona == 4)
+                                        html += "<td> Este </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 5)
+                                        html += "<td> Oeste </td>";
+
+                                html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
+                                html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td> "
+                                    + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                    "<i class='bi bi-pencil-fill'></i> </button> </td>";
+
+                                html += "</tr>";
+
+
+                                $("#cuerpoTablaID").append(html);
+                            }
+                        }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTabla").show();
+            $("#cuerpoTablaID").hide();
+        }
+    });
+
+    $("#transportistaB").change(function () {
+        let id = $("#transportistaB").val();
+
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
+            // url: "HojaDeRuta/Upsert/" + id,
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTabla").hide();
+                        $("#cuerpoTablaID").empty();
+                        $("#cuerpoTablaID").show();
+                        $("#cboIdRuta").val(0);
+                        $("#zonaB").val(0);
+                        $("#fechaB").val("");
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.hojaRutas.length; index++) {
+                            if (result.return.hojaRutas[index].idTransportista == id){
+                                let html = "<tr>";
+                                html += "<td>" + result.return.hojaRutas[index].id + "</td>";
+                                html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
+                                
+                                if (result.return.hojaRutas[index].idZona == 1)
+                                        html += "<td> Sur </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 2)
+                                        html += "<td> Norte </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 3)
+                                        html += "<td> Centro </td>";
+                                        if (result.return.hojaRutas[index].idZona == 4)
+                                        html += "<td> Este </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 5)
+                                        html += "<td> Oeste </td>";
+
+                                html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
+                                html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td> "
+                                    + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                    "<i class='bi bi-pencil-fill'></i> </button> </td>";
+
+                                html += "</tr>";
+
+
+                                $("#cuerpoTablaID").append(html);
+                            }
+                        }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTabla").show();
+            $("#cuerpoTablaID").hide();
+        }
+    });
  </script>
  <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
  <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
