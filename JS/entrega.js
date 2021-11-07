@@ -86,8 +86,8 @@ function OnLoad() {
     select = document.getElementById("cboDetalle");
     for (let i = 0; i < datos.length; i++) {
         var option = document.createElement('option');
-        option.value = datos[i].IdDetalle;
-        option.text = datos[i].Observaciones;
+        option.value = datos[i].idDetalle;
+        option.text = datos[i].horaEntrega;
         select.add(option);
     }
 }
