@@ -52,12 +52,46 @@ function OnLoad() {
         },
     });
 
-    $("#btnModificarEntrega").click(function () {
+     // Modificar Entrega
+     $("#btnModificarEntrega").click(function () {
         let id = $("#cboDetalle").val();
         let observaciones = $("#observacionesModificar").val();
 
         modificarEntrega(id,observaciones);
         
+    });
+
+    // GET DETALLE ENTREGA
+    $(document).ready(function () {
+        $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Entregas/ObtenerDetalleEntrega",
+        type: "GET",
+        success: function (result) {
+            if(result.ok){
+                resultadoS = result.return;
+                cargarCombo(resultadoS);
+            } else 
+            {
+                swal(result.error);
+            }
+        },
+        error : function (error) {
+            swal("Problemas al conseguir detalles de entrega");
+        },
+    })
+    // carga combo
+    function cargarCombo(datos){
+    var html = "<option value=''>SELECCIONE</option>";
+    $("#cboDetalle").append(html);
+    select = document.getElementById("cboDetalle");
+    for (let i = 0; i < datos.length; i++) {
+        var option = document.createElement('option');
+        option.value = datos[i].IdDetalle;
+        option.text = datos[i].Observaciones;
+        select.add(option);
+    }
+}
+
     });
 }
 
@@ -69,10 +103,10 @@ function mostrarDatos() {
 
         success: function (result) {
             if (result.ok) {
-                clienteEntrega.value = result.return.idClienteNavigation.nombre;
-                direccionEntrega.value = result.return.idClienteNavigation.direccion;
-                crearTablaDetalles(result.return.productosXremitos);
-                switch (result.return.idEstado) {
+                clienteEntrega.value = result.return.cliente.nombre;
+                direccionEntrega.value = result.return.cliente.direccion;
+                crearTablaDetalles(result.return.productosXRemitos);
+                switch (result.return.estado.idEstado) {
                     case 1:
                         estadoEntrega.value = "Pendiente";
                         break;
@@ -105,7 +139,7 @@ function crearTablaDetalles(datos) {
     $("#cuerpoTabla tr").remove();
     for (let index = 0; index < datos.length; index++) {
         let html = "<tr>";
-        html += "<td>" + datos[index].idProductoNavigation.descripcion + "</td>";
+        html += "<td>" + datos[index].producto.descripcion + "</td>";
         html += "<td>" + datos[index].cantidad + "</td>";
         html += "</tr>"
 
@@ -123,7 +157,7 @@ function crearTablaEntregas(datos) {
             let html = "<tr>";
             html += "<td>" + datos[index].idRemito + "</td>";
             html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
-            html += "<td>" + datos[index].fechaCompra + "</td>";
+            html += "<td>" + roundDate(datos[index].fechaCompra) + "</td>";
             html += "<td>" + datos[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
             html += "<td>" +
                 "<button type='button' class='btn' id='eliminar' onclick='eliminarEntrega(" + datos[index].idRemito + ")' data-placement='bottom'>" +
@@ -140,6 +174,13 @@ function crearTablaEntregas(datos) {
     }
 }
 
+function roundDate(timeStamp){
+    var yyyy = new Date(timeStamp).getFullYear().toString();
+    var mm = new Date(timeStamp).getMonth()+1;
+    var dd  = new Date(timeStamp).getDate().toString();
+    return dd +"/"+ mm +"/" + yyyy;
+  }
+
 function CargarEntrega() {
     let idRemito = $("#idRemito").val();
     let horaEntrega = $("#horaEntrega").val();
@@ -151,15 +192,15 @@ function CargarEntrega() {
 
 function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
     comando = {
-        "IdDetalle": 0,
-        "IdRemito": parseInt(idRemito),
-        "HoraEntrega": horaEntrega,
-        "Firma": firma,
-        "Observaciones": observaciones
+        "idDetalle": 0,
+        "idRemito": parseInt(idRemito),
+        "horaEntrega": horaEntrega,
+        "firma": firma,
+        "observaciones": observaciones
     }
 
     $.ajax({
-        url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega", //no está en heroku
+        url: "https://vast-brook-85314.herokuapp.com/DetalleEntrega/CargarDetalleEntrega", //no está en heroku
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(comando),
@@ -177,15 +218,16 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
         }
     });
 }
-    // Modificar Entrega
+   
+    
     function modificarEntrega(id,observaciones){
         comando = {
-      "IdDetalle": parseInt(id),
-      "Observaciones": observaciones,
+      "idDetalle": parseInt(id),
+      "observaciones": observaciones,
         };
     
         $.ajax({
-            url: "https://localhost:5001/Entregas/ModificarEntregas",
+            url: "https://vast-brook-85314.herokuapp.com/Entregas/ModificarEntregas",
             type: "PUT",
             dataType: 'JSON',
             contentType:'application/json',
@@ -204,38 +246,7 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
         })
         
     }
-    // GET DETALLE ENTREGA
-    $(document).ready(function () {
-        $.ajax({
-        url: "https://localhost:5001/Entregas/ObtenerDetalleEntrega",
-        type: "GET",
-        success: function (result) {
-            if(result.ok){
-                resultadoS = result.return;
-                cargarCombo(resultadoS);
-            } else 
-            {
-                swal(result.error);
-            }
-        },
-        error : function (error) {
-            swal("Problemas al conseguir detalles de entrega");
-        },
-    })
-    // carga combo
-    function cargarCombo(datos){
-    var html = "<option value=''>SELECCIONE</option>";
-    $("#cboDetalle").append(html);
-    select = document.getElementById("cboDetalle");
-    for (let i = 0; i < datos.length; i++) {
-        var option = document.createElement('option');
-        option.value = datos[i].IdDetalle;
-        option.text = datos[i].Observaciones;
-        select.add(option);
-    }
-}
-
-    });
+    
 
 // function ActualizarEstado(id) {
 
