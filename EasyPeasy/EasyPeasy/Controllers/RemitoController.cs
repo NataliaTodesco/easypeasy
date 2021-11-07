@@ -225,7 +225,9 @@ namespace api.Controllers
             r.HoraEntregaPreferido = comando.HoraEntregaPreferido;
             r.IdEstado = comando.IdEstado;
             r.IdCliente = comando.IdCliente;
-            r.IdHojaRuta = comando.IdHojaRuta;
+            if (comando.IdHojaRuta!=0){
+                r.IdHojaRuta = comando.IdHojaRuta;
+            }
           
             _db.Remitos.Add(r);
             _db.SaveChanges();
@@ -620,5 +622,26 @@ namespace api.Controllers
 
         //     return resultado;
         // }
+
+        [HttpPut]
+        [Route("Remito/CambiarHojaRuta")]
+        public ActionResult<ResultadoApi> CambiarHR(int idRemito, int idHojaRuta){
+            ResultadoApi resultado = new ResultadoApi();
+            Remito remito = _db.Remitos.Where(r=>r.IdRemito == idRemito).FirstOrDefault();
+            HojaRuta hojaruta = _db.HojaRuta.Where(hr=>hr.IdHojaRuta == idHojaRuta).FirstOrDefault();
+            if (remito != null && hojaruta != null){
+                remito.IdHojaRuta = idHojaRuta;
+                _db.Remitos.Update(remito);
+                _db.SaveChanges();
+                resultado.Ok = true;
+                resultado.Return=remito;
+                return resultado;
+            }
+            else{
+                resultado.Ok = false;
+                resultado.Error = "El remito que intentas asignar y/o la hoja de ruta a la que quieres asignarlo no existe";
+                return resultado;
+            }
+        }
     }
 }
