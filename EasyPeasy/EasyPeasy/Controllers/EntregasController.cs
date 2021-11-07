@@ -71,14 +71,29 @@ namespace api.Controllers
             catch (Exception ex)
             {
                 resultado.Ok = false;
-               
+
                 resultado.Error = "Error al encontrar";
 
                 return resultado;
             }
         }
 
+        [HttpDelete]
+        [Route("Entregas/DeleteEntrega/{idDetalle}")]
+        public ActionResult<ResultadoApi> deleteById(int IdDetalle)
+        {
+            var resultado = new ResultadoApi();
+            var entrega = db.DetalleEntregas.Where(c => c.IdDetalle == IdDetalle).FirstOrDefault();
+            db.DetalleEntregas.Remove(entrega);
+            db.SaveChanges();
 
+            resultado.Ok = true;
+  
+            return resultado;
+
+
+
+        }
 
 
     }
