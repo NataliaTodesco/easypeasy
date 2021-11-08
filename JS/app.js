@@ -29,7 +29,7 @@
     } 
     
     else if ($("#contraseña").val()=='123456' && $("#email").val() =='transportista@gmail.com' && idRol == 4){
-      window.location.replace("./IndexHojaDeRuta");
+      window.location.replace("./IndexHojaDeRuta.html");
     } 
     
     else if ($("#contraseña").val()=='123456' && $("#email").val() =='empleado@gmail.com' && idRol == 3){
