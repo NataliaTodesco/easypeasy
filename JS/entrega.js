@@ -43,6 +43,18 @@ function OnLoad() {
                     }
                 }
                 crearTablaEntregas(result.return);
+                var html = "<option value='0'>Seleccione...</option>";
+                $("#nroEntrega").append(html);
+                select = document.getElementById("nroEntrega");
+                for (let i = 0; i < result.return.length; i++) {
+                    if (result.return[i].idEstado == 3){
+                        var option = document.createElement('option');
+                        option.value = result.return[i].idRemito;
+                        option.text = result.return[i].idRemito;
+                        select.add(option);
+                    }
+            }
+                
             } else {
                 swal(result.error);
             }
@@ -88,7 +100,7 @@ function OnLoad() {
         })
         // carga combo
         function cargarCombo(datos) {
-            var html = "<option value=''>SELECCIONE</option>";
+            var html = "<option value='0'>SELECCIONE</option>";
             $("#cboDetalle").append(html);
             select = document.getElementById("cboDetalle");
             for (let i = 0; i < datos.length; i++) {
@@ -119,7 +131,7 @@ function OnLoad() {
         })
         // carga combo
         function cargarCombo(datos) {
-            var html = "<option value=''>SELECCIONE</option>";
+            var html = "<option value='0'>SELECCIONE</option>";
             $("#cboDetalle2").append(html);
             select = document.getElementById("cboDetalle2");
             for (let i = 0; i < datos.length; i++) {
@@ -142,7 +154,16 @@ function OnLoad() {
                 for (let i = 0; i < result.return.length; i++) {
                     Clientes.push(result.return[i]);
                 }
-                console.log(Clientes)
+
+                var html = "<option value='0'>Seleccione...</option>";
+                $("#clienteB").append(html);
+                select = document.getElementById("clienteB");
+                for (let i = 0; i < result.return.length; i++) {
+                    var option = document.createElement('option');
+                    option.text = result.return[i].nombre;
+                    option.value = result.return[i].idCliente;
+                    select.add(option);
+                }
                 
             } else {
                 swal(result.error);
@@ -152,7 +173,294 @@ function OnLoad() {
             console.log(error);
         },
     });
+
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
+        type: "GET",
+        success: function (result) {
+            var html = "<option value='0'>Seleccione...</option>";
+            $("#transportistaB").append(html);
+            select = document.getElementById("transportistaB");
+            for (let i = 0; i < result.return.length; i++) {
+                var option = document.createElement('option');
+                option.text = result.return[i].nombre;
+                option.value = result.return[i].idTransportista;
+                select.add(option);
+            }
+            console.log(select.value);
+        },
+        error: function (error) {
+            swal(result.error);
+        }
+    });
+
+    // PARAMETROS DE BUSQUEDA
+    $("#clienteB").change(function () {
+        let id = $("#clienteB").val();
+
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerDetallesRemitos",
+            type: "GET",
+   
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTablaEntregas").hide();
+                        $("#cuerpoTablaEntregasP").empty();
+                        $("#cuerpoTablaEntregasP").show();
+                        $("#fechaB").val("");
+                        $("#nroEntrega").val(0);
+                        $("#transportistaB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.length; index++) {
+                           if (result.return[index].idEstado == 3 && result.return[index].idCliente == id) {
+                   
+                               let html = "<tr>";
+                               html += "<td>" + result.return[index].idRemito + "</td>";
+                               //html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
+                               html += "<td>" + roundDate(result.return[index].fechaCompra) + "</td>";
+                               html += "<td>" + result.return[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
+                               
+                               let nombre = "";
+   
+                               for (let i = 0; i < Clientes.length; i++) {
+                                   if (result.return[index].idCliente == Clientes[i].idCliente)
+                                       nombre = Clientes[i].nombre;
+                               }
+                               
+                               html += "<td>" + nombre + "</td>";
+                               
+                               html += "<td>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<i class='bi bi-trash-fill'></i> </button>";
+   
+                               html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
+                                   "<i class='bi bi-pencil-fill'></i> </button> "
+   
+                               html += "</td>";
+                               html += "</tr>"
+                   
+                               $("#cuerpoTablaEntregasP").append(html);
+                           }
+                       }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTablaEntregas").show();
+            $("#cuerpoTablaEntregasP").hide();
+        }
+    });
+
+    $("#transportistaB").change(function () {
+        let id = $("#transportistaB").val();
+
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerDetallesRemitos",
+            type: "GET",
+   
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTablaEntregas").hide();
+                        $("#cuerpoTablaEntregasP").empty();
+                        $("#cuerpoTablaEntregasP").show();
+                        $("#fechaB").val("");
+                        $("#nroEntrega").val(0);
+                        $("#clienteB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.length; index++) {
+                           if (result.return[index].idEstado == 3 && result.return[index].idHojaRutaNavigation.idTransportista == id) {
+                   
+                               let html = "<tr>";
+                               html += "<td>" + result.return[index].idRemito + "</td>";
+                               //html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
+                               html += "<td>" + roundDate(result.return[index].fechaCompra) + "</td>";
+                               html += "<td>" + result.return[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
+                               
+                               let nombre = "";
+   
+                               for (let i = 0; i < Clientes.length; i++) {
+                                   if (result.return[index].idCliente == Clientes[i].idCliente)
+                                       nombre = Clientes[i].nombre;
+                               }
+                               
+                               html += "<td>" + nombre + "</td>";
+                               
+                               html += "<td>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<i class='bi bi-trash-fill'></i> </button>";
+   
+                               html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
+                                   "<i class='bi bi-pencil-fill'></i> </button> "
+   
+                               html += "</td>";
+                               html += "</tr>"
+                   
+                               $("#cuerpoTablaEntregasP").append(html);
+                           }
+                       }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTablaEntregas").show();
+            $("#cuerpoTablaEntregasP").hide();
+        }
+    });
     
+    $("#nroEntrega").change(function () {
+        let id = $("#nroEntrega").val();
+
+        if (id != 0){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerDetallesRemitos",
+            type: "GET",
+   
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTablaEntregas").hide();
+                        $("#cuerpoTablaEntregasP").empty();
+                        $("#cuerpoTablaEntregasP").show();
+                        $("#fechaB").val("");
+                        $("#transportistaB").val(0);
+                        $("#clienteB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.length; index++) {
+                           if (result.return[index].idEstado == 3 && result.return[index].idRemito == id) {
+                   
+                               let html = "<tr>";
+                               html += "<td>" + result.return[index].idRemito + "</td>";
+                               //html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
+                               html += "<td>" + roundDate(result.return[index].fechaCompra) + "</td>";
+                               html += "<td>" + result.return[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
+                               
+                               let nombre = "";
+   
+                               for (let i = 0; i < Clientes.length; i++) {
+                                   if (result.return[index].idCliente == Clientes[i].idCliente)
+                                       nombre = Clientes[i].nombre;
+                               }
+                               
+                               html += "<td>" + nombre + "</td>";
+                               
+                               html += "<td>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<i class='bi bi-trash-fill'></i> </button>";
+   
+                               html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
+                                   "<i class='bi bi-pencil-fill'></i> </button> "
+   
+                               html += "</td>";
+                               html += "</tr>"
+                   
+                               $("#cuerpoTablaEntregasP").append(html);
+                           }
+                       }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTablaEntregas").show();
+            $("#cuerpoTablaEntregasP").hide();
+        }
+    });
+
+    function roundDatePlus(timeStamp){
+        var yyyy = new Date(timeStamp).getFullYear().toString();
+        var mm = new Date(timeStamp).getMonth()+1;
+        var dd  = new Date(timeStamp).getDate()+1;
+        return dd +"/"+ mm +"/" + yyyy;
+    }
+
+    $("#fechaB").change(function () {
+        let fecha = $("#fechaB").val();
+
+        if (fecha != ""){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerDetallesRemitos",
+            type: "GET",
+   
+            success: function (result) {
+                if (result.ok) {
+                        $("#cuerpoTablaEntregas").hide();
+                        $("#cuerpoTablaEntregasP").empty();
+                        $("#cuerpoTablaEntregasP").show();
+                        $("#nroEntrega").val(0);
+                        $("#transportistaB").val(0);
+                        $("#clienteB").val(0);
+                        swal("Datos traidos con exito");
+                        
+                        for (let index = 0; index < result.return.length; index++) {
+                           if (result.return[index].idEstado == 3 && roundDate(result.return[index].fechaCompra) == roundDatePlus(fecha)) {
+                   
+                               let html = "<tr>";
+                               html += "<td>" + result.return[index].idRemito + "</td>";
+                               //html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
+                               html += "<td>" + roundDate(result.return[index].fechaCompra) + "</td>";
+                               html += "<td>" + result.return[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
+                               
+                               let nombre = "";
+   
+                               for (let i = 0; i < Clientes.length; i++) {
+                                   if (result.return[index].idCliente == Clientes[i].idCliente)
+                                       nombre = Clientes[i].nombre;
+                               }
+                               
+                               html += "<td>" + nombre + "</td>";
+                               
+                               html += "<td>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<i class='bi bi-trash-fill'></i> </button>";
+   
+                               html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
+                                   "<i class='bi bi-pencil-fill'></i> </button> "
+   
+                               html += "</td>";
+                               html += "</tr>"
+                   
+                               $("#cuerpoTablaEntregasP").append(html);
+                           }
+                       }
+                    
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    swal("Problemas en el servidor");
+                },
+            })
+        }
+        else {
+            $("#cuerpoTablaEntregas").show();
+            $("#cuerpoTablaEntregasP").hide();
+        }
+    });
 }
 
 // ------------ OBTENER INFO REGISTRAR ENTREGAS -------------
@@ -209,6 +517,7 @@ function crearTablaDetalles(datos) {
 
 // ---------- CREAR TABLA ENTREGAS -----------
 function crearTablaEntregas(datos) {
+    $("#cuerpoTablaEntregasP").hide();
     $("#cuerpoTablaEntregas tr").remove();
     //codigo, estado, fecha, transpotista
         for (let index = 0; index < datos.length; index++) {

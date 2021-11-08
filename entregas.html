@@ -121,10 +121,23 @@
             <!-- --------------------------------- E N T R E G A S ------------------------------ -->
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="entregas-tab">
                 <div class="container" style="padding: 3%;">
+                  <div class="form-inline" style="float: right; margin-bottom: 10px;">
+                    <label for="">Buscar por:  N°</label> &nbsp;&nbsp;
+                    <select class="form-control" name="id" id="nroEntrega">
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <label for="">Fecha</label> &nbsp;&nbsp;
+                    <input type="date" class="form-control" name="fechaB" id="fechaB">&nbsp;&nbsp;&nbsp;
+                    <label for="">Transportista</label> &nbsp;&nbsp;
+                    <select class="form-control" id="transportistaB">
+                    </select>&nbsp;&nbsp;&nbsp;
+                    <label for="">Cliente</label> &nbsp;&nbsp;
+                    <select class="form-control" id="clienteB">
+                    </select>
+                </div>
                     <table class="table" onload="OnLoad()">
                       <table class="table" id="TablaRemitos">
                         <thead class="thead-dark">
-                            <th data-field="codigo">Envío</th>
+                            <th data-field="codigo">N°</th>
                             <!-- <th data-field="estado">Estado</th> -->
                             <th data-field="fecha">Fecha</th>
                             <th data-field="transportista">Transportista</th>
@@ -143,6 +156,7 @@
                             </td>
                           </tr>
                         </tbody>
+                        <tbody id="cuerpoTablaEntregasP"></tbody>
                     </table>
                 </div>
             </div>
