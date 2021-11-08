@@ -15,7 +15,9 @@ namespace EasyPeasy.Models
         public int IdTransportista { get; set; }
         public long Legajo { get; set; }
         public string Nombre { get; set; }
+       // public int idDisponibilidad { get; set; }
 
         public virtual ICollection<HojaRuta> HojaRuta { get; set; }
+       // public virtual Disponibilidad IdDisponibilidadNavigation {get;set;}
     }
 }
