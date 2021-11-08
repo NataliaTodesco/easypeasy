@@ -79,8 +79,8 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Route("Entregas/DeleteEntrega/{idDetalle}")]
-        public ActionResult<ResultadoApi> deleteById(int IdDetalle)
+        [Route("Entregas/DeleteEntrega")]
+        public ActionResult<ResultadoApi> deleteById([FromBody] int IdDetalle)
         {
             var resultado = new ResultadoApi();
             var entrega = db.DetalleEntregas.Where(c => c.IdDetalle == IdDetalle).FirstOrDefault();

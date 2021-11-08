@@ -277,7 +277,7 @@ function modificarEntrega(id, observaciones) {
             }
         },
         error: function (error) {
-            swal("Problemas en el servidor");
+            swal("Error");
         },
     })
 
@@ -288,7 +288,7 @@ function eliminarEntrega(id) {
 
 
     $.ajax({
-        url: "Entregas/DeleteEntrega/{idDetalle}"+id,//falta heroku
+        url: "Entregas/DeleteEntrega"+id,//falta heroku
         type: "DELETE",
         success: function (result) {
             if (result.ok) {
