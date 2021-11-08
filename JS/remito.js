@@ -1,5 +1,6 @@
     
-    // Validar Form
+   let Clientes = [];
+   // Validar Form
     function go() {
         var forms = document.getElementsByClassName('needs-validation');
 
@@ -65,6 +66,7 @@
               for (let i = 0; i < result.return.length; i++) {
                   var option = document.createElement('option');
                   option.text = result.return[i].nombre;
+                  option.value = result.return[i].idCliente;
                   select.add(option);
               }
               
@@ -72,6 +74,7 @@
               for (let i = 0; i < result.return.length; i++) {
                   var option = document.createElement('option');
                   option.text = result.return[i].nombre;
+                  option.value = result.return[i].idCliente;
                   select.add(option);
               }
           },
@@ -95,6 +98,7 @@
                 for (let i = 0; i < result.return.length; i++) {
                     var option = document.createElement('option');
                     option.text = result.return[i].descripcion;
+                    option.value = result.return[i].idEstado;
                     select.add(option);
                 }
 
@@ -102,6 +106,7 @@
                 for (let i = 0; i < result.return.length; i++) {
                     var option = document.createElement('option');
                     option.text = result.return[i].descripcion;
+                    option.value = result.return[i].idEstado;
                     select.add(option);
                 }
             }else{
@@ -155,9 +160,12 @@
         }else if (datos[index].estado.idEstado == 3){
         html += "<td>"+ "Entregado"+"</td>";
         }               
-        else {
+        else if (datos[index].estado.idEstado == 4){
         html += "<td>"+ "Reprogramado"+"</td>";
         }
+        else {
+            html += "<td>"+ "Cancelado"+"</td>";
+            }
 
         var fecha = roundDate(datos[index].fechaCompra);
 
@@ -168,6 +176,8 @@
         datos[index].productosXRemitos.forEach(prod => {
             html += prod.producto.descripcion +"<br>";
         }); 
+
+        Clientes.push(datos[index]);
             
         html += "</td>";  
 
@@ -289,6 +299,21 @@
 
   function modificar(id) {
     let idRem = id;
+    let idCl = 0;
+    let fecha = "";
+    let idE = 0;
+
+    for (let i = 0; i < Clientes.length; i++) {
+        if (Clientes[i].idRemito == id){
+        idCl = Clientes[i].cliente.idCliente
+        fecha = Clientes[i].fechaCompra;
+        idE = Clientes[i].estado.idEstado;
+        }
+    }
+    
+    $("#clienteM").val(idCl);
+    $("#fechaM").val(fecha);
+    $("#estadoM").val(idE);
 
     $("#btnModificar").click(function() {    
         let fecha = $("#fechaM").val();
@@ -388,7 +413,7 @@
 
             document.getElementById('itemIngreso').innerHTML = detalle;
 
-            cargarProducto(idProducto,valor.value)
+            cargarProducto(idProducto,ingresos[i].cantidad)
         }
 
         function cargarProducto(index,cant){

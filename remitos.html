@@ -110,10 +110,10 @@
     <section class="container body">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item presentation" role="presentation">
-              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Remitos</a>
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Listado de Remitos</a>
             </li>
             <li class="nav-item presentation" role="presentation">
-              <a class="nav-link" id="art-tab" data-toggle="tab" href="#art" role="tab" aria-controls="home" aria-selected="false">Articulos</a>
+              <a class="nav-link" id="art-tab" data-toggle="tab" href="#art" role="tab" aria-controls="home" aria-selected="false">Artículos</a>
             </li>
             <li class="nav-item presentation" role="presentation">
               <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Cargar Remito</a>
@@ -162,7 +162,7 @@
                         <table class="table" id="TablaArticulos">
                           <thead class="thead-dark">
                               <th data-field="codigo">Código</th>
-                              <th data-field="descripcion">Descripcion</th>
+                              <th data-field="descripcion">Descripción</th>
                           </thead>
                           <tbody id="cuerpoTablaA"></tbody>
                       </table>
@@ -170,12 +170,12 @@
                     <div class="col-lg-6 col-md-6" style="text-align: center;">
                       <h4>Obtener por Código</h4> <br>
                       <div class="input-group mb-3">
-                        <input type="number" class="form-control" id="id" placeholder="Ingrese el código del Articulo que desea consultar">
+                        <input type="number" class="form-control" id="id" placeholder="Ingrese el código del Artículo que desea consultar">
                         <div class="input-group-append">
                           <button class="btn" type="button" id="buscar">Buscar</button>
                         </div>
                       </div>
-                      <div id="articulo">Articulo: </div>
+                      <div id="articulo">Artículo: </div>
                       <img src="./Imagenes/Easy-Peasy-2.svg" class="img-fluid" alt="">
                     </div>
                   </div>
@@ -336,7 +336,7 @@
                 <form class="needs-validation" novalidate id="carga">
                   <div class="form-row">
                     <div class="col-md-6 mb-3">
-                      <label for="fecha">Fecha de Compra</label>
+                      <label for="fecha">Fecha de Remito</label>
                       <input type="date" class="form-control" id="fechaM" required>
                       <div class="invalid-feedback">
                         Ingrese una fecha de compra
