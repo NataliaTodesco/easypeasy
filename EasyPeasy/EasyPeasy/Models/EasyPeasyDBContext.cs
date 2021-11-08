@@ -28,6 +28,7 @@ namespace EasyPeasy.Models
         public virtual DbSet<Transportista> Transportistas { get; set; }
         public virtual DbSet<Vehiculo> Vehiculos { get; set; }
         public virtual DbSet<Zona> Zonas { get; set; }
+       //public virtual DbSet<Disponibilidad> Disponibilidads {get;set;}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

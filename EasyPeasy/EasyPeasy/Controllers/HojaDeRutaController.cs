@@ -198,6 +198,9 @@ namespace api.Controllers
             {
                 item.IdEstado = 2;
             }
+            //cambio la disponibilidad del transportista
+            // var transportista=_db.Transportistas.Where(x=>x.IdTransportista==hojaRuta.IdTransportista).FirstOrDefault();
+            // transportista.idDisponibilidad=2;
             //guardo cambios
             _db.SaveChanges();
 
