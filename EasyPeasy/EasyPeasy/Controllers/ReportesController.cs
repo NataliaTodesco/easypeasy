@@ -84,5 +84,29 @@ namespace EasyPeasy.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        [Route("/Reportes/DetalleEntregas")]
+        public ActionResult<ResultadoApi> DetalleEntregas()
+        {
+            ResultadoApi resultadoApi = new ResultadoApi();
+            try
+            {  
+                var detalles= _db.Remitos.Include(x=>x.DetalleEntregas).ToList();  
+                      
+                resultadoApi.Ok = true;
+                resultadoApi.Return = detalles;
+                return resultadoApi;
+            }
+
+            catch (Exception ex)
+            {
+                resultadoApi.Ok = false;
+                resultadoApi.Error = "Error " + ex.Message;
+                return resultadoApi;
+            }
+
+        }
     }
 }

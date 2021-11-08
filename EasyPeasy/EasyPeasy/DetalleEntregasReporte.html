@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <body onload="OnLoad()" id="body">
+        </div>
+        <table class="table">
+            <table class="table" id="TablaRemitos">
+                <thead class="thead-dark">
+                    <th data-field="codigo">#</th>
+                    <th data-field="estado">Estado</th>
+                    <th data-field="fechaCompra">Fecha</th>
+                    <th data-field="remito">Remito</th>
+                    <th data-field="observaciones">Observaciones</th>
+                </thead>
+                <tbody id="cuerpoTabla"></tbody>
+            </table>
+    </div>
+    </table>
+</div>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script>
+<script>
+    function OnLoad() {
+        // Obtener Remitos
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Reportes/DetalleEntregas",
+           // url: "https://localhost:5001/Reportes/DetalleEntregas",
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                    crearTabla(result.return);
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(); (error);
+            },
+        });
+    }
+
+    function crearTabla(datos) {
+        for (let index = 0; index < datos.length; index++) {
+            let html = "<tr id='lista'>";
+
+            html += "<td>" + datos[index].idRemito + "</td>";
+
+            if (datos[index].idEstado == 1) {
+                html += "<td>" + "Pendiente" + "</td>";
+            } else if (datos[index].idEstado == 2) {
+                html += "<td>" + "En proceso" + "</td>";
+            } else if (datos[index].idEstado == 3) {
+                html += "<td>" + "Entregado" + "</td>";
+            }
+            else if (datos[index].idEstado == 4) {
+                html += "<td>" + "Reprogramado" + "</td>";
+            }
+            else {
+                html += "<td>" + "Cancelado" + "</td>";
+            }
+            var fecha = datos[index].fechaCompra;
+            html += "<td>" + fecha + "</td>";
+            html += "<td>" + datos[index].idRemito + "</td>";
+            html += "<td>";
+            datos[index].detalleEntregas.forEach(det => {
+                html += det.observaciones + "<br>";
+            });
+            html += "</td>";
+            html += "</tr>"
+            $("#cuerpoTabla").append(html);
+        }
+    }
+</script>
+</body>
+</html>
