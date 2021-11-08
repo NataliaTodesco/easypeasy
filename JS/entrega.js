@@ -197,10 +197,10 @@ function crearTablaEntregas(datos) {
             html += "<td>" + roundDate(datos[index].fechaCompra) + "</td>";
             html += "<td>" + datos[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
             html += "<td>" +
-                "<button type='button' class='btn' id='eliminar' onclick='eliminarEntrega(" + datos[index].idRemito + ")'data-toggle='modal' data-target='#eliminarEntrega' data-placement='bottom'>" +
+                "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + datos[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
                 "<i class='bi bi-trash-fill'></i> </button>";
 
-            html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='modificarEntrega(" + datos[index].idRemito + ")' data-toggle='modal' data-target='#modificarEntrega' data-placement='bottom'>" +
+            html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + datos[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
                 "<i class='bi bi-pencil-fill'></i> </button> "
 
             html += "</td>";
@@ -271,7 +271,7 @@ function modificarEntrega(id, observaciones) {
         data: JSON.stringify(comando),
         success: function (result) {
             if (result.ok) {
-
+                swal("Entrega modificada correctamente");
             } else {
                 swal("Problema Server");
             }
