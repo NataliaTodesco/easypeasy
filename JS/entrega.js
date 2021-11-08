@@ -1,3 +1,4 @@
+let Clientes = [];
 // Validar Form
 function go() {
     var forms = document.getElementsByClassName('needs-validation');
@@ -130,6 +131,28 @@ function OnLoad() {
         }
 
     });
+
+   
+
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Cliente/ObtenerCliente",
+        type: "GET",
+        success: function (result) {
+            if (result.ok) {
+                for (let i = 0; i < result.return.length; i++) {
+                    Clientes.push(result.return[i]);
+                }
+                console.log(Clientes)
+                
+            } else {
+                swal(result.error);
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+    
 }
 
 // ------------ OBTENER INFO REGISTRAR ENTREGAS -------------
@@ -188,27 +211,38 @@ function crearTablaDetalles(datos) {
 function crearTablaEntregas(datos) {
     $("#cuerpoTablaEntregas tr").remove();
     //codigo, estado, fecha, transpotista
-    for (let index = 0; index < datos.length; index++) {
-        if (datos[index].idEstado == 1) {
+        for (let index = 0; index < datos.length; index++) {
+            if (datos[index].idEstado == 3) {
+    
+                let html = "<tr>";
+                html += "<td>" + datos[index].idRemito + "</td>";
+                //html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
+                html += "<td>" + roundDate(datos[index].fechaCompra) + "</td>";
+                html += "<td>" + datos[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
+                
+                let nombre = "";
 
-            let html = "<tr>";
-            html += "<td>" + datos[index].idRemito + "</td>";
-            html += "<td>" + datos[index].idEstadoNavigation.descripcion + "</td>";
-            html += "<td>" + roundDate(datos[index].fechaCompra) + "</td>";
-            html += "<td>" + datos[index].idHojaRutaNavigation.idTransportistaNavigation.nombre + "</td>";
-            html += "<td>" +
+                for (let i = 0; i < Clientes.length; i++) {
+                    if (datos[index].idCliente == Clientes[i].idCliente)
+                        nombre = Clientes[i].nombre;
+                }
+                
+                html += "<td>" + nombre + "</td>";
+                
+                html += "<td>" +
                 "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + datos[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
                 "<i class='bi bi-trash-fill'></i> </button>";
 
-            html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + datos[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
-                "<i class='bi bi-pencil-fill'></i> </button> "
+                html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + datos[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
+                    "<i class='bi bi-pencil-fill'></i> </button> "
 
-            html += "</td>";
-            html += "</tr>"
-
-            $("#cuerpoTablaEntregas").append(html);
+                html += "</td>";
+                html += "</tr>"
+    
+                $("#cuerpoTablaEntregas").append(html);
+            }
         }
-    }
+    
 }
 
 function roundDate(timeStamp) {
@@ -347,4 +381,5 @@ function actualizarEstado(id,fecha,idCliente,idHojaRuta) {
         }
     });
 }
+
 // https://vast-brook-85314.herokuapp.com/swagger/index.html
