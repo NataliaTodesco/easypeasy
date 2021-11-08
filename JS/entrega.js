@@ -35,7 +35,7 @@ function OnLoad() {
             if (result.ok) {
                 for (let i = 0; i < result.return.length; i++) {
                     //---- OBTENER REMITOS NO ENTREGADOS
-                    if (result.return[i].idEstado != 2) {
+                    if (result.return[i].idEstado != 3) {
                         var option = document.createElement('option');
                         option.text = result.return[i].idRemito;
                         idRemito.add(option);
@@ -248,24 +248,49 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
     }
     
 
-// function ActualizarEstado(id) {
+function ActualizarEstadoEntregado(id) {
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + id,
+        type: "GET",
+        success: function (result) {
+            if (result.ok) {
+                actualizarEstado(id,result.return.fechaCompra,result.return.cliente.idCliente,result.return.hojaRuta.idHojaRuta);
+            } else {
+                swal(result.error);
+            }
+        },
+        error: function (error) {
+            console.log(error);
+        },
+    });
+}
 
-//     $.ajax({
-//         url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
-//         dataType:'json',
-//         contentType:'application/json',
-//         data: JSON.stringify(id),
-//         type: "PUT",
-//         success: function(result) {
-//             if (result.ok){
-//                 // location.reload();
-//                 swal("Remito modificado exitosamente");
-//             }
-//             else swal(result.error);
-//         },
-//         error: function(error) {
-//             swal("Error" + error);
-//         }
-//     });
-//   }
+function actualizarEstado(id,fecha,idCliente,idHojaRuta) {
+    comando = {
+        "idRemito": id,
+        "fechaCompra": fecha,
+        "horaEntregaPreferido": "16:00",
+        "idEstado": 3,
+        "idCliente": idCliente,
+        "idHojaRuta": idHojaRuta
+    }
+
+    $.ajax({
+        url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
+        dataType:'json',
+        contentType:'application/json',
+        data: JSON.stringify(comando),
+        type: "PUT",
+        success: function(result) {
+            if (result.ok){
+                //swal("Estado modificado exitosamente");
+                location.reload();
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
+}
 // https://vast-brook-85314.herokuapp.com/swagger/index.html
