@@ -447,21 +447,21 @@
                 cantidad: Number(valor.value)
             }
 
-            if (ingresos.length == 0){
-                ingresos.push(lista);
-            }
-            else{
-                for (let i = 0; i < ingresos.length; i++) {
-                    if (lista.descripcion == ingresos[i].descripcion){
-                        ingresos[i].cantidad += Number(lista.cantidad);
-                        break;
-                    }
-                    else {
-                        ingresos.push(lista);
-                        break;
-                    }
+            let elemento = ingresos.find(element => element.descripcion == descripcion.value);
+
+            let cant = 0;
+
+            try {
+                elemento = {
+                    descripcion: elemento.descripcion,
+                    cantidad: Number(elemento.cantidad += Number(lista.cantidad))
                 }
+                cant = elemento.cantidad;
+            } catch (error) {
+                ingresos.push(lista);
+                cant = Number(valor.value);
             }
+
 
             let detalle = "";
 
@@ -471,7 +471,11 @@
 
             document.getElementById('itemIngreso').innerHTML = detalle;
 
-            cargarProducto(idProducto,ingresos[i].cantidad)
+            let cant2 = ingresos.find(element => element.descripcion == descripcion.value);
+
+            if (cant != 0)
+            cargarProducto(idProducto,cant2.cantidad);
+            else swal("Ingrese Cantidad");
         }
 
         function cargarProducto(index,cant){
