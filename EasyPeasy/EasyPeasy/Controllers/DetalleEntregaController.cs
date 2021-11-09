@@ -61,7 +61,13 @@ namespace api.Controllers
             de.Firma = comando.Firma;
             de.Observaciones = comando.Observaciones;
 
-            _db.DetalleEntregas.Add(de);            
+            _db.DetalleEntregas.Add(de);
+             //busco hoja de ruta q tiene el remito para buscar al transportista
+            var remito=_db.Remitos.Include(x=>x.IdHojaRutaNavigation).FirstOrDefault(x=>x.IdRemito==comando.IdRemito);        
+            
+             var transportista=_db.Transportistas.FirstOrDefault(x=>x.IdTransportista==remito.IdHojaRutaNavigation.IdTransportista);
+             //cambio disponibilidad de transportista responsable de la entrega a "disponible"
+             //transportista.idDisponibilidad=1;            
             _db.SaveChanges();
 
             resultado.Ok = true;
