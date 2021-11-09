@@ -60,8 +60,13 @@ namespace api.Controllers
             de.HoraEntrega = comando.HoraEntrega;
             de.Firma = comando.Firma;
             de.Observaciones = comando.Observaciones;
+           // de.IdMotivo=comando.IdMotivo;          
 
-            _db.DetalleEntregas.Add(de);
+            // _db.DetalleEntregas.Add(de);
+            
+            // if(comando.IdEstado==5){
+            //     var rem=_db.Remitos.FirstOrDefault(x=>x.IdRemito==comando.IdRemito).IdEstado=5;
+            // }
              //busco hoja de ruta q tiene el remito para buscar al transportista
             var remito=_db.Remitos.Include(x=>x.IdHojaRutaNavigation).FirstOrDefault(x=>x.IdRemito==comando.IdRemito);        
             

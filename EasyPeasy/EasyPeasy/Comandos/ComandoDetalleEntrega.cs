@@ -11,5 +11,7 @@ namespace EasyPeasy.Comandos
         public TimeSpan HoraEntrega { get; set; }
         public byte[] Firma { get; set; }
         public string Observaciones { get; set; }
+        public int? IdMotivo { get; set; }
+        public int? IdEstado { get; set; }
     }
 }
