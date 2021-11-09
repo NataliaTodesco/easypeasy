@@ -70,6 +70,7 @@ namespace EasyPeasy.Controllers
                 var estados= new List<int>();
                 estados.Add(_db.Remitos.Where(x=>x.IdEstado==3).Count());
                 estados.Add(_db.Remitos.Where(x=>x.IdEstado==4).Count());
+                estados.Add(_db.Remitos.Where(x=>x.IdEstado==5).Count());
 
                 resultadoApi.Ok = true;
                 resultadoApi.Return = estados;
@@ -93,7 +94,12 @@ namespace EasyPeasy.Controllers
             ResultadoApi resultadoApi = new ResultadoApi();
             try
             {  
-                var detalles= _db.Remitos.Include(x=>x.DetalleEntregas).ToList();  
+                 var detalles= _db.Remitos.Include(x=>x.DetalleEntregas)
+                .Where(x=>x.IdEstado==4 && x.IdEstado==5)
+                .ToList();  
+                // foreach(var det in detalles){
+                //     det.IdMotivoNavigation=db.Motivos.where(x=>x.IdMotivo==det.IdMotivo);
+                // }  
                       
                 resultadoApi.Ok = true;
                 resultadoApi.Return = detalles;
