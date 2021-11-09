@@ -1,5 +1,6 @@
     
    let Clientes = [];
+   let cont = [];
    // Validar Form
     function go() {
         var forms = document.getElementsByClassName('needs-validation');
@@ -178,6 +179,7 @@
         }); 
 
         Clientes.push(datos[index]);
+        cont.push(0);
             
         html += "</td>";  
 
@@ -365,12 +367,17 @@
         idCl = Clientes[i].cliente.idCliente
         fecha = Clientes[i].fechaCompra;
         idE = Clientes[i].estado.idEstado;
+        
         }
     }
     
     $("#clienteM").val(idCl);
     //$("#fechaM").val(fecha);
     document.getElementById('fechaM').valueAsDate = new Date();
+    if (idE == 4)
+    $("#contador").val(1);
+    else $("#contador").val(0);
+    
     $("#estadoM").val(idE);
 
     $("#btnModificar").click(function() {    
@@ -381,7 +388,11 @@
         var idCliente = cliente.selectedIndex;
         var estado = document.getElementById('estadoM');
         var idEstado = estado.selectedIndex;
+        let c = Number($("#contador").val());
 
+        if (idEstado == 4) $("#contador").val(c++);
+        if (c == 3) swal("La entrega ya fue reprogramada 2(Dos) veces, por favor registrar como cancelación");
+        else
         ModificarFormulario(idRem,fecha,hora,idCliente,idEstado);
     })
   }
