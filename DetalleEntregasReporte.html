@@ -9,7 +9,78 @@
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="shortcut icon" href="./Imagenes/Easy-Peasy-2.ico">
+        <title>EasyPeasy</title>
+    
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital@1&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+    
+            body{
+                background-color: #ffee32;
+                font-family: 'Fira Sans', sans-serif;
+            }
+    
+            .btn{
+                background-color: #0aa34f;
+                color: white;
+                font-size: medium;
+            }
+    
+            .btn:hover{
+                color: white;
+                border: 3px dashed #ffee32;
+            }
+    
+            h1{
+                font-family: 'Luckiest Guy', cursive;
+                margin-top: 3%;
+            }
+    
+            .presentation, .tab-content{
+                background-color: white;
+                border-radius: 5px 5px 0 0;
+            }
+    
+            a{
+              color: black;
+            }
+    
+            a:hover{
+              color: rgb(82, 79, 79);
+            }
+    
+            .id{
+              float: right;
+              gap: 15px;
+            }
+        </style>
 </head>
+<body>
+<!-- Navbar -->
+<section>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <img src="./Imagenes/Easy-Peasy-2.svg" alt="" style="height: 50px;">
+            <h4 style="color: white; margin-top: 5%;">&nbsp EasyPeasy</h4>
+        </div>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button> 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto"></ul>
+          <form class="form-inline my-2 my-lg-0" style="gap: 15px;">
+            <a class="btn btn-success my-2 my-sm-0" href="menuReportes.html">Volver</a>
+            <a class="btn btn-success my-2 my-sm-0" type="button" href="index.html">
+                Salir
+                <i class="bi bi-box-arrow-right"></i>
+            </a>
+          </form>
+        </div>
+      </nav>
+</section>
+<h1 class="display-4" style="text-align: center;">Reporte Detalle de Entregas</h1>
 <div class="container">
     <div class="row">
         <div class="col-md-1"></div>
