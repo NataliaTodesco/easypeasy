@@ -269,9 +269,15 @@
 
   // Modificar Remitos
   function ModificarFormulario(id,fecha,hora,idCliente,idEstado) {
+    let fechaR = fecha;
+    const hoy = new Date();
+
+    if (idEstado == 4) 
+        fechaR =  sumarDias(hoy,1);
+    
     comando = {
-        "idRemito": id,
-        "fechaCompra": fecha,
+        "idRemito": id, 
+        "fechaCompra": fechaR,
         "horaEntregaPreferido": "16:00",
         "idEstado": idEstado,
         "idCliente": idCliente,
@@ -297,6 +303,11 @@
     });
   }
 
+  function sumarDias(fecha, dias){
+    fecha.setDate(fecha.getDate() + dias);
+    return fecha;
+  }
+
   function modificar(id) {
     let idRem = id;
     let idCl = 0;
@@ -312,7 +323,8 @@
     }
     
     $("#clienteM").val(idCl);
-    $("#fechaM").val(fecha);
+    //$("#fechaM").val(fecha);
+    document.getElementById('fechaM').valueAsDate = new Date();
     $("#estadoM").val(idE);
 
     $("#btnModificar").click(function() {    
