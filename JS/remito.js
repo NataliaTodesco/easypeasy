@@ -274,50 +274,50 @@
     let fechaR = fecha;
     const hoy = new Date();
 
-    if (idEstado == 4) 
-        fechaR =  sumarDias(hoy,1);
-        comando = {
-        "idRemito": id,
-        "fechaCompra": fechaR,
-        "idEstado": idEstado,
-        "firma": null,
-        "observaciones": document.getElementById("observaciones").value,      
+    // if (idEstado == 4) 
+    //     fechaR =  sumarDias(hoy,1);
+    //     comando = {
+    //     "idRemito": id,
+    //     "fechaCompra": fechaR,
+    //     "idEstado": idEstado,
+    //     "firma": null,
+    //     "observaciones": document.getElementById("observaciones").value,      
           
-    }  
+    // }  
 
-    if(idEstado==5){
-        var motivo = document.getElementById('motivos');
-        var idMotivo = motivo.selectedIndex;
-    comando = {
-        "idRemito": id,
-        "fechaCompra": fecha,
-        "idEstado": idEstado,
-        "firma": null,
-        "observaciones": document.getElementById("observaciones").value,       
-        "idMotivo":idMotivo    
-    }  
+    // if(idEstado==5){
+    //     var motivo = document.getElementById('motivos');
+    //     var idMotivo = motivo.selectedIndex;
+    // comando = {
+    //     "idRemito": id,
+    //     "fechaCompra": fecha,
+    //     "idEstado": idEstado,
+    //     "firma": null,
+    //     "observaciones": document.getElementById("observaciones").value,       
+    //     "idMotivo":idMotivo    
+    // }  
        
-        $.ajax({
-        //url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega",
-        url: "https://vast-brook-85314.herokuapp.com/DetalleEntrega/CargarDetalleEntrega",
-        dataType:'json',
-        contentType:'application/json',
-        data: JSON.stringify(comando),
-        type: "POST",
-        success: function(result) {
-            if (result.ok){
-                location.reload();
-                //swal("Remito modificado exitosamente");
-            }
-            else swal(result.error);
-        },
-        error: function(error) {
-            swal("Error" + error);
-        }
-    });
+    //     $.ajax({
+    //     //url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega",
+    //     url: "https://vast-brook-85314.herokuapp.com/DetalleEntrega/CargarDetalleEntrega",
+    //     dataType:'json',
+    //     contentType:'application/json',
+    //     data: JSON.stringify(comando),
+    //     type: "POST",
+    //     success: function(result) {
+    //         if (result.ok){
+    //             location.reload();
+    //             //swal("Remito modificado exitosamente");
+    //         }
+    //         else swal(result.error);
+    //     },
+    //     error: function(error) {
+    //         swal("Error" + error);
+    //     }
+    // });
 
 
-    }else{
+    // }else{
         comando = {
         "idRemito": id,
         "fechaCompra": fecha,
@@ -349,7 +349,7 @@
     }
 
   
-  }
+  //}
 
   function sumarDias(fecha, dias){
     fecha.setDate(fecha.getDate() + dias);
