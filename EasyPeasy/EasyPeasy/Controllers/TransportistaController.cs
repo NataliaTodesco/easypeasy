@@ -35,7 +35,7 @@ namespace api.Controllers
             try{
                 Resultado.Ok = true;
                 Resultado.Return = _db.Transportistas
-                               //   .Where(x=>x.idDisponibilidad==1)
+                                  .Where(x=>x.idDisponibilidad==1)
                                   .ToList();            
                       
                 return Resultado;

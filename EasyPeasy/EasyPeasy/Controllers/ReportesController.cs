@@ -7,6 +7,7 @@ using EasyPeasy.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using api.Resultados;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyPeasy.Controllers
 {
@@ -97,7 +98,7 @@ namespace EasyPeasy.Controllers
                  var detalles= _db.Remitos.Include(x=>x.DetalleEntregas)
                 .Where(x=>x.IdEstado==4 && x.IdEstado==5)
                 .ToList();  
-                // foreach(var det in detalles){
+                // foreach(var det in detalles.DetalleEntregas){
                 //     det.IdMotivoNavigation=db.Motivos.where(x=>x.IdMotivo==det.IdMotivo);
                 // }  
                       

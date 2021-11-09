@@ -9,6 +9,6 @@ namespace EasyPeasy.Models
     { 
         public int IdMotivo { get; set; }
         public string Descripcion { get; set; }
-        //public virtual ICollection<DetalleEntrega> DetalleEntregas { get; set; }
+        public virtual ICollection<DetalleEntrega> DetalleEntregas { get; set; }
     }
 }

@@ -60,19 +60,21 @@ namespace api.Controllers
             de.HoraEntrega = comando.HoraEntrega;
             de.Firma = comando.Firma;
             de.Observaciones = comando.Observaciones;
-           // de.IdMotivo=comando.IdMotivo;          
+            de.IdMotivo=comando.IdMotivo;          
 
-            // _db.DetalleEntregas.Add(de);
-            
-            // if(comando.IdEstado==5){
-            //     var rem=_db.Remitos.FirstOrDefault(x=>x.IdRemito==comando.IdRemito).IdEstado=5;
-            // }
+            _db.DetalleEntregas.Add(de);
+            if(comando.IdEstado==4){
+                 var rem=_db.Remitos.FirstOrDefault(x=>x.IdRemito==comando.IdRemito).IdEstado=4;
+            }
+            if(comando.IdEstado==5){
+                var rem=_db.Remitos.FirstOrDefault(x=>x.IdRemito==comando.IdRemito).IdEstado=5;
+            }
              //busco hoja de ruta q tiene el remito para buscar al transportista
             var remito=_db.Remitos.Include(x=>x.IdHojaRutaNavigation).FirstOrDefault(x=>x.IdRemito==comando.IdRemito);        
             
              var transportista=_db.Transportistas.FirstOrDefault(x=>x.IdTransportista==remito.IdHojaRutaNavigation.IdTransportista);
              //cambio disponibilidad de transportista responsable de la entrega a "disponible"
-             //transportista.idDisponibilidad=1;            
+             transportista.idDisponibilidad=1;            
             _db.SaveChanges();
 
             resultado.Ok = true;
