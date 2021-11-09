@@ -269,23 +269,51 @@
 
   // Modificar Remitos
   function ModificarFormulario(id,fecha,hora,idCliente,idEstado) {
-    let fechaR = fecha;
-    const hoy = new Date();
-
-    if (idEstado == 4) 
-        fechaR =  sumarDias(hoy,1);
-    
+    if(idEstado==5){
+        var motivo = document.getElementById('motivos');
+        var idMotivo = motivo.selectedIndex;
     comando = {
-        "idRemito": id, 
-        "fechaCompra": fechaR,
+        "idRemito": id,
+        "fechaCompra": fecha,
+        "idEstado": idEstado,
+        "firma": null,
+        "observaciones": document.getElementById("observaciones").value,       
+        "idMotivo":idMotivo    
+    }  
+       
+        $.ajax({
+        //url: "https://localhost:5001/DetalleEntrega/CargarDetalleEntrega",
+        url: "https://vast-brook-85314.herokuapp.com/DetalleEntrega/CargarDetalleEntrega",
+        dataType:'json',
+        contentType:'application/json',
+        data: JSON.stringify(comando),
+        type: "POST",
+        success: function(result) {
+            if (result.ok){
+                location.reload();
+                //swal("Remito modificado exitosamente");
+            }
+            else swal(result.error);
+        },
+        error: function(error) {
+            swal("Error" + error);
+        }
+    });
+
+
+    }else{
+        comando = {
+        "idRemito": id,
+        "fechaCompra": fecha,
         "horaEntregaPreferido": "16:00",
         "idEstado": idEstado,
         "idCliente": idCliente,
-        "idHojaRuta": 0
+        "idHojaRuta": 0        
     }
-
-    $.ajax({
+        $.ajax({
+        //url: "https://localhost:5001/Remito/Actualizar",
         url: "https://vast-brook-85314.herokuapp.com/Remito/Actualizar",
+        
         dataType:'json',
         contentType:'application/json',
         data: JSON.stringify(comando),
@@ -301,6 +329,10 @@
             swal("Error" + error);
         }
     });
+
+    }
+
+  
   }
 
   function sumarDias(fecha, dias){
