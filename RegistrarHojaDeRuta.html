@@ -104,7 +104,7 @@
                     <div class="row">
                         <div  class="col">
                             <label>Fecha</label><br>
-                            <input type="date" class="form-control" id="txtFecha"><br>
+                            <input type="date" class="form-control" id="txtFecha" disabled><br>
                         </div>
                     </div>
                     <div class="row">
@@ -165,6 +165,8 @@
     }
 
     function cargarCombo() {
+        document.getElementById('txtFecha').valueAsDate = new Date();
+
         $.ajax({
             url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
             type: "GET",
