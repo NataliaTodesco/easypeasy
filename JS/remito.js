@@ -269,6 +269,20 @@
 
   // Modificar Remitos
   function ModificarFormulario(id,fecha,hora,idCliente,idEstado) {
+    let fechaR = fecha;
+    const hoy = new Date();
+
+    if (idEstado == 4) 
+        fechaR =  sumarDias(hoy,1);
+        comando = {
+        "idRemito": id,
+        "fechaCompra": fechaR,
+        "idEstado": idEstado,
+        "firma": null,
+        "observaciones": document.getElementById("observaciones").value,      
+          
+    }  
+
     if(idEstado==5){
         var motivo = document.getElementById('motivos');
         var idMotivo = motivo.selectedIndex;
