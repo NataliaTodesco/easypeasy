@@ -12,7 +12,9 @@ namespace EasyPeasy.Models
         public TimeSpan? HoraEntrega { get; set; }
         public byte[] Firma { get; set; }
         public string Observaciones { get; set; }
+         // public int? IdMotivo { get; set; }
 
         public virtual Remito IdRemitoNavigation { get; set; }
+        //public virtual Motivos IdMotivoNavigation {get;set;}
     }
 }

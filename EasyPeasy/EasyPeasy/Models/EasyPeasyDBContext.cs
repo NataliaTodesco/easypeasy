@@ -29,6 +29,8 @@ namespace EasyPeasy.Models
         public virtual DbSet<Vehiculo> Vehiculos { get; set; }
         public virtual DbSet<Zona> Zonas { get; set; }
        //public virtual DbSet<Disponibilidad> Disponibilidads {get;set;}
+        //public virtual DbSet<Motivos> Motivoss { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -42,6 +44,26 @@ namespace EasyPeasy.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Spanish_Spain.1252");
+             // modelBuilder.Entity<Motivos>(entity=>{
+            //     entity.HasKey(m=>m.IdMotivo)
+            //     .HasName("IdMotivo");
+            //     entity.Property(e => e.IdMotivo).UseIdentityAlwaysColumn();
+            //       entity.Property(e => e.Descripcion)
+            //         .IsRequired()
+            //         .HasColumnType("character varying");
+           
+
+            // });
+
+            // modelBuilder.Entity<Disponibilidad>(entity=>{
+            //     entity.HasKey(k=>k.Id)
+            //     .HasName("Id");
+            //      entity.Property(e => e.Id).UseIdentityAlwaysColumn();
+            //       entity.Property(e => e.Nombre)
+            //         .IsRequired()
+            //         .HasColumnType("character varying");
+            // });
+
 
             modelBuilder.Entity<Barrio>(entity =>
             {
@@ -102,6 +124,13 @@ namespace EasyPeasy.Models
                     .WithMany(p => p.DetalleEntregas)
                     .HasForeignKey(d => d.IdRemito)
                     .HasConstraintName("IdRemito");
+
+                          //      entity.HasOne(d => d.IdMotivoNavigation)
+            //         .WithMany(p => p.DetalleEntrega)
+            //         .HasForeignKey(d => d.IdMotivo)
+            //         .HasConstraintName("IdMotivo");
+
+                 
             });
 
             modelBuilder.Entity<Estado>(entity =>
@@ -205,6 +234,11 @@ namespace EasyPeasy.Models
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("character varying");
+
+                                        //      entity.HasOne(d => d.IdDisponibilidadNavigation)
+            //         .WithMany(p => p.Transportistas)
+            //         .HasForeignKey(d => d.idDisponibilidad)
+            //         .HasConstraintName("idDisponibilidad");
             });
 
             modelBuilder.Entity<Vehiculo>(entity =>
