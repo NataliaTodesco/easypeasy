@@ -135,8 +135,8 @@
                             </select>
                     <button class="btn" type="submit" onclick="buscar()">Buscar</button>
                   </div>
-                    <table class="table">
-                      <table class="table" id="TablaRemitos">
+                    <table class="table table-responsive-sm">
+                      <table class="table table-responsive-md" id="TablaRemitos">
                         <thead class="thead-dark">
                             <th data-field="codigo">#</th>
                             <th data-field="estado">Estado</th>
@@ -337,7 +337,7 @@
                   <div class="form-row">
                     <div class="col-md-6 mb-3">
                       <label for="fecha">Fecha de Remito</label>
-                      <input type="date" class="form-control" id="fechaM" required>
+                      <input type="date" class="form-control" id="fechaM" disabled>
                       <div class="invalid-feedback">
                         Ingrese una fecha de compra
                       </div>

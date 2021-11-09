@@ -102,6 +102,12 @@
                     </select>&nbsp;&nbsp;&nbsp;
                     <label for="">Transportista</label> &nbsp;&nbsp;
                     <select class="form-control" id="transportistaB">
+                        <option selected value="0">Seleccione...</option>
+                                <option value="1">Juan Perez</option>
+                                <option value="2">Jonathan Correa</option>
+                                <option value="3">John Wick</option>
+                                <option value="4">Marcelo Juaino</option>
+                                <option value="5">Jorge Rios</option>
                     </select>
                 </div>
             </div>
@@ -109,17 +115,17 @@
 
     </section>
     <section class="container">
-        <table class="table table bordered jumbotron" id="TablaRutas">
-            <thead class="thead-dark">
+        <table class="table table bordered jumbotron table-responsive-md" id="TablaRutas">
+            <thead class="thead-dark" style='text-align: center'>
                 <th data-field="num">N°</th>
                 <th data-field="fecha">Fecha</th>
                 <th data-field="zona">Zona</th>
                 <th data-field="transportista">Transportista</th>
                 <th data-field="vehiculo">Vehículo</th>
-                <th>Acciones</th>
+                <th data-field="acciones" style='text-align: center'>Acciones</th>
             </thead>
-            <tbody id="cuerpoTabla"></tbody>
-            <tbody id="cuerpoTablaID"></tbody>
+            <tbody id="cuerpoTabla" style='text-align: center'></tbody>
+            <tbody id="cuerpoTablaID" style='text-align: center'></tbody>
         </table>
     </section>
     <section>
@@ -159,6 +165,11 @@
                             <label>Transportista</label><br>
                             <select class="form-control" id="cboTransportista">
                                 <option disabled selected>Seleccione transportista...</option>
+                                <option value="1">Juan Perez</option>
+                                <option value="2">Jonathan Correa</option>
+                                <option value="3">John Wick</option>
+                                <option value="4">Marcelo Juaino</option>
+                                <option value="5">Jorge Rios</option>
                             </select><br>
                         </div>
                     </div>
@@ -192,6 +203,8 @@
     function OnLoad() {
         cargarCombo();
 
+        document.getElementById('fechaB').valueAsDate = new Date();
+
         $.ajax({
             url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/ObtenerHojasDeRuta",
             type: "GET",
@@ -213,15 +226,7 @@
             url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
             type: "GET",
             success: function (result) {
-                var html = "<option value='0'>Seleccione...</option>";
-                $("#transportistaB").append(html);
-                select = document.getElementById("transportistaB");
-                for (let i = 0; i < result.return.length; i++) {
-                    var option = document.createElement('option');
-                    option.text = result.return[i].nombre;
-                    option.value = result.return[i].idTransportista;
-                    select.add(option);
-                }
+                
             },
             error: function (error) {
                 swal(result.error);
@@ -341,6 +346,10 @@
                         else {
                             $("#cuerpoTabla").show();
                             $("#cuerpoTablaID").hide();
+                            $("#cboIdRuta").val(0);
+                            $("#zonaB").val(0);
+                            $("#transportistaB").val(0);
+                            $("#fechaB").val(0);
                         }
                 } else {
                     swal(result.error);
@@ -424,14 +433,7 @@
             url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
             type: "GET",
             success: function (result) {
-                select = document.getElementById("cboTransportista");
-                for (let i = 0; i < result.return.length; i++) {
-                    var option = document.createElement('option');
-                    option.text = result.return[i].nombre;
-                    option.value = result.return[i].idTransportista;
-                    select.add(option);
-                }
-                console.log(select.value);
+                
             },
             error: function (error) {
                 swal(result.error);
@@ -571,11 +573,16 @@
         else {
             $("#cuerpoTabla").show();
             $("#cuerpoTablaID").hide();
+            $("#cboIdRuta").val(0);
+            $("#zonaB").val(0);
+            $("#transportistaB").val(0);
+            $("#fechaB").val(0);
         }
     });
 
     $("#fechaB").change(function () {
         let fecha = $("#fechaB").val();
+        let id =  $("#transportistaB").val();
 
         if (fecha != ""){
         $.ajax({
@@ -590,12 +597,10 @@
                         $("#cuerpoTablaID").show();
                         $("#cboIdRuta").val(0);
                         $("#zonaB").val(0);
-                        $("#transportistaB").val(0);
                         swal("Datos traidos con exito");
                         
                         for (let index = 0; index < result.return.hojaRutas.length; index++) {
-                            console.log(roundDate(result.return.hojaRutas[index].fecha), roundDatePlus(fecha))
-                            if (roundDate(result.return.hojaRutas[index].fecha) == roundDatePlus(fecha)){
+                            if (roundDate(result.return.hojaRutas[index].fecha) == roundDatePlus(fecha) && id == 0){
                                 let html = "<tr>";
                                 html += "<td>" + result.return.hojaRutas[index].id + "</td>";
                                 html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
@@ -624,6 +629,39 @@
 
                                 $("#cuerpoTablaID").append(html);
                             }
+                            else if (result.return.hojaRutas[index].idTransportista == id && roundDate(result.return.hojaRutas[index].fecha) == roundDatePlus(fecha)){
+                                let html = "<tr>";
+                                html += "<td>" + result.return.hojaRutas[index].id + "</td>";
+                                html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
+                                
+                                if (result.return.hojaRutas[index].idZona == 1)
+                                        html += "<td> Sur </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 2)
+                                        html += "<td> Norte </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 3)
+                                        html += "<td> Centro </td>";
+                                        if (result.return.hojaRutas[index].idZona == 4)
+                                        html += "<td> Este </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 5)
+                                        html += "<td> Oeste </td>";
+
+                                html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
+                                html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td> "
+                                    + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                    "<i class='bi bi-pencil-fill'></i> </button>&nbsp;"+
+                                    "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-geo-alt-fill'></i> </button>&nbsp;"+
+                                    "<a type='button' class='btn' href='entregas.html' >"+
+                                    "<i class='bi bi-plus-square'></i> Entrega Exitosa</a></td>";
+
+                                html += "</tr>";
+
+
+                                $("#cuerpoTablaID").append(html);
+                            }
                         }
                     
                     } else {
@@ -638,11 +676,16 @@
         else {
             $("#cuerpoTabla").show();
             $("#cuerpoTablaID").hide();
+            $("#cboIdRuta").val(0);
+            $("#zonaB").val(0);
+            $("#transportistaB").val(0);
+            $("#fechaB").val(0);
         }
     });
 
     $("#transportistaB").change(function () {
         let id = $("#transportistaB").val();
+        let fecha = $("#fechaB").val();
 
         if (id != 0){
         $.ajax({
@@ -657,11 +700,10 @@
                         $("#cuerpoTablaID").show();
                         $("#cboIdRuta").val(0);
                         $("#zonaB").val(0);
-                        $("#fechaB").val("");
                         swal("Datos traidos con exito");
                         
                         for (let index = 0; index < result.return.hojaRutas.length; index++) {
-                            if (result.return.hojaRutas[index].idTransportista == id){
+                            if (result.return.hojaRutas[index].idTransportista == id && fecha == ""){
                                 let html = "<tr>";
                                 html += "<td>" + result.return.hojaRutas[index].id + "</td>";
                                 html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
@@ -687,6 +729,39 @@
 
                                 html += "</tr>";
 
+                                console.log(roundDate(result.return.hojaRutas[index].fecha), roundDatePlus(fecha))
+                                $("#cuerpoTablaID").append(html);
+                            }
+                            else if (result.return.hojaRutas[index].idTransportista == id && roundDate(result.return.hojaRutas[index].fecha) == roundDatePlus(fecha)){
+                                let html = "<tr>";
+                                html += "<td>" + result.return.hojaRutas[index].id + "</td>";
+                                html += "<td>" + roundDate(result.return.hojaRutas[index].fecha) + "</td>";
+                                
+                                if (result.return.hojaRutas[index].idZona == 1)
+                                        html += "<td> Sur </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 2)
+                                        html += "<td> Norte </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 3)
+                                        html += "<td> Centro </td>";
+                                        if (result.return.hojaRutas[index].idZona == 4)
+                                        html += "<td> Este </td>";
+                                        else if (result.return.hojaRutas[index].idZona == 5)
+                                        html += "<td> Oeste </td>";
+
+                                html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
+                                html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td style='text-align: center'> "
+                                    + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='modificar' onclick='modificar("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#modificarM' data-placement='bottom'>"+
+                                    "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
+                                    "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.hojaRutas[index].id+")'>"+
+                                    "<i class='bi bi-geo-alt-fill'></i> </button> &nbsp;"+
+                                    "<a type='button' class='btn' href='entregas.html' >"+
+                                    "<i class='bi bi-plus-square'></i> Entrega Exitosa</a> </td>";
+
+                                html += "</tr>";
+
 
                                 $("#cuerpoTablaID").append(html);
                             }
@@ -704,6 +779,10 @@
         else {
             $("#cuerpoTabla").show();
             $("#cuerpoTablaID").hide();
+            $("#cboIdRuta").val(0);
+            $("#zonaB").val(0);
+            $("#transportistaB").val(0);
+            $("#fechaB").val(0);
         }
     });
  </script>
@@ -715,7 +794,7 @@
  <script>
     async function cargarMapa(id){
          if ($('#map').length < 1){
-             $("#cuerpoTablaID").append("<tr><td colspan='5'><div id='map' style='width: 100%; height: 50vh'></div></td></tr>")
+             $("#cuerpoTablaID").append("<tr><td colspan='6'><div id='map' style='width: 100%; height: 50vh'></div></td></tr>")
          }
          //$('#map').show
          try {
