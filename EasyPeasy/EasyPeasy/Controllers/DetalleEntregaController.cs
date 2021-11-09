@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using System.Data;
 using System.Xml.Schema;
@@ -60,7 +61,7 @@ namespace api.Controllers
             de.Firma = comando.Firma;
             de.Observaciones = comando.Observaciones;
 
-            _db.DetalleEntregas.Add(de);
+            _db.DetalleEntregas.Add(de);            
             _db.SaveChanges();
 
             resultado.Ok = true;
