@@ -358,7 +358,7 @@
                     </div>
                     <div class="col-md-6 mb-6">
                       <label for="estado">Estado</label>
-                      <select class="custom-select" id="estadoM" onclick="enable(this.value)" required>
+                      <select class="custom-select" id="estadoM" required>
                         <option selected disabled value="">Seleccionar...</option>
                       </select>
                       <div class="invalid-feedback">
@@ -366,7 +366,7 @@
                       </div>
                     </div>
                      <!-- combo motivos -->
-                     <div class="col-md-6 mb-6">
+                     <!-- <div class="col-md-6 mb-6">
                       <label for="motivo">Motivo</label>
                       <select class="custom-select" id="motivos" name="motivos" required disabled>
                         <option selected disabled value="">Seleccionar...</option>
@@ -386,7 +386,7 @@
                       <label for="observaciones">Observaciones</label>
                       <textarea class="form-control" id="observaciones" name="observaciones" disabled></textarea>                        
                     </div>
-                  </div>
+                  </div> -->
                   <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
                   <button class="btn" type="button" onclick="go()" id="btnModificar">Aceptar</button>
                 </form>
@@ -436,12 +436,12 @@
       });
     }); 
 
-    function enable(value){
+  //   function enable(value){
            
-           document.getElementById("motivos").disabled = value != "5";
-           document.getElementById("observaciones").disabled = value != "5" && value != "4";              
+  //          document.getElementById("motivos").disabled = value != "5";
+  //          document.getElementById("observaciones").disabled = value != "5" && value != "4";              
        
-   }
+  //  }
     
   </script>
   
