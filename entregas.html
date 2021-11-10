@@ -201,7 +201,12 @@
                         </div>
                         <div class="col-md-6 mb-6">
                           <label for="estadoEntrega">Estado</label>
-                          <input readonly type="text" class="form-control mb-3" id="estadoEntrega" required>
+                          <select class="custom-select" id="estadoEntrega" required>
+                            <option selected disabled value="0">Seleccionar...</option>
+                            <option value="3">Entregado</option>
+                            <option value="4">Reprogramado</option>
+                            <option value="5">Cancelado</option>
+                          </select>
                         </div>
                       </div>
                       <div class="form-row">
@@ -262,12 +267,6 @@
             <div class="modal-body">
               <section>
                 <form class="needs-validation" novalidate id="carga">
-                  <div class="form-row">
-                    <div class="col-md-12 mb-6">
-                      <label for="idDetalle">Hora de Entrega</label>
-                      <select style="resize: none;" name="" id="cboDetalle" rows="4" class="form-control mb-3"></select>
-                    </div>
-                  </div>
                   <div class="form-row">
                     <div class="col-md-12 mb-6">
                       <label for="observaciones">Observaciones</label>

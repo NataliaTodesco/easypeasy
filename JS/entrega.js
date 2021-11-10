@@ -474,23 +474,23 @@ function mostrarDatos() {
                 clienteEntrega.value = result.return.cliente.nombre;
                 direccionEntrega.value = result.return.cliente.direccion;
                 crearTablaDetalles(result.return.productosXRemitos);
-                switch (result.return.estado.idEstado) {
-                    case 1:
-                        estadoEntrega.value = "Pendiente";
-                        break;
-                    case 2:
-                        estadoEntrega.value = "En proceso";
-                        break;
-                    case 3:
-                        estadoEntrega.value = "Entregado";
-                        break;
-                    case 4:
-                        estadoEntrega.value = "Reprogramar";
-                        break;
+                // switch (result.return.estado.idEstado) {
+                //     case 1:
+                //         $('#estadoEntrega').val(1);
+                //         break;
+                //     case 2:
+                //         $('#estadoEntrega').val(2);
+                //         break;
+                //     case 3:
+                //         $('#estadoEntrega').val(3);
+                //         break;
+                //     case 4:
+                //         $('#estadoEntrega').val(4);
+                //         break;
 
-                    default: estadoEntrega.value = "---";
-                        break;
-                }
+                //     default: $('#estadoEntrega').val(5);
+                //         break;
+                // }
             } else {
                 swal(result.error);
             }
@@ -566,8 +566,9 @@ function CargarEntrega() {
     let horaEntrega = $("#horaEntrega").val();
     var firma = null;
     let observaciones = $("#observaciones").val();
+    let idEstado = $("#estadoEntrega").val();
     CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones);
-    ActualizarEstadoEntregado(idRemito);
+    ActualizarEstadoEntregado(idRemito,idEstado);
 }
 
 function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
@@ -645,13 +646,13 @@ function eliminarEntrega(id) {
     });
 }
 
-function ActualizarEstadoEntregado(id) {
+function ActualizarEstadoEntregado(id,idEstado) {
     $.ajax({
         url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + id,
         type: "GET",
         success: function (result) {
             if (result.ok) {
-                actualizarEstado(id,result.return.fechaCompra,result.return.cliente.idCliente,result.return.hojaRuta.idHojaRuta);
+                actualizarEstado(id,result.return.fechaCompra,result.return.cliente.idCliente,result.return.hojaRuta.idHojaRuta,idEstado);
             } else {
                 swal(result.error);
             }
@@ -662,12 +663,12 @@ function ActualizarEstadoEntregado(id) {
     });
 }
 
-function actualizarEstado(id,fecha,idCliente,idHojaRuta) {
+function actualizarEstado(id,fecha,idCliente,idHojaRuta,idEstado) {
     comando = {
         "idRemito": id,
         "fechaCompra": fecha,
         "horaEntregaPreferido": "16:00",
-        "idEstado": 3,
+        "idEstado": idEstado,
         "idCliente": idCliente,
         "idHojaRuta": idHojaRuta
     }
