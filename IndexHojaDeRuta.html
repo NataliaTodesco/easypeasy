@@ -424,6 +424,8 @@
 
                     html += "<td>" + result.return.transportista.nombre + "</td>";
                     html += "<td>" + result.return.vehiculo.patente + "</td>";
+                    html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                     html += "<td> "
                         + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.id+")'>"+
                         "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -639,6 +641,8 @@
 
                                 html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
                                 html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                                 html += "<td> "
                                     + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
                                     "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -709,6 +713,8 @@
 
                                 html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
                                 html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                                 html += "<td> "
                                     + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
                                     "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -738,6 +744,8 @@
 
                                 html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
                                 html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                                 html += "<td> "
                                     + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
                                     "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -812,6 +820,8 @@
 
                                 html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
                                 html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                                 html += "<td> "
                                     + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
                                     "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -841,6 +851,8 @@
 
                                 html += "<td>" + result.return.hojaRutas[index].transportista.nombre + "</td>";
                                 html += "<td>" + result.return.hojaRutas[index].vehiculo.patente + "</td>";
+                                html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+result.return.hojaRutas[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                                "Ver </button>" + "</td>";
                                 html += "<td style='text-align: center'> "
                                     + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+result.return.hojaRutas[index].id+")'>"+
                                     "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
