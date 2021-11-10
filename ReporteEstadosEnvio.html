@@ -78,24 +78,6 @@
         <h1 class="display-3" style="text-align: center;">Estado de envíos</h1><br>
         <div class="row">
             <div class="col-md-4">
-                <label>Seleccione año:</label>
-                <select id="anios" class="form-control select" required>
-                    <option value="0" disabled selected>Seleccione año...</option>
-                    <option value="1">2010</option>
-                    <option value="2">2011</option>
-                    <option value="3">2012</option>
-                    <option value="4">2013</option>
-                    <option value="5">2014</option>
-                    <option value="6">2015</option>
-                    <option value="7">2016</option>
-                    <option value="8">2017</option>
-                    <option value="9">2018</option>
-                    <option value="10">2019</option>
-                    <option value="11">2020</option>
-                    <option value="12">2021</option>
-                </select>
-            </div>
-            <div class="col-md-4">
                 <label>Seleccione mes:</label>
                 <select id="meses" class="form-control select" required>
                     <option value="0" disabled selected>Seleccione mes...</option>
@@ -134,7 +116,7 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript">
         function ValidarFechas() {
-            let anios = document.getElementById("anios");
+            let anios = 2021;
             let meses = document.getElementById("meses");
 
             if (anios.value === "" || anios.value == 0) {
