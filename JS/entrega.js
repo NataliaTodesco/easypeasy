@@ -36,7 +36,7 @@ function OnLoad() {
             if (result.ok) {
                 for (let i = 0; i < result.return.length; i++) {
                     //---- OBTENER REMITOS NO ENTREGADOS
-                    if (result.return[i].idEstado != 3) {
+                    if (result.return[i].idEstado != 3 && result.return[i].idEstado != 5) {
                         var option = document.createElement('option');
                         option.text = result.return[i].idRemito;
                         idRemito.add(option);
