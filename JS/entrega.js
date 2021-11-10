@@ -593,7 +593,7 @@ function CargarDetalleEntrega(idRemito, horaEntrega, firma, observaciones) {
         type: "POST",
         success: function (result) {
             if (result.ok) {
-
+                swal("Registro Exitoso")
             }
             else swal(result.error);
 
