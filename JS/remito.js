@@ -646,7 +646,7 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else if (result.return.estado.idEstado == 4){
+                        else if (result.return.remitos[index].estado.idEstado == 4){
                             html += "<td>"+ "Reprogramado"+"</td>";
                             }
                             else {
@@ -711,7 +711,7 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else if (result.return.estado.idEstado == 4){
+                        else if (result.return.remitos[index].estado.idEstado == 4){
                             html += "<td>"+ "Reprogramado"+"</td>";
                             }
                             else {
@@ -776,7 +776,7 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else if (result.return.estado.idEstado == 4){
+                        else if (result.return.remitos[index].estado.idEstado == 4){
                             html += "<td>"+ "Reprogramado"+"</td>";
                             }
                             else {
