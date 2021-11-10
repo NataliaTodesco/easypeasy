@@ -276,14 +276,14 @@
 
     if (idEstado == 4) 
         fechaR =  sumarDias(hoy,1);
-        comando = {
-        "idRemito": id,
-        "fechaCompra": fechaR,
-        "idEstado": idEstado,
-        "firma": null,
-        "observaciones": document.getElementById("observaciones").value,      
+    //     comando = {
+    //     "idRemito": id,
+    //     "fechaCompra": fechaR,
+    //     "idEstado": idEstado,
+    //     "firma": null,
+    //     "observaciones": document.getElementById("observaciones").value,      
           
-    }  
+    // }  
 
     // if(idEstado==5){
     //     var motivo = document.getElementById('motivos');
@@ -320,7 +320,7 @@
     // }else{
         comando = {
         "idRemito": id,
-        "fechaCompra": fecha,
+        "fechaCompra": fechaR,
         "horaEntregaPreferido": "16:00",
         "idEstado": idEstado,
         "idCliente": idCliente,
