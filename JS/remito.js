@@ -274,16 +274,16 @@
     let fechaR = fecha;
     const hoy = new Date();
 
-    // if (idEstado == 4) 
-    //     fechaR =  sumarDias(hoy,1);
-    //     comando = {
-    //     "idRemito": id,
-    //     "fechaCompra": fechaR,
-    //     "idEstado": idEstado,
-    //     "firma": null,
-    //     "observaciones": document.getElementById("observaciones").value,      
+    if (idEstado == 4) 
+        fechaR =  sumarDias(hoy,1);
+        comando = {
+        "idRemito": id,
+        "fechaCompra": fechaR,
+        "idEstado": idEstado,
+        "firma": null,
+        "observaciones": document.getElementById("observaciones").value,      
           
-    // }  
+    }  
 
     // if(idEstado==5){
     //     var motivo = document.getElementById('motivos');
@@ -374,11 +374,11 @@
     $("#clienteM").val(idCl);
     //$("#fechaM").val(fecha);
     document.getElementById('fechaM').valueAsDate = new Date();
-    if (idE == 4)
-    $("#contador").val(1);
-    else $("#contador").val(0);
+    // if (idE == 4)
+    // $("#contador").val(1);
+    // else $("#contador").val(0);
     
-    $("#estadoM").val(idE);
+    // $("#estadoM").val(idE);
 
     $("#btnModificar").click(function() {    
         let fecha = $("#fechaM").val();
@@ -390,9 +390,9 @@
         var idEstado = estado.selectedIndex;
         let c = Number($("#contador").val());
 
-        if (idEstado == 4) $("#contador").val(c++);
-        if (c == 3) swal("La entrega ya fue reprogramada 2(Dos) veces, por favor registrar como cancelación");
-        else
+        // if (idEstado == 4) $("#contador").val(c++);
+        // if (c == 3) swal("La entrega ya fue reprogramada 2(Dos) veces, por favor registrar como cancelación");
+        // else
         ModificarFormulario(idRem,fecha,hora,idCliente,idEstado);
     })
   }

@@ -561,6 +561,11 @@ function roundDate(timeStamp) {
     return dd + "/" + mm + "/" + yyyy;
 }
 
+function sumarDias(fecha, dias){
+    fecha.setDate(fecha.getDate() + dias);
+    return fecha;
+  }
+
 function CargarEntrega() {
     let idRemito = $("#idRemito").val();
     let horaEntrega = $("#horaEntrega").val();
@@ -664,9 +669,15 @@ function ActualizarEstadoEntregado(id,idEstado) {
 }
 
 function actualizarEstado(id,fecha,idCliente,idHojaRuta,idEstado) {
+    let fechaR = fecha;
+    const hoy = new Date();
+
+    if (idEstado == 4) 
+        fechaR =  sumarDias(hoy,1);
+
     comando = {
         "idRemito": id,
-        "fechaCompra": fecha,
+        "fechaCompra": fechaR,
         "horaEntregaPreferido": "16:00",
         "idEstado": idEstado,
         "idCliente": idCliente,
