@@ -20,19 +20,19 @@
     var rol = document.getElementById('rol');
     var idRol = rol.selectedIndex+1;
 
-    if ($("#contraseña").val()=='123456' && $("#email").val() =='administrador@gmail.com' && idRol == 1){ 
+    if ($("#contraseña").val()=='Admin123456' && $("#email").val() =='administrador@gmail.com' && idRol == 1){ 
       window.location.replace("./menu.html");
     } 
     
-    else if ($("#contraseña").val()=='123456' && $("#email").val() =='gerente@gmail.com' && idRol == 2){
+    else if ($("#contraseña").val()=='Gerente123456' && $("#email").val() =='gerente@gmail.com' && idRol == 2){
       window.location.replace("./menu.html");
     } 
     
-    else if ($("#contraseña").val()=='123456' && $("#email").val() =='transportista@gmail.com' && idRol == 4){
+    else if ($("#contraseña").val()=='Transp123456' && $("#email").val() =='transportista@gmail.com' && idRol == 4){
       window.location.replace("./IndexHojaDeRuta.html");
     } 
     
-    else if ($("#contraseña").val()=='123456' && $("#email").val() =='empleado@gmail.com' && idRol == 3){
+    else if ($("#contraseña").val()=='Emple123456' && $("#email").val() =='empleado@gmail.com' && idRol == 3){
       window.location.replace("./remitos.html");
     }
     else{ 
