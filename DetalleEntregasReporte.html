@@ -95,7 +95,7 @@
                     <th data-field="fechaCompra">Fecha</th>
                     <th data-field="remito">Remito</th>
                     <th data-field="observaciones">Observaciones</th>
-                    <th data-field="motivos">Motivo de Cancelacion</th>
+                    <!-- <th data-field="motivos">Motivo de Cancelacion</th> -->
                 </thead>
                 <tbody id="cuerpoTabla"></tbody>
             </table>
@@ -160,11 +160,11 @@
             });
             html += "</td>";
             html += "</td>";
-            html += "<td>";
-            datos[index].idMotivoNavigation.forEach(det => {
-                html += det.descripcion + "<br>";
-            });
-            html += "</td>";
+            // html += "<td>";
+            // datos[index].idMotivoNavigation.forEach(det => {
+            //     html += det.descripcion + "<br>";
+            // });
+            // html += "</td>";
             html += "</tr>"
             $("#cuerpoTabla").append(html);
         }
