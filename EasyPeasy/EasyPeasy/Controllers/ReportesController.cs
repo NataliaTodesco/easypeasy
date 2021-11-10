@@ -16,58 +16,52 @@ namespace EasyPeasy.Controllers
     public class ReportesController : ControllerBase
     {
         private readonly EasyPeasyDBContext _db = new EasyPeasyDBContext();
-        [HttpGet]
-        [Route("/Reportes/EntregasPorTransportista")]
-        public ActionResult<ResultadoApi> EntregasPorTransportista()
-        {
-            //Random random = new Random();
-            //listado de transportistas
-            var transportistasList = _db.Transportistas.ToList();
-            var entregasList = new List<ReportesViewModel>();
-            ResultadoApi resultadoApi = new ResultadoApi();
-            try
-            {
-               if (transportistasList != null)
-                {
-                    int total = 100;
-                    for (int i = 0; i < transportistasList.Count(); i++)
-                    {
-                        ReportesViewModel report = new ReportesViewModel()
-                        {
-                            text = transportistasList[i].Nombre,
-                            // value = random.Next(total),
-                            value=_db.HojaRuta.Where(x=>x.IdTransportista==transportistasList[i].IdTransportista).Count(),
-                            color = String.Format("#{0:X6}", new Random().Next(0x1000000))
-                        };
-                        total -= report.value;
-                        entregasList.Add(report);
-                    }
+        // [HttpGet]
+        // [Route("/Reportes/EntregasPorTransportista")]
+        // public ActionResult<ResultadoApi> EntregasPorTransportista()
+        // {
+        //     //listado de transportistas
+        //     var transportistasList = _db.Transportistas.ToList();
+        //     var entregasList = new List<ReportesViewModel>();
+        //     ResultadoApi resultadoApi = new ResultadoApi();
+        //     try
+        //     {
+        //        if (transportistasList != null)
+        //         {
+        //             int total = 100;
+        //             for (int i = 0; i < transportistasList.Count(); i++)
+        //             {
+        //                 ReportesViewModel report = new ReportesViewModel()
+        //                 {
+        //                     text = transportistasList[i].Nombre,
+        //                     // value = random.Next(total),
+        //                     value=_db.HojaRuta.Where(x=>x.IdTransportista==transportistasList[i].IdTransportista).Count(),
+        //                     color = String.Format("#{0:X6}", new Random().Next(0x1000000))
+        //                 };
+        //                 total -= report.value;
+        //                 entregasList.Add(report);
+        //             }
 
-                }
-                resultadoApi.Return = entregasList;
-                return resultadoApi;
-            }
+        //         }
+        //         resultadoApi.Return = entregasList;
+        //         return resultadoApi;
+        //     }
 
-            catch (Exception ex)
-            {
-                resultadoApi.Ok = false;
-                resultadoApi.Error = "Error " + ex.Message;
-                return resultadoApi;
-            }
-        }
+        //     catch (Exception ex)
+        //     {
+        //         resultadoApi.Ok = false;
+        //         resultadoApi.Error = "Error " + ex.Message;
+        //         return resultadoApi;
+        //     }
+        // }
 
         [HttpGet]
         [Route("/Reportes/EstadoEntregas")]
         public ActionResult<ResultadoApi> EstadoEntregas()
         {
-            //Random random = new Random();
             ResultadoApi resultadoApi = new ResultadoApi();
             try
             {
-                // int total = 100;
-                // var entregadas = random.Next(total);
-                // var reprogramadas = random.Next(total - entregadas);
-                // int[] estados = new int[2];
                 var estados= new List<int>();
                 estados.Add(_db.Remitos.Where(x=>x.IdEstado==3).Count());
                 estados.Add(_db.Remitos.Where(x=>x.IdEstado==4).Count());
@@ -115,5 +109,55 @@ namespace EasyPeasy.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        [Route("/Reportes/EntregasPorTransportista")]
+        public ActionResult<ResultadoApi> EntregasPorTransportista()
+        {
+            //listado de transportistas
+            var transportistasList = _db.Transportistas
+                                    .Include(x=>x.HojaRuta)
+                                    .ThenInclude(x=>x.Remitos)
+                                    .ToList();
+       
+
+            var entregasList = new List<ReportesViewModel>();
+            ResultadoApi resultadoApi = new ResultadoApi();
+            try
+            {
+               if (transportistasList != null)
+                {
+                    int total = 100;
+                    for (int i = 0; i < transportistasList.Count(); i++)
+                    {    var entregas=0;
+                        foreach(var e in transportistasList[i].HojaRuta){
+                            //estado distinto a "en proceso"(2) y "pendiente"(1)
+                           entregas=e.Remitos.Where(x=>x.IdEstado!=2 && x.IdEstado!=1).Count();
+                        }
+                             
+                        ReportesViewModel report = new ReportesViewModel()
+                        {
+                            text = transportistasList[i].Nombre,                          
+                            value=entregas,
+                            color = String.Format("#{0:X6}", new Random().Next(0x1000000))
+                        };
+                        total -= report.value;
+                        entregasList.Add(report);
+                    }
+
+                }
+                resultadoApi.Return = entregasList;
+                return resultadoApi;
+            }
+
+            catch (Exception ex)
+            {
+                resultadoApi.Ok = false;
+                resultadoApi.Error = "Error " + ex.Message;
+                return resultadoApi;
+            }
+        }
+
     }
 }
