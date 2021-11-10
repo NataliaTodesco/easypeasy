@@ -16,44 +16,55 @@ namespace EasyPeasy.Controllers
     public class ReportesController : ControllerBase
     {
         private readonly EasyPeasyDBContext _db = new EasyPeasyDBContext();
-        // [HttpGet]
-        // [Route("/Reportes/EntregasPorTransportista")]
-        // public ActionResult<ResultadoApi> EntregasPorTransportista()
-        // {
-        //     //listado de transportistas
-        //     var transportistasList = _db.Transportistas.ToList();
-        //     var entregasList = new List<ReportesViewModel>();
-        //     ResultadoApi resultadoApi = new ResultadoApi();
-        //     try
-        //     {
-        //        if (transportistasList != null)
-        //         {
-        //             int total = 100;
-        //             for (int i = 0; i < transportistasList.Count(); i++)
-        //             {
-        //                 ReportesViewModel report = new ReportesViewModel()
-        //                 {
-        //                     text = transportistasList[i].Nombre,
-        //                     // value = random.Next(total),
-        //                     value=_db.HojaRuta.Where(x=>x.IdTransportista==transportistasList[i].IdTransportista).Count(),
-        //                     color = String.Format("#{0:X6}", new Random().Next(0x1000000))
-        //                 };
-        //                 total -= report.value;
-        //                 entregasList.Add(report);
-        //             }
 
-        //         }
-        //         resultadoApi.Return = entregasList;
-        //         return resultadoApi;
-        //     }
+        [HttpGet]
+        [Route("/Reportes/EntregasPorTransportista")]
+        public ActionResult<ResultadoApi> EntregasPorTransportista(int id)
+        {
+            //Random random = new Random();
+            //listado de transportistas
+            var transportistasList = _db.Transportistas
+                                    .Include(x=>x.HojaRuta)
+                                    .ThenInclude(x=>x.Remitos)
+                                    .ToList();
+       
 
-        //     catch (Exception ex)
-        //     {
-        //         resultadoApi.Ok = false;
-        //         resultadoApi.Error = "Error " + ex.Message;
-        //         return resultadoApi;
-        //     }
-        // }
+            var entregasList = new List<ReportesViewModel>();
+            ResultadoApi resultadoApi = new ResultadoApi();
+            try
+            {
+               if (transportistasList != null)
+                {
+                    int total = _db.Remitos.Where(x=>x.IdEstado==id).Count();
+                    for (int i = 0; i < transportistasList.Count(); i++)
+                    {    var entregas=0;
+                        foreach(var e in transportistasList[i].HojaRuta){                       
+                           entregas+=e.Remitos.Where(x=>x.IdEstado==id).Count();
+                        }
+                             
+                        ReportesViewModel report = new ReportesViewModel()
+                        {
+                            text = transportistasList[i].Nombre,                          
+                            value=(entregas*100)/total,
+                            color = String.Format("#{0:X6}", new Random().Next(0x1000000))
+                        };
+                       // total -= report.value;
+                        entregasList.Add(report);
+                    }
+
+                }
+                resultadoApi.Return = entregasList;
+                return resultadoApi;
+            }
+
+            catch (Exception ex)
+            {
+                resultadoApi.Ok = false;
+                resultadoApi.Error = "Error " + ex.Message;
+                return resultadoApi;
+            }
+        }
+        
 
         [HttpGet]
         [Route("/Reportes/EstadoEntregas")]
@@ -111,53 +122,53 @@ namespace EasyPeasy.Controllers
         }
 
 
-        [HttpGet]
-        [Route("/Reportes/EntregasPorTransportista")]
-        public ActionResult<ResultadoApi> EntregasPorTransportista()
-        {
-            //listado de transportistas
-            var transportistasList = _db.Transportistas
-                                    .Include(x=>x.HojaRuta)
-                                    .ThenInclude(x=>x.Remitos)
-                                    .ToList();
+        // [HttpGet]
+        // [Route("/Reportes/EntregasPorTransportista")]
+        // public ActionResult<ResultadoApi> EntregasPorTransportista()
+        // {
+        //     //listado de transportistas
+        //     var transportistasList = _db.Transportistas
+        //                             .Include(x=>x.HojaRuta)
+        //                             .ThenInclude(x=>x.Remitos)
+        //                             .ToList();
        
 
-            var entregasList = new List<ReportesViewModel>();
-            ResultadoApi resultadoApi = new ResultadoApi();
-            try
-            {
-               if (transportistasList != null)
-                {
-                    int total = 100;
-                    for (int i = 0; i < transportistasList.Count(); i++)
-                    {    var entregas=0;
-                        foreach(var e in transportistasList[i].HojaRuta){
-                            //estado distinto a "en proceso"(2) y "pendiente"(1)
-                           entregas+=e.Remitos.Where(x=>x.IdEstado!=2 && x.IdEstado!=1).Count();
-                        }
+        //     var entregasList = new List<ReportesViewModel>();
+        //     ResultadoApi resultadoApi = new ResultadoApi();
+        //     try
+        //     {
+        //        if (transportistasList != null)
+        //         {
+        //             int total = 100;
+        //             for (int i = 0; i < transportistasList.Count(); i++)
+        //             {    var entregas=0;
+        //                 foreach(var e in transportistasList[i].HojaRuta){
+        //                     //estado distinto a "en proceso"(2) y "pendiente"(1)
+        //                    entregas+=e.Remitos.Where(x=>x.IdEstado!=2 && x.IdEstado!=1).Count();
+        //                 }
                              
-                        ReportesViewModel report = new ReportesViewModel()
-                        {
-                            text = transportistasList[i].Nombre,                          
-                            value=entregas,
-                            color = String.Format("#{0:X6}", new Random().Next(0x1000000))
-                        };
-                        total -= report.value;
-                        entregasList.Add(report);
-                    }
+        //                 ReportesViewModel report = new ReportesViewModel()
+        //                 {
+        //                     text = transportistasList[i].Nombre,                          
+        //                     value=entregas,
+        //                     color = String.Format("#{0:X6}", new Random().Next(0x1000000))
+        //                 };
+        //                 total -= report.value;
+        //                 entregasList.Add(report);
+        //             }
 
-                }
-                resultadoApi.Return = entregasList;
-                return resultadoApi;
-            }
+        //         }
+        //         resultadoApi.Return = entregasList;
+        //         return resultadoApi;
+        //     }
 
-            catch (Exception ex)
-            {
-                resultadoApi.Ok = false;
-                resultadoApi.Error = "Error " + ex.Message;
-                return resultadoApi;
-            }
-        }
+        //     catch (Exception ex)
+        //     {
+        //         resultadoApi.Ok = false;
+        //         resultadoApi.Error = "Error " + ex.Message;
+        //         return resultadoApi;
+        //     }
+        // }
 
     }
 }
