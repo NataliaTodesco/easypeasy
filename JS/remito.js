@@ -585,9 +585,12 @@
                         }else if (result.return.estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else {
+                        else if (result.return.estado.idEstado == 4){
                         html += "<td>"+ "Reprogramado"+"</td>";
                         }
+                        else {
+                            html += "<td>"+ "Cancelado"+"</td>";
+                            }
                 
                         html += "<td>"+ roundDate(result.return.fechaCompra) + "</td>";
                         html += "<td>"+ result.return.cliente.nombre + "</td>"; 
@@ -643,9 +646,12 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else {
-                        html += "<td>"+ "Reprogramado"+"</td>";
-                        }
+                        else if (result.return.estado.idEstado == 4){
+                            html += "<td>"+ "Reprogramado"+"</td>";
+                            }
+                            else {
+                                html += "<td>"+ "Cancelado"+"</td>";
+                                }
 
                         var fecha = roundDate(result.return.remitos[index].fechaCompra);
 
@@ -705,9 +711,12 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else {
-                        html += "<td>"+ "Reprogramado"+"</td>";
-                        }
+                        else if (result.return.estado.idEstado == 4){
+                            html += "<td>"+ "Reprogramado"+"</td>";
+                            }
+                            else {
+                                html += "<td>"+ "Cancelado"+"</td>";
+                                }
 
                         var fecha = roundDate(result.return.remitos[index].fechaCompra);
 
@@ -767,9 +776,12 @@
                         }else if (result.return.remitos[index].estado.idEstado == 3){
                         html += "<td>"+ "Entregado"+"</td>";
                         }               
-                        else {
-                        html += "<td>"+ "Reprogramado"+"</td>";
-                        }
+                        else if (result.return.estado.idEstado == 4){
+                            html += "<td>"+ "Reprogramado"+"</td>";
+                            }
+                            else {
+                                html += "<td>"+ "Cancelado"+"</td>";
+                                }
 
                         var fecha = roundDate(result.return.remitos[index].fechaCompra);
 
