@@ -206,6 +206,7 @@
                         <div class="col">
                             <table class="table table-responsive-sm" id="TablaRemitos">
                                 <thead class="thead-dark">
+                                    <th data-field="idRemito">N° Remito</th>
                                     <th data-field="articulo">Articulo</th>
                                     <th data-field="cantidad">Cantidad</th>
                                 </thead>
@@ -349,6 +350,7 @@
     function cargarArticulos(datos){
         for (let index = 0; index < datos.productosXRemitos.length; index++){
             let html = "<tr> ";
+                html += "<td> " + datos.idRemito + " </td> ";
                 html += "<td> " + datos.productosXRemitos[index].producto.descripcion + " </td> ";
                 html += "<td> " + datos.productosXRemitos[index].cantidad + " </td>";
                 html += "</tr>";
