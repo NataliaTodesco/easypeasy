@@ -190,7 +190,9 @@ namespace api.Controllers
             //busco los remitos pendientes para la zona seleccionada y registro la hoja de ruta
             hojaRuta.Remitos = _db.Remitos
                             .Where(x => x.IdClienteNavigation.IdBarrioNavigation.IdZona == comando.idZona
-                            && x.IdEstado == 1).ToList();
+                            && x.IdEstado == 1)
+                            .Take(3)
+                            .ToList();
             //agrego hoja de ruta
             _db.HojaRuta.Add(hojaRuta);
             //cambio el estado de los remitos de "1"(pendiente) a "2"(en proceso)
