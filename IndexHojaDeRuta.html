@@ -121,6 +121,7 @@
                 <th data-field="zona">Zona</th>
                 <th data-field="transportista">Transportista</th>
                 <th data-field="vehiculo">Vehículo</th>
+                <th data-field="articulos">Artículos</th>
                 <th data-field="acciones" style='text-align: center'>Acciones</th>
             </thead>
             <tbody id="cuerpoTabla" style='text-align: center'></tbody>
@@ -182,6 +183,39 @@
                     </div>
                     <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
                     <button class="btn" type="button" id="btnModificar" onclick="go()">Aceptar</button>
+                  </form>
+                </section>
+            </div>
+          </div>
+        </div>  
+      </section>
+      <section>
+        <div class="modal fade" id="detallesArticulos" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Detalle de articulos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <section>
+                  <form class="needs-validation" novalidate id="carga">
+                    <div class="row ">                       
+                        <div class="col">
+                            <table class="table table-responsive-sm" id="TablaRemitos">
+                                <thead class="thead-dark">
+                                    <th data-field="articulo">Articulo</th>
+                                    <th data-field="cantidad">Cantidad</th>
+                                </thead>
+                                <tbody id="cuerpoTablaDetalleArticulos">
+                                </tbody>
+                                <tbody id="cuerpoTablaEntregasP"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <button type="button" onclick="limpiarTablaArticulos()" class="btn" data-dismiss="modal">Aceptar</button>
                   </form>
                 </section>
             </div>
@@ -254,6 +288,8 @@
 
             html += "<td>" + datos[index].transportista.nombre + "</td>";
             html += "<td>" + datos[index].vehiculo.patente + "</td>";
+            html += "<td>" + "<button type='button' class='btn' id='verDetalle' onclick='verDetalle("+datos[index].id+")' data-toggle='modal' data-target='#detallesArticulos' data-placement='bottom'>"+
+                "Ver </button>" + "</td>";
             html += "<td> "
                 + "<button type='button' class='btn' id='eliminar' onclick='eliminar("+datos[index].id+")'>"+
                 "<i class='bi bi-trash-fill'></i> </button> &nbsp;"+
@@ -264,6 +300,60 @@
             $("#cuerpoTabla").append(html);
         }
 
+    }
+
+    function verDetalle(idHoja){
+        $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/HojaDeRuta/Upsert?Id=" + idHoja,
+            type: "GET",
+            
+            success: function (result) {
+                if (result.ok) {
+                    buscarRemitoHoja(result.return);
+                    
+                }else{
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log();(error);
+            },
+        });
+        
+    }
+
+    function limpiarTablaArticulos(){
+        $("#cuerpoTablaDetalleArticulos tr").remove();
+    }
+
+    function buscarRemitoHoja(datos){
+        limpiarTablaArticulos();
+        for (let index = 0; index < datos.remitos.length; index++) {
+            $.ajax({
+                url: "https://vast-brook-85314.herokuapp.com/Remito/ObtenerRemito?id=" + datos.remitos[index].idRemito,
+                type: "GET",
+                success: function (result) {
+                    if (result.ok) {
+                        cargarArticulos(result.return);
+                    } else {
+                        swal(result.error);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+    }
+
+    function cargarArticulos(datos){
+        for (let index = 0; index < datos.productosXRemitos.length; index++){
+            let html = "<tr> ";
+                html += "<td> " + datos.productosXRemitos[index].producto.descripcion + " </td> ";
+                html += "<td> " + datos.productosXRemitos[index].cantidad + " </td>";
+                html += "</tr>";
+            $("#cuerpoTablaDetalleArticulos").append(html);
+        }
     }
 
         function roundDate(timeStamp){
@@ -278,6 +368,9 @@
         var dd  = new Date(timeStamp).getDate()+1;
         return dd +"/"+ mm +"/" + yyyy;
     }
+
+    //CARGAR TABLA DETALLE DE ARTICULOS
+
 
     //CARGAR COMBO ID HOJA RUTAS
     function cargarComboIdRuta(datos) {
@@ -338,7 +431,6 @@
                         "<i class='bi bi-pencil-fill'></i> </button> &nbsp;"+
                         "<button type='button' class='btn' id='botonMapa' onclick='cargarMapa("+result.return.id+")'>"+
                         "<i class='bi bi-geo-alt-fill'></i> </button> </td>";
-
                     html += "</tr>"
                     $("#cuerpoTablaID").append(html);
                         }
