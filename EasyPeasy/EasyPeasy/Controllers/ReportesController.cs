@@ -133,7 +133,7 @@ namespace EasyPeasy.Controllers
                     {    var entregas=0;
                         foreach(var e in transportistasList[i].HojaRuta){
                             //estado distinto a "en proceso"(2) y "pendiente"(1)
-                           entregas=e.Remitos.Where(x=>x.IdEstado!=2 && x.IdEstado!=1).Count();
+                           entregas+=e.Remitos.Where(x=>x.IdEstado!=2 && x.IdEstado!=1).Count();
                         }
                              
                         ReportesViewModel report = new ReportesViewModel()
