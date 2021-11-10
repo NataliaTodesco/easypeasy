@@ -88,13 +88,16 @@
                 </select><br>
             </div> 
         </div>
-        <button onclick="LoadChart()" class="btn">Consultar</button>
-        <button onclick="location.reload()" class="btn">Nueva búsqueda</button><br>
+        <div>
+            <button onclick="LoadChart()" class="btn">Consultar</button>
+            <button onclick="location.reload()" class="btn">Nueva búsqueda</button><br>
+        </div>       
     </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+  
+    <div class="row py-5">
+        <div class="col-md-2"></div>
+        <div class="col-md-4" id="informacion"> </div>
+        <div class="col-md-6">
             <table border="0" cellpadding="0" cellspacing="0" style="width: 100;">
                 <tr>
                     <td>
@@ -109,7 +112,6 @@
                 </tr>
             </table>
         </div>
-        <div class="col-md-4"></div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -179,6 +181,7 @@
                      url: "https://vast-brook-85314.herokuapp.com/Reportes/EntregasPorTransportista?id="+id,
 
                     success: function (result) {
+                        crearInforme(result);
                         var transportistasArray = new Array();
                         for (let i = 0; i < result.return.length; i++) {
                             transportistasArray.push(result.return[i]);
@@ -203,7 +206,35 @@
                     }
                 });
             }
-        };      
+        };     
+         function crearInforme(result){
+
+            var estado = document.getElementById("estados");
+            let id = estado.selectedIndex;
+            let state=0;
+            switch(id){
+                case 1: state="pendientes";
+                break;
+                case 2: state="en proceso";
+                break;
+                case 3: state="entregadas";
+                break;
+                case 4: state="reprogramadas";
+                break;
+                case 5: state="canceladas";
+                break;
+            }
+
+            let html="<ul>";              
+                    for(let i=0; i<result.return.length;i++){
+
+                        html+="<li>"+ result.return[i].text + ", cantidad " + state + ": " + result.return[i].totalPorTransportista +"</li>"+"</br>";                        
+                    }
+                    html+="<li>"+"Total "+ state + ": "+ result.return[0].total +"</li>"+"</br>";
+                    html += "</ul>";  
+                    $("#informacion").append(html);
+        }
+ 
 
     </script>
 </body>

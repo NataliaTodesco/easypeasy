@@ -44,6 +44,8 @@ namespace EasyPeasy.Controllers
                              
                         ReportesViewModel report = new ReportesViewModel()
                         {
+                            total = total,
+                            totalPorTransportista = entregas,
                             text = transportistasList[i].Nombre,                          
                             value=(entregas*100)/total,
                             color = String.Format("#{0:X6}", new Random().Next(0x1000000))
