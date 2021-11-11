@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using api.Resultados;
 using Microsoft.EntityFrameworkCore;
+using EasyPeasy.Models.DTO;
 
 namespace EasyPeasy.Controllers
 {
@@ -102,15 +103,35 @@ namespace EasyPeasy.Controllers
             ResultadoApi resultadoApi = new ResultadoApi();
             try
             {  
-                 var detalles= _db.Remitos.Include(x=>x.DetalleEntregas)
-                .Where(x=>x.IdEstado==4 && x.IdEstado==5)
-                .ToList();  
-                // foreach(var det in detalles.DetalleEntregas){
-                //     det.IdMotivoNavigation=db.Motivos.where(x=>x.IdMotivo==det.IdMotivo);
-                // }  
+                Detalles dtodetalles = new Detalles();
+                dtodetalles.DTOdetalleEntregas=(from dr in _db.DetalleEntregas
+                            select new DTOdetalleEntregas{
+                                 Id = dr.IdDetalle,
+                                 IdRemito = dr.IdRemito,
+                                 HoraEntrega = dr.HoraEntrega,
+                                 Observaciones = dr.Observaciones,
+                                 Remitos = (
+                                         from r in _db.Remitos
+                                         where r.IdRemito==dr.IdRemito 
+                                         select new DRemito
+                                         {
+                                             IdRemito = r.IdRemito,
+                                             FechaCompra = r.FechaCompra,
+                                             IdEstado = r.IdEstado,
+                                             HojaRuta = (
+                                                 from h in _db.HojaRuta
+                                                 where h.IdHojaRuta==r.IdHojaRuta
+                                                 select new DHojaRuta{
+                                                     Id=h.IdHojaRuta,
+                                                     Fecha=h.Fecha,
+                                                     IdTransportista=h.IdTransportista
+                                                 }
+                                             ).FirstOrDefault(),
+                            }).ToList(),
+                            }).ToList();
                       
                 resultadoApi.Ok = true;
-                resultadoApi.Return = detalles;
+                resultadoApi.Return = dtodetalles;
                 return resultadoApi;
             }
 
