@@ -15,6 +15,6 @@ namespace EasyPeasy.Models
        // public int? IdMotivo { get; set; }
 
         public virtual Remito IdRemitoNavigation { get; set; }
-        public virtual Motivos IdMotivoNavigation {get;set;}
+       // public virtual Motivos IdMotivoNavigation {get;set;}
     }
 }
