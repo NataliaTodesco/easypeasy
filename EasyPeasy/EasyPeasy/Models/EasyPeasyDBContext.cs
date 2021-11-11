@@ -29,7 +29,7 @@ namespace EasyPeasy.Models
         public virtual DbSet<Vehiculo> Vehiculos { get; set; }
         public virtual DbSet<Zona> Zonas { get; set; }
         public virtual DbSet<Disponibilidad> Disponibilidades {get;set;}
-        public virtual DbSet<Motivos> Motivos { get; set; }
+        //public virtual DbSet<Motivos> Motivos { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,16 +44,16 @@ namespace EasyPeasy.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Spanish_Spain.1252");
-             modelBuilder.Entity<Motivos>(entity=>{
-                entity.HasKey(m=>m.IdMotivo)
-                .HasName("IdMotivo");
-                entity.Property(e => e.IdMotivo).UseIdentityAlwaysColumn();
-                  entity.Property(e => e.Descripcion)
-                    .IsRequired()
-                    .HasColumnType("character varying");
+            //  modelBuilder.Entity<Motivos>(entity=>{
+            //     entity.HasKey(m=>m.IdMotivo)
+            //     .HasName("IdMotivo");
+            //     entity.Property(e => e.IdMotivo).UseIdentityAlwaysColumn();
+            //       entity.Property(e => e.Descripcion)
+            //         .IsRequired()
+            //         .HasColumnType("character varying");
            
 
-            });
+            // });
 
             modelBuilder.Entity<Disponibilidad>(entity=>{
                 entity.HasKey(k=>k.Id)
@@ -125,10 +125,10 @@ namespace EasyPeasy.Models
                     .HasForeignKey(d => d.IdRemito)
                     .HasConstraintName("IdRemito");
 
-                               entity.HasOne(d => d.IdMotivoNavigation)
-                    .WithMany(p => p.DetalleEntregas)
-                    .HasForeignKey(d => d.IdMotivo)
-                    .HasConstraintName("IdMotivo");
+                    //            entity.HasOne(d => d.IdMotivoNavigation)
+                    // .WithMany(p => p.DetalleEntregas)
+                    // .HasForeignKey(d => d.IdMotivo)
+                    // .HasConstraintName("IdMotivo");
 
                  
             });
