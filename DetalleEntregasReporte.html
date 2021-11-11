@@ -155,18 +155,17 @@
             }
             var fecha = datos.dtOdetalleEntregas[index].remitos[i].fechaCompra;
             html += "<td>" + fecha + "</td>";
-                } 
-             
-            
+                }  
           
             html += "<td>" + datos.dtOdetalleEntregas[index].idRemito + "</td>";
-            html += "<td>"+  datos.dtOdetalleEntregas[index].observaciones + "</td>";
+            if( datos.dtOdetalleEntregas[index].observaciones == null || 
+                datos.dtOdetalleEntregas[index].observaciones == ""){
+                html += "<td>"+  "N/A" + "</td>";
+            }
+            else{
+                html += "<td>"+  datos.dtOdetalleEntregas[index].observaciones + "</td>";
+            }           
             html += "</td>";
-            // html += "<td>";
-            // datos[index].idMotivoNavigation.forEach(det => {
-            //     html += det.descripcion + "<br>";
-            // });
-            // html += "</td>";
             html += "</tr>"
             $("#cuerpoTabla").append(html);
         }
