@@ -56,7 +56,7 @@ function OnLoad() {
             }
                 
             } else {
-                swal(result.error);
+                console.log(result.error);
             }
         },
         error: function (error) {
@@ -91,7 +91,7 @@ function OnLoad() {
                     resultadoS = result.return;
                     cargarCombo(resultadoS);
                 } else {
-                    swal(result.error);
+                    console.log(result.error);
                 }
             },
             error: function (error) {
@@ -122,7 +122,7 @@ function OnLoad() {
                     resultadoS = result.return;
                     cargarCombo(resultadoS);
                 } else {
-                    swal(result.error);
+                    console.log(result.error);
                 }
             },
             error: function (error) {
@@ -166,7 +166,7 @@ function OnLoad() {
                 }
                 
             } else {
-                swal(result.error);
+                console.log(result.error);
             }
         },
         error: function (error) {
@@ -178,15 +178,7 @@ function OnLoad() {
         url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
         type: "GET",
         success: function (result) {
-            var html = "<option value='0'>Seleccione...</option>";
-            $("#transportistaB").append(html);
-            select = document.getElementById("transportistaB");
-            for (let i = 0; i < result.return.length; i++) {
-                var option = document.createElement('option');
-                option.text = result.return[i].nombre;
-                option.value = result.return[i].idTransportista;
-                select.add(option);
-            }
+            
             console.log(select.value);
         },
         error: function (error) {
@@ -246,7 +238,7 @@ function OnLoad() {
                        }
                     
                     } else {
-                        swal(result.error);
+                        console.log(result.error);
                     }
                 },
                 error: function (error) {
@@ -311,7 +303,7 @@ function OnLoad() {
                        }
                     
                     } else {
-                        swal(result.error);
+                        console.log(result.error);
                     }
                 },
                 error: function (error) {
@@ -376,7 +368,7 @@ function OnLoad() {
                        }
                     
                     } else {
-                        swal(result.error);
+                        console.log(result.error);
                     }
                 },
                 error: function (error) {
@@ -492,7 +484,7 @@ function mostrarDatos() {
                 //         break;
                 // }
             } else {
-                swal(result.error);
+                console.log(result.error);
             }
         },
         error: function (error) {
