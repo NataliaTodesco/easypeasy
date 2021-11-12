@@ -224,7 +224,7 @@ function OnLoad() {
                                html += "<td>" + nombre + "</td>";
                                
                                html += "<td>" +
-                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'>" +
                                "<i class='bi bi-trash-fill'></i> </button>";
    
                                html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
@@ -289,7 +289,7 @@ function OnLoad() {
                                html += "<td>" + nombre + "</td>";
                                
                                html += "<td>" +
-                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'>" +
                                "<i class='bi bi-trash-fill'></i> </button>";
    
                                html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
@@ -354,7 +354,7 @@ function OnLoad() {
                                html += "<td>" + nombre + "</td>";
                                
                                html += "<td>" +
-                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'>" +
                                "<i class='bi bi-trash-fill'></i> </button>";
    
                                html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
@@ -426,7 +426,7 @@ function OnLoad() {
                                html += "<td>" + nombre + "</td>";
                                
                                html += "<td>" +
-                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                               "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + result.return[index].idRemito + ")'>" +
                                "<i class='bi bi-trash-fill'></i> </button>";
    
                                html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + result.return[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
@@ -531,7 +531,7 @@ function crearTablaEntregas(datos) {
                 html += "<td>" + nombre + "</td>";
                 
                 html += "<td>" +
-                "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + datos[index].idRemito + ")'data-toggle='modal' data-target='#EliminarEntrega' data-placement='bottom'>" +
+                "<button type='button' class='btn' id='eliminar' onclick='EliminarEntrega(" + datos[index].idRemito + ")'>" +
                 "<i class='bi bi-trash-fill'></i> </button>";
 
                 html += "&nbsp; <button type='button' class='btn' id='modificar' onclick='ModificarEntrega(" + datos[index].idRemito + ")' data-toggle='modal' data-target='#ModificarEntrega' data-placement='bottom'>" +
@@ -625,11 +625,11 @@ function modificarEntrega(id, observaciones) {
 }
 
 
-function eliminarEntrega(id) {
+function EliminarEntrega(id) {
 
 
     $.ajax({
-        url: "Entregas/DeleteEntrega"+id,//falta heroku
+        url: "https://localhost:5001/Entregas/DeleteEntrega?IdDetalle="+id,//falta heroku
         type: "DELETE",
         success: function (result) {
             if (result.ok) {
