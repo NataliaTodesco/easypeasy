@@ -25,7 +25,7 @@
     } 
     
     else if ($("#contraseña").val()=='Gerente123456' && $("#email").val() =='gerente@gmail.com' && idRol == 2){
-      window.location.replace("./menu.html");
+      window.location.replace("./menuReportes.html");
     } 
     
     else if ($("#contraseña").val()=='Transp123456' && $("#email").val() =='transportista@gmail.com' && idRol == 4){
@@ -33,6 +33,9 @@
     } 
     
     else if ($("#contraseña").val()=='Emple123456' && $("#email").val() =='empleado@gmail.com' && idRol == 3){
+      window.location.replace("./remitos.html");
+    }
+    else if ($("#contraseña").val()=='Resp123456' && $("#email").val() =='ResponsableRutas@gmail.com' && idRol == 5){
       window.location.replace("./remitos.html");
     }
     else{ 
