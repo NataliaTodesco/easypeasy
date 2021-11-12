@@ -54,6 +54,10 @@
               float: right;
               gap: 15px;
             }
+
+            table{
+                background-color: white;
+            }
         </style>
 </head>
 <body>
@@ -82,6 +86,19 @@
 </section>
 <h1 class="display-4" style="text-align: center;">Reporte Detalle de Entregas</h1>
 <div class="container">
+        <div>
+            <div class="input-group input-group-inline">
+                <label for="">Buscar por Fecha</label> &nbsp;&nbsp;
+                <input type="date" name="" id="fechaB" class="form-control"> &nbsp;&nbsp;&nbsp;
+                <label for="">Buscar por Estado</label>&nbsp;&nbsp;
+             <select name="estado" id="estado" class="form-control">
+                 <option value="0">Seleccionar...</option>
+                 <option value="3">Entregado</option>
+                 <option value="4">Reprogramado</option>
+                 <option value="5">Cancelado</option>
+                </select><br>
+            </div>
+        </div>
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -116,7 +133,6 @@
         // Obtener Remitos
         $.ajax({
             url: "https://vast-brook-85314.herokuapp.com/Reportes/DetalleEntregas",
-           // url: "https://localhost:5001/Reportes/DetalleEntregas",
             type: "GET",
 
             success: function (result) {
@@ -127,12 +143,21 @@
                 }
             },
             error: function (error) {
-                console.log(); (error);
+                console.log(error);
             },
         });
     }
 
+    function roundDatePlus(timeStamp){
+        var yyyy = new Date(timeStamp).getFullYear().toString();
+        var mm = new Date(timeStamp).getMonth()+1;
+        var dd  = new Date(timeStamp).getDate()+1;
+        return dd +"/"+ mm +"/" + yyyy;
+    }
+
     function crearTabla(datos) {
+        $("#cuerpoTabla").empty();
+
         for (let index = 0; index < datos.dtOdetalleEntregas.length; index++) {
             let html = "<tr id='lista'>";
 
@@ -153,7 +178,7 @@
             else {
                 html += "<td>" + "Cancelado" + "</td>";
             }
-            var fecha = datos.dtOdetalleEntregas[index].remitos[i].fechaCompra;
+            var fecha = roundDate(datos.dtOdetalleEntregas[index].remitos[i].fechaCompra);
             html += "<td>" + fecha + "</td>";
                 }  
           
@@ -170,6 +195,167 @@
             $("#cuerpoTabla").append(html);
         }
     }
+    function roundDate(timeStamp){
+    var yyyy = new Date(timeStamp).getFullYear().toString();
+    var mm = new Date(timeStamp).getMonth()+1;
+    var dd  = new Date(timeStamp).getDate().toString();
+    return dd +"/"+ mm +"/" + yyyy;
+  }
 </script>
+    <script>
+        $('#fechaB').change(function () {
+            let datos = [];
+
+            $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Reportes/DetalleEntregas",
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                    datos = result.return;
+
+                    let fechaB = $('#fechaB').val();
+
+            if (fechaB != ""){
+                $("#cuerpoTabla").empty();
+                swal("Datos traidos con exito ")
+
+                for (let index = 0; index < datos.dtOdetalleEntregas.length; index++) {
+                        let html = "<tr id='lista'>";
+
+                        for(let i=0; i < datos.dtOdetalleEntregas[index].remitos.length; i++){
+                        if (roundDate(datos.dtOdetalleEntregas[index].remitos[i].fechaCompra) == roundDatePlus(fechaB)){
+
+                            html += "<td>" + datos.dtOdetalleEntregas[index].id+ "</td>";
+
+                                if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 1) {
+                                    html += "<td>" + "Pendiente" + "</td>";
+                                } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 2) {
+                                    html += "<td>" + "En proceso" + "</td>";
+                                } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 3) {
+                                    html += "<td>" + "Entregado" + "</td>";
+                                }
+                                else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 4) {
+                                    html += "<td>" + "Reprogramado" + "</td>";
+                                }
+                                else {
+                                    html += "<td>" + "Cancelado" + "</td>";
+                                }
+                                var fecha = roundDate(datos.dtOdetalleEntregas[index].remitos[i].fechaCompra);
+                                html += "<td>" + fecha + "</td>";
+                                    
+                            
+                                html += "<td>" + datos.dtOdetalleEntregas[index].idRemito + "</td>";
+                                if( datos.dtOdetalleEntregas[index].observaciones == null || 
+                                    datos.dtOdetalleEntregas[index].observaciones == ""){
+                                    html += "<td>"+  "N/A" + "</td>";
+                                }
+                                else{
+                                    html += "<td>"+  datos.dtOdetalleEntregas[index].observaciones + "</td>";
+                                }           
+                                html += "</td>";
+                                html += "</tr>"
+
+
+                                $("#cuerpoTabla").append(html);
+                               
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                else{
+                    crearTabla(datos);
+                }
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+
+            
+        })
+
+        $('#estado').change(function () {
+            let datos = [];
+
+            $.ajax({
+            url: "https://vast-brook-85314.herokuapp.com/Reportes/DetalleEntregas",
+            type: "GET",
+
+            success: function (result) {
+                if (result.ok) {
+                    datos = result.return;
+
+                    let estado = $('#estado').val();
+
+            if (estado != 0){
+                $("#cuerpoTabla").empty();
+                swal("Datos traidos con exito ")
+
+                for (let index = 0; index < datos.dtOdetalleEntregas.length; index++) {
+                        let html = "<tr id='lista'>";
+
+                        for(let i=0; i < datos.dtOdetalleEntregas[index].remitos.length; i++){
+                        if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == estado){
+
+                            html += "<td>" + datos.dtOdetalleEntregas[index].id+ "</td>";
+
+                                if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 1) {
+                                    html += "<td>" + "Pendiente" + "</td>";
+                                } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 2) {
+                                    html += "<td>" + "En proceso" + "</td>";
+                                } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 3) {
+                                    html += "<td>" + "Entregado" + "</td>";
+                                }
+                                else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 4) {
+                                    html += "<td>" + "Reprogramado" + "</td>";
+                                }
+                                else {
+                                    html += "<td>" + "Cancelado" + "</td>";
+                                }
+                                var fecha = roundDate(datos.dtOdetalleEntregas[index].remitos[i].fechaCompra);
+                                html += "<td>" + fecha + "</td>";
+                                    
+                            
+                                html += "<td>" + datos.dtOdetalleEntregas[index].idRemito + "</td>";
+                                if( datos.dtOdetalleEntregas[index].observaciones == null || 
+                                    datos.dtOdetalleEntregas[index].observaciones == ""){
+                                    html += "<td>"+  "N/A" + "</td>";
+                                }
+                                else{
+                                    html += "<td>"+  datos.dtOdetalleEntregas[index].observaciones + "</td>";
+                                }           
+                                html += "</td>";
+                                html += "</tr>"
+
+
+                                $("#cuerpoTabla").append(html);
+                               
+                            }
+                            
+                        }
+                        
+                    }
+                }
+                else{
+                    crearTabla(datos);
+                }
+                } else {
+                    swal(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+
+            
+        })
+    </script>
 </body>
 </html>
