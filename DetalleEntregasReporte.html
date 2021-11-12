@@ -133,38 +133,39 @@
     }
 
     function crearTabla(datos) {
-        for (let index = 0; index < datos.length; index++) {
+        for (let index = 0; index < datos.dtOdetalleEntregas.length; index++) {
             let html = "<tr id='lista'>";
 
-            html += "<td>" + datos[index].idRemito + "</td>";
+            html += "<td>" + datos.dtOdetalleEntregas[index].id+ "</td>";
 
-            if (datos[index].idEstado == 1) {
+                for(let i=0; i<datos.dtOdetalleEntregas[index].remitos.length; i++){
+
+                    if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 1) {
                 html += "<td>" + "Pendiente" + "</td>";
-            } else if (datos[index].idEstado == 2) {
+            } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 2) {
                 html += "<td>" + "En proceso" + "</td>";
-            } else if (datos[index].idEstado == 3) {
+            } else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 3) {
                 html += "<td>" + "Entregado" + "</td>";
             }
-            else if (datos[index].idEstado == 4) {
+            else if (datos.dtOdetalleEntregas[index].remitos[i].idEstado == 4) {
                 html += "<td>" + "Reprogramado" + "</td>";
             }
             else {
                 html += "<td>" + "Cancelado" + "</td>";
             }
-            var fecha = datos[index].fechaCompra;
+            var fecha = datos.dtOdetalleEntregas[index].remitos[i].fechaCompra;
             html += "<td>" + fecha + "</td>";
-            html += "<td>" + datos[index].idRemito + "</td>";
-            html += "<td>";
-            datos[index].detalleEntregas.forEach(det => {
-                html += det.observaciones + "<br>";
-            });
+                }  
+          
+            html += "<td>" + datos.dtOdetalleEntregas[index].idRemito + "</td>";
+            if( datos.dtOdetalleEntregas[index].observaciones == null || 
+                datos.dtOdetalleEntregas[index].observaciones == ""){
+                html += "<td>"+  "N/A" + "</td>";
+            }
+            else{
+                html += "<td>"+  datos.dtOdetalleEntregas[index].observaciones + "</td>";
+            }           
             html += "</td>";
-            html += "</td>";
-            // html += "<td>";
-            // datos[index].idMotivoNavigation.forEach(det => {
-            //     html += det.descripcion + "<br>";
-            // });
-            // html += "</td>";
             html += "</tr>"
             $("#cuerpoTabla").append(html);
         }
