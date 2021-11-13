@@ -507,7 +507,12 @@
               var idCliente = cliente.selectedIndex;
               var idEstado = 1;
 
-              CargarFormulario(fecha,hora,idCliente,idEstado,Productos);
+              if (fecha != "" & idCliente != 0){
+                CargarFormulario(fecha,hora,idCliente,idEstado,Productos);
+              }
+              else {
+                  swal("Por favor complete todos los campos")
+              }
           })
         }
 
