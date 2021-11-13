@@ -56,44 +56,30 @@ namespace api.Controllers
 
 
 
-        /* [HttpPost]
-        [Route("Direccion/RegistrarDireccion")]
-        public ActionResult<ResultadoApi> AltaDireccion([FromBody] ComandoDireccion comando)
+        [HttpPut]
+        [Route("Direccion/ModificarDireccion")]
+        public ActionResult<ResultadoApi> ModificarDireccion([FromBody] ComandoDireccion comando)
         {
-            var resultado = new ResultadoApi();
+          var resultado = new ResultadoApi();
 
-            if (comando.idBarrio.Equals(""))
+            if (comando.Direccion.Equals(""))
             {
                 resultado.Ok = false;
-                resultado.Error = "Ingrese Barrio";
-                return resultado;
-            }
-            if (comando.idZona.Equals(""))
-            {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese Zona";
+                resultado.Error = "ingrese dirección";
                 return resultado;
             }
 
-           
-            if (comando.Descripcion.Equals(""))
+            var direccion = db.Clientes.Where(c => c.IdCliente == comando.IdCliente).FirstOrDefault();
+            if (direccion != null)
             {
-                resultado.Ok = false;
-                resultado.Error = "Ingrese calle y altura";
-                return resultado;
+                direccion.Direccion = comando.Direccion;
+                db.Clientes.Update(direccion);
+                db.SaveChanges();
             }
-
-            var direccion = new Barrio();
-            direccion.IdBarrio=comando.idBarrio;
-            direccion.Descripcion=comando.Descripcion;
-            direccion.IdZona=comando.idZona;
-            
-            db.Barrios.Add(direccion);
-            db.SaveChanges(); 
             resultado.Ok = true;
 
             return resultado;
-        } */
+        } 
     }
 
 }

@@ -5,6 +5,6 @@ namespace EasyPeasy.Comandos
     public class ComandoDireccion
     {
         public int IdCliente { get; set; }
-        public String Descripcion { get; set; } 
+        public String Direccion { get; set; } 
     }
 }

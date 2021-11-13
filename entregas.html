@@ -182,13 +182,17 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="clienteEntrega">Cliente</label>
+                        <input readonly id="clienteEntregaId" class="form-control" type="hidden">
                         <input readonly id="clienteEntrega" class="form-control" type="text">
                       </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                           <label for="direccionEntrega">Dirección</label>
-                          <input readonly type="text" class="form-control" id="direccionEntrega" required>
+                          <input readonly type="text" class="form-control" id="direccionEntrega" required><br>
+                          
+                          <button id="habilitarDireccion" type="button" onclick="habilitarBoton()" class="btn mb-3">Modificar</button>
+                          <button id="modificarDireccion" type="button" onclick="botonModificarDireccion()" disabled class="btn mb-3">Enviar</button>
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="horaEntrega">Hora de entrega</label>
@@ -374,6 +378,7 @@
 </section>
       <!-- <script src="JS/remito.js"></script> -->
       <script src="JS/entrega.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
       <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
