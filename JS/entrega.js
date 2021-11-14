@@ -67,7 +67,7 @@ function OnLoad() {
 
     // Modificar Entrega
     $("#btnModificarEntrega").click(function () {
-        let id = $("#cboDetalle").val();
+        let id = $("#cboDetalle2").val();
         let observaciones = $("#observacionesModificar").val();
 
         modificarEntrega(id, observaciones);
@@ -101,8 +101,8 @@ function OnLoad() {
         // carga combo
         function cargarCombo(datos) {
             var html = "<option value='0'>SELECCIONE</option>";
-            $("#cboDetalle").append(html);
-            select = document.getElementById("cboDetalle");
+            $("#cboDetalle2").append(html);
+            select = document.getElementById("cboDetalle2");
             for (let i = 0; i < datos.length; i++) {
                 var option = document.createElement('option');
                 option.value = datos[i].idDetalle;
@@ -178,8 +178,8 @@ function OnLoad() {
         url: "https://vast-brook-85314.herokuapp.com/Transportista/ObtenerTransportistas",
         type: "GET",
         success: function (result) {
-
-            console.log(select.value);
+            
+            // console.log(select.value);
         },
         error: function (error) {
             swal(result.error);
