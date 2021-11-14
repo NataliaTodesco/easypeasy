@@ -727,7 +727,7 @@ function modificarDireccione(id, direccion) {
         "direccion": direccion,
     };
     $.ajax({
-        url: "https://localhost:5001/Direccion/ModificarDireccion",//Heroku
+        url: "https://vast-brook-85314.herokuapp.com/Direccion/ModificarDireccion",//Heroku
         type: "PUT",
         dataType: 'JSON',
         contentType: 'application/json',
